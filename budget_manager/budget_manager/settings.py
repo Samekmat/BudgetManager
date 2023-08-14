@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'compressor',
+    "budget_manager_app",
+    "compressor",
 ]
 
 MIDDLEWARE = [

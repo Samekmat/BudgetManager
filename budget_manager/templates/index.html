@@ -1,25 +1,5 @@
 {% extends "_base.html" %}
 
 {% block content %}
-<h1 class="mb-6 text-3xl text-green-800">Django + Tailwind CSS + Flowbite</h1>
-
-
-<div class="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-    <a href="{% url 'login' %}" aria-current="true" class="block w-full px-4 py-2 text-white bg-blue-700 border-b border-gray-200 rounded-t-lg cursor-pointer dark:bg-gray-800 dark:border-gray-600">
-        Login
-    </a>
-    <a href="{% url 'register' %}" class="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-        Register
-    </a>
-    {% if request.user.is_authenticated %}
-    <a href="{% url 'logout' %}" class="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-        Logout
-    </a>
-    {% endif %}
-    <a href="#" class="block w-full px-4 py-2 rounded-b-lg cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-        Index
-    </a>
-</div>
-
-
+<h1 class="mb-6 text-3xl text-gray-900 dark:text-white">Django + Tailwind CSS + Flowbite</h1>
 {% endblock content %}

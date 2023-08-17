@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import login
 from django.urls import reverse_lazy
 from django.views.generic import FormView
-from .forms import RegisterForm, LoginForm
+from budget_manager_app.forms import RegisterForm, LoginForm
 
 
 def index(request):

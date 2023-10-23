@@ -1,5 +1,6 @@
-from api.serializers import IncomeSerializer, ExpenseSerializer
-from budget_manager_app.models import Income, Expense
+from api.serializers import ExpenseSerializer, IncomeSerializer
+from expenses.models import Expense
+from incomes.models import Income
 from django.contrib import messages
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -23,6 +24,7 @@ class ExpenseDeleteAPIView(generics.DestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
+        idx = instance.id
         self.perform_destroy(instance)
-        messages.success(request, f"Expense with ID {instance.id} has been deleted.")
+        messages.success(request, f"Expense with ID {idx} has been deleted.")
         return Response(status=status.HTTP_204_NO_CONTENT)

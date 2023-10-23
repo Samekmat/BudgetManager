@@ -2,7 +2,9 @@ import os
 from pathlib import Path
 import environ
 
-env = environ.Env()
+env = environ.Env(
+    DEBUG=(bool, True),
+)
 environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -16,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -30,9 +32,16 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "budget_manager_app",
     "compressor",
+    "rest_framework",
 ]
+
+INSTALLED_EXTENSIONS = [
+    "api",
+    "budget_manager_app",
+]
+
+INSTALLED_APPS += INSTALLED_EXTENSIONS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -136,3 +145,6 @@ COMPRESS_ROOT = BASE_DIR / 'static'
 COMPRESS_ENABLED = True
 
 STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
+
+# Messages storage
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

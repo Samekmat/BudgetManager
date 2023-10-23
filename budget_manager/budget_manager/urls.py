@@ -16,16 +16,25 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
-from budget_manager_app.views import index, RegisterView, LoginView
+from django.urls import path, include
+from budget_manager_app import views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', index, name='index'),
-    path('register/', RegisterView.as_view(), name='register'),
-    path('login/', LoginView.as_view(), name='login'),
+    path('', views.index, name='index'),
+    path('register/', views.RegisterView.as_view(), name='register'),
+    path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
+
+    path('income/', views.IncomeListView.as_view(), name='incomes'),
+    path('income/create/', views.IncomeCreateView.as_view(), name='income_create'),
+    path('income/update/<int:pk>', views.IncomeUpdateView.as_view(), name='income_update'),
+    path('expense/', views.ExpenseListView.as_view(), name='expenses'),
+    path('expense/create/', views.ExpenseCreateView.as_view(), name='expense_create'),
+    path('expense/update/<int:pk>', views.ExpenseUpdateView.as_view(), name='expense_update'),
+
+    path('api/', include('api.urls')),
 
 ]
 

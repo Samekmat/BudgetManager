@@ -1,0 +1,50 @@
+[
+  {
+    "model": "budget_manager_app.categoryexpense",
+    "pk": 1,
+    "fields": {
+      "name": "Housing",
+      "description": "Base category for expense"
+    }
+  },
+  {
+    "model": "budget_manager_app.categoryexpense",
+    "pk": 2,
+    "fields": {
+      "name": "Transportation",
+      "description": "Base category for expense"
+    }
+  },
+  {
+    "model": "budget_manager_app.categoryexpense",
+    "pk": 3,
+    "fields": {
+      "name": "Entertainment",
+      "description": "Base category for expense"
+    }
+  },
+  {
+    "model": "budget_manager_app.categoryexpense",
+    "pk": 4,
+    "fields": {
+      "name": "Food",
+      "description": "Base category for expense"
+    }
+  },
+  {
+    "model": "budget_manager_app.categoryexpense",
+    "pk": 5,
+    "fields": {
+      "name": "Utilities",
+      "description": "Base category for expense"
+    }
+  },
+  {
+    "model": "budget_manager_app.categoryexpense",
+    "pk": 6,
+    "fields": {
+      "name": "Healthcare",
+      "description": "Base category for expense"
+    }
+  }
+]

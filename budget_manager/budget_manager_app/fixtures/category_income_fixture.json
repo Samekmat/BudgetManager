@@ -1,0 +1,42 @@
+[
+  {
+    "model": "budget_manager_app.categoryincome",
+    "pk": 1,
+    "fields": {
+      "name": "Salary",
+      "description": "Base category for income"
+    }
+  },
+  {
+    "model": "budget_manager_app.categoryincome",
+    "pk": 2,
+    "fields": {
+      "name": "Freelance Income",
+      "description": "Base category for income"
+    }
+  },
+  {
+    "model": "budget_manager_app.categoryincome",
+    "pk": 3,
+    "fields": {
+      "name": "Investment Returns",
+      "description": "Base category for income"
+    }
+  },
+  {
+    "model": "budget_manager_app.categoryincome",
+    "pk": 4,
+    "fields": {
+      "name": "Rental Income",
+      "description": "Base category for income"
+    }
+  },
+  {
+    "model": "budget_manager_app.categoryincome",
+    "pk": 5,
+    "fields": {
+      "name": "Other income",
+      "description": "Base category for income"
+    }
+  }
+  ]

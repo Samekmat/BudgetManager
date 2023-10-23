@@ -1,0 +1,25 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<section class="bg-white dark:bg-gray-900">
+  <div class="max-w-2xl px-4 py-8 mx-auto lg:py-16">
+      <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Update expense with id {{expense.id}}</h2>
+      <form method="post" enctype="multipart/form-data">
+          <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
+              <div class="sm:col-span-2">
+              <div class="w-full">
+              {% csrf_token %}
+              {{ form.as_p }}
+              </div>
+              </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <button type="submit" class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Update
+            </button>
+          </div>
+      </form>
+  </div>
+</section>
+
+{% endblock content %}

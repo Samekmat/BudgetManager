@@ -10,6 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Manager App</title>
 
+    {% block js %}
+    {% endblock %}
+
     {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}">
     {% endcompress %}
@@ -38,7 +41,7 @@
           <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.905 1.316 15.633 6M18 10h-5a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h5m0-5a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1m0-5V7a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h15a1 1 0 0 0 1-1v-3m-6.367-9L7.905 1.316 2.352 6h9.281Z"/>
           </svg>
-          <h1 class="px-4 text-lg font-semibold text-gray-900 dark:text-white">Budget Manager</h1>
+          <h1 class="px-4 text-lg font-semibold text-gray-900 dark:text-white"><a href="{% url 'index' %}">Budget Manager</a></h1>
           <!-- dark mode button -->
           <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
               <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
@@ -94,10 +97,10 @@
             </button>
             <ul id="dropdown-example" class="hidden py-2 space-y-2">
                   <li>
-                     <a href="#" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Incomes</a>
+                     <a href="{% url 'incomes' %}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Incomes</a>
                   </li>
                   <li>
-                     <a href="#" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Expenses</a>
+                     <a href="{% url 'expenses' %}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Expenses</a>
                   </li>
             </ul>
          </li>
@@ -139,12 +142,45 @@
          </li>
           {% endif %}
       </ul>
+        <!-- Toasts -->
+       {% if messages %}
+       {% for message in messages %}
+       <div id="dropdown-cta" class="p-4 mt-6 rounded-lg bg-blue-50 dark:bg-blue-900" role="alert">
+         <div class="flex items-center mb-3">
+            <span class="bg-orange-100 text-orange-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-orange-200 dark:text-orange-900">Notifications</span>
+            <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-blue-50 inline-flex justify-center items-center w-6 h-6 text-blue-900 rounded-lg focus:ring-2 focus:ring-blue-400 p-1 hover:bg-blue-200 h-6 w-6 dark:bg-blue-900 dark:text-blue-400 dark:hover:bg-blue-800" data-dismiss-target="#dropdown-cta" aria-label="Close">
+               <span class="sr-only">Close</span>
+               <svg class="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+               </svg>
+            </button>
+         </div>
+           <div class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+
+                        {% if message.tags == 'success' %}
+                            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                    </svg>
+                    <span class="sr-only">Check icon</span>
+                </div>
+                <div class="ml-3 text-sm font-normal">{{ message }}</div>
+               {% elif message.tags == 'error' %}
+               <!-- Similar structure for error messages -->
+               {% elif message.tags == 'warning' %}
+               <!-- Similar structure for warning messages -->
+               {% endif %}
+                </div>
+           {% endfor %}
+           {% endif %}
+      </div>
+
    </div>
 </aside>
 
 <div class="p-4 mt-8 sm:ml-64 bg-white dark:bg-gray-600">
    <div class="p-4 mt-8 bg-white dark:bg-gray-600">
-      <div class="text-center mb-4 mt-8 bg-white dark:bg-gray-600">
+      <div class="mb-4 mt-8 bg-white dark:bg-gray-600">
                 {% block content %}
                 {% endblock content %}
          </div>

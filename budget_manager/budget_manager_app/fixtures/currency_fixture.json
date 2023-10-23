@@ -1,0 +1,83 @@
+[
+  {
+    "model": "budget_manager_app.currency",
+    "pk": 1,
+    "fields": {
+      "name": "US dollar",
+      "code": "USD",
+      "symbol": "$"
+    }
+  },
+  {
+    "model": "budget_manager_app.currency",
+    "pk": 2,
+    "fields": {
+      "name": "Euro",
+      "code": "EUR",
+      "symbol": "€"
+    }
+  },
+  {
+    "model": "budget_manager_app.currency",
+    "pk": 3,
+    "fields": {
+      "name": "Japanese yen",
+      "code": "JPY",
+      "symbol": "¥"
+    }
+  },
+  {
+    "model": "budget_manager_app.currency",
+    "pk": 4,
+    "fields": {
+      "name": "Pound sterling",
+      "code": "GBP",
+      "symbol": "£"
+    }
+  },
+  {
+    "model": "budget_manager_app.currency",
+    "pk": 5,
+    "fields": {
+      "name": "Australian dollar",
+      "code": "AUD",
+      "symbol": "$"
+    }
+  },
+  {
+    "model": "budget_manager_app.currency",
+    "pk": 6,
+    "fields": {
+      "name": "Canadian dollar",
+      "code": "CAD",
+      "symbol": "$"
+    }
+  },
+  {
+    "model": "budget_manager_app.currency",
+    "pk": 7,
+    "fields": {
+      "name": "Swiss franc",
+      "code": "CHF",
+      "symbol": "Fr"
+    }
+  },
+  {
+    "model": "budget_manager_app.currency",
+    "pk": 8,
+    "fields": {
+      "name": "Chinese renminbi",
+      "code": "CNH",
+      "symbol": "¥"
+    }
+  },
+  {
+    "model": "budget_manager_app.currency",
+    "pk": 9,
+    "fields": {
+      "name": "Polish Zloty",
+      "code": "PLN",
+      "symbol": "zł"
+    }
+  }
+]

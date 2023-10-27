@@ -1,7 +1,7 @@
-from expenses import views
 from django.urls import path
+from expenses import views
 
-app_name = 'expenses'
+app_name = "expenses"
 
 urlpatterns = [
     path("expense/", views.ExpenseListView.as_view(), name="expenses"),

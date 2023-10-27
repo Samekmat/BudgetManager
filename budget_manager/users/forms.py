@@ -1,7 +1,7 @@
+from budget_manager_app.styles import CLASSES
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
-from budget_manager_app.styles import CLASSES
 
 
 class RegisterForm(UserCreationForm):

@@ -13,15 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from budget_manager_app import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from budget_manager_app.views import index
 from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", index, name="index"),
+    path("", views.index, name="index"),
+    path("category/", views.CategoryListView.as_view(), name="categories"),
+    path("category/create/", views.CategoryCreateView.as_view(), name="category_create"),
+    path("category/update/<int:pk>", views.CategoryUpdateView.as_view(), name="category_update"),
+    path("tag/", views.TagListView.as_view(), name="tags"),
+    path("tag/create/", views.TagCreateView.as_view(), name="tag_create"),
+    path("tag/update/<int:pk>", views.TagUpdateView.as_view(), name="tag_update"),
     # apps
     path("api/", include("api.urls")),
     path("users/", include("users.urls")),

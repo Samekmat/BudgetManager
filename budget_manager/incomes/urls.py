@@ -1,7 +1,7 @@
-from incomes import views
 from django.urls import path
+from incomes import views
 
-app_name = 'incomes'
+app_name = "incomes"
 
 urlpatterns = [
     path("income/", views.IncomeListView.as_view(), name="incomes"),

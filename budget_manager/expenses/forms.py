@@ -1,6 +1,6 @@
-from expenses.models import Expense
 from budget_manager_app.styles import CLASSES
 from django import forms
+from expenses.models import Expense
 
 
 class ExpenseForm(forms.ModelForm):

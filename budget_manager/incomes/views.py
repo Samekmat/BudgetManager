@@ -1,8 +1,8 @@
-from incomes.forms import IncomeForm
-from incomes.models import Income
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
+from incomes.forms import IncomeForm
+from incomes.models import Income
 
 
 class IncomeListView(ListView):

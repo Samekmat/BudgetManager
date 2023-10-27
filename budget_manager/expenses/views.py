@@ -1,8 +1,8 @@
-from expenses.forms import ExpenseForm
-from expenses.models import Expense
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
+from expenses.forms import ExpenseForm
+from expenses.models import Expense
 
 
 class ExpenseListView(ListView):

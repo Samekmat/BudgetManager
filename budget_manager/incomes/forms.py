@@ -1,6 +1,6 @@
-from incomes.models import Income
 from budget_manager_app.styles import CLASSES
 from django import forms
+from incomes.models import Income
 
 
 class IncomeForm(forms.ModelForm):

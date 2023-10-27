@@ -1,7 +1,8 @@
-from api.serializers import ExpenseSerializer, IncomeSerializer
+from api.serializers import ExpenseSerializer, IncomeSerializer, CategorySerializer, TagSerializer
+from django.contrib import messages
+from budget_manager_app.models import Category, Tag
 from expenses.models import Expense
 from incomes.models import Income
-from django.contrib import messages
 from rest_framework import generics, status
 from rest_framework.response import Response
 
@@ -27,4 +28,33 @@ class ExpenseDeleteAPIView(generics.DestroyAPIView):
         idx = instance.id
         self.perform_destroy(instance)
         messages.success(request, f"Expense with ID {idx} has been deleted.")
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CategoryDeleteAPIView(generics.DestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        if instance.non_editable:
+            messages.error(request, f"Cannot delete a non-editable category with ID {instance.id}.")
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        idx = instance.id
+        self.perform_destroy(instance)
+        messages.success(request, f"Category with ID {idx} has been deleted.")
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class TagDeleteAPIView(generics.DestroyAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        idx = instance.id
+        self.perform_destroy(instance)
+        messages.success(request, f"Tag with ID {idx} has been deleted.")
         return Response(status=status.HTTP_204_NO_CONTENT)

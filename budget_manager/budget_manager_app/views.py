@@ -14,6 +14,7 @@ class CategoryListView(ListView):
     model = Category
     template_name = "categories/categories.html"
     context_object_name = "categories"
+    paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs["form"] = CategoryForm()
@@ -52,6 +53,7 @@ class TagListView(ListView):
     model = Tag
     template_name = "tags/tags.html"
     context_object_name = "tags"
+    paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs["form"] = TagForm()

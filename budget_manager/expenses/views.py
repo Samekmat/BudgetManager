@@ -10,6 +10,7 @@ class ExpenseListView(ListView):
     template_name = "expenses/expenses.html"
     context_object_name = "expenses"
     paginate_by = 10
+    ordering = ['date']
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs["form"] = ExpenseForm()

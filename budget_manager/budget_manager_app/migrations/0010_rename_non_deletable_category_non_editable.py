@@ -12,6 +12,6 @@ class Migration(migrations.Migration):
         migrations.RenameField(
             model_name="category",
             old_name="non_deletable",
-            new_name="non_editable",
+            new_name="builtin",
         ),
     ]

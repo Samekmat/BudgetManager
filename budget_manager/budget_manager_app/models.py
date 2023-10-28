@@ -8,18 +8,24 @@ PAYMENT_METHOD_CHOICES = [
 ]
 
 
+CATEGORY_TYPES = [
+    ("income", "Income"),
+    ("expense", "Expense"),
+]
+
+
 class Category(models.Model):
     name = models.CharField(max_length=120)
     description = models.TextField()
-    is_income = models.BooleanField()  # if default not declared value = None
-    non_editable = models.BooleanField(default=False)
+    type = models.CharField(choices=CATEGORY_TYPES)
+    builtin = models.BooleanField(default=False)
 
     def delete(self, *args, **kwargs):
-        if not self.non_editable:
+        if not self.builtin:
             super(Category, self).delete(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        if not self.non_editable:
+        if not self.builtin:
             super(Category, self).save(*args, **kwargs)
 
     def __str__(self):

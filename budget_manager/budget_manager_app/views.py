@@ -15,6 +15,7 @@ class CategoryListView(ListView):
     template_name = "categories/categories.html"
     context_object_name = "categories"
     paginate_by = 10
+    ordering = ['type']
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs["form"] = CategoryForm()
@@ -43,8 +44,8 @@ class CategoryUpdateView(UpdateView):
         return super().form_valid(form)
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object.non_editable:
+        obj = self.get_object()
+        if obj.builtin:
             messages.error(self.request, "Cannot edit a non-editable category.")
         return super().get(request, *args, **kwargs)
 
@@ -54,6 +55,7 @@ class TagListView(ListView):
     template_name = "tags/tags.html"
     context_object_name = "tags"
     paginate_by = 10
+    ordering = ['name']
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs["form"] = TagForm()

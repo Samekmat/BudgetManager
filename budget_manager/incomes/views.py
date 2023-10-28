@@ -10,6 +10,7 @@ class IncomeListView(ListView):
     template_name = "incomes/incomes.html"
     context_object_name = "incomes"
     paginate_by = 10
+    ordering = ['date']
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs["form"] = IncomeForm()

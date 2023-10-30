@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from decimal import Decimal
+
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView
-from budget_manager_app.forms import CategoryForm, TagForm
-from budget_manager_app.models import Category, Tag
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from budget_manager_app.forms import CategoryForm, TagForm, SavingGoalForm
+from budget_manager_app.models import Category, Tag, SavingGoal
 
 
 def index(request):
@@ -82,3 +84,51 @@ class TagUpdateView(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, "Tag updated successfully.")
         return super().form_valid(form)
+
+
+class SavingGoalListView(ListView):
+    model = SavingGoal
+    template_name = 'saving_goals/goals.html'
+    context_object_name = 'goals'
+
+    def post(self, request, *args, **kwargs):
+        goal_id = request.POST.get('goal_id')
+        goal = SavingGoal.objects.get(id=goal_id)
+
+        if 'amount_to_add' in request.POST:
+            amount_to_add = Decimal(request.POST.get('amount_to_add'))
+            if amount_to_add > Decimal(0):
+                goal.amount += amount_to_add
+                messages.success(request, f"Added {amount_to_add} to the goal.")
+            else:
+                messages.error(request, "Invalid amount to add.")
+        elif 'amount_to_subtract' in request.POST:
+            amount_to_subtract = Decimal(request.POST.get('amount_to_subtract'))
+            if goal.amount - amount_to_subtract >= Decimal(0):
+                goal.amount -= amount_to_subtract
+                messages.success(request, f"Subtracted {amount_to_subtract} from the goal.")
+            else:
+                messages.error(request, "Invalid amount to subtract")
+
+        goal.save()
+        return redirect('goals')
+
+
+class SavingGoalCreateView(CreateView):
+    model = SavingGoal
+    form_class = SavingGoalForm
+    template_name = 'saving_goals/goal_form.html'
+    success_url = reverse_lazy('goals')
+
+
+class SavingGoalUpdateView(UpdateView):
+    model = SavingGoal
+    form_class = SavingGoalForm
+    template_name = 'saving_goals/goal_form.html'
+    success_url = reverse_lazy('goals')
+
+
+class SavingGoalDeleteView(DeleteView):
+    model = SavingGoal
+    template_name = 'saving_goals/goal_confirm_delete.html'
+    success_url = reverse_lazy('goals')

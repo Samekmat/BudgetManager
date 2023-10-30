@@ -5,8 +5,8 @@
     "fields": {
       "name": "Salary",
       "description": "Base category for income",
-      "is_income": true,
-      "non_editable": true
+      "type": "income",
+      "builtin": true
     }
   },
   {
@@ -15,8 +15,8 @@
     "fields": {
       "name": "Freelance Income",
       "description": "Base category for income",
-      "is_income": true,
-      "non_editable": true
+      "type": "income",
+      "builtin": true
     }
   },
   {
@@ -25,8 +25,8 @@
     "fields": {
       "name": "Investment Returns",
       "description": "Base category for income",
-      "is_income": true,
-      "non_editable": true
+      "type": "income",
+      "builtin": true
     }
   },
   {
@@ -35,8 +35,8 @@
     "fields": {
       "name": "Rental Income",
       "description": "Base category for income",
-      "is_income": true,
-      "non_editable": true
+      "type": "income",
+      "builtin": true
     }
   },
   {
@@ -45,8 +45,8 @@
     "fields": {
       "name": "Other income",
       "description": "Base category for income",
-      "is_income": true,
-      "non_editable": true
+      "type": "income",
+      "builtin": true
     }
   },
   {
@@ -55,8 +55,8 @@
     "fields": {
       "name": "Housing",
       "description": "Base category for expense",
-      "is_income": false,
-      "non_editable": true
+      "type": "expense",
+      "builtin": true
     }
   },
   {
@@ -65,8 +65,8 @@
     "fields": {
       "name": "Transportation",
       "description": "Base category for expense",
-      "is_income": false,
-      "non_editable": true
+      "type": "expense",
+      "builtin": true
     }
   },
   {
@@ -75,8 +75,8 @@
     "fields": {
       "name": "Entertainment",
       "description": "Base category for expense",
-      "is_income": false,
-      "non_editable": true
+      "type": "expense",
+      "builtin": true
     }
   },
   {
@@ -85,8 +85,8 @@
     "fields": {
       "name": "Food",
       "description": "Base category for expense",
-      "is_income": false,
-      "non_editable": true
+      "type": "expense",
+      "builtin": true
     }
   },
   {
@@ -95,8 +95,8 @@
     "fields": {
       "name": "Utilities",
       "description": "Base category for expense",
-      "is_income": false,
-      "non_editable": true
+      "type": "expense",
+      "builtin": true
     }
   },
   {
@@ -105,8 +105,8 @@
     "fields": {
       "name": "Healthcare",
       "description": "Base category for expense",
-      "is_income": false,
-      "non_editable": true
+      "type": "expense",
+      "builtin": true
     }
   }
   ]

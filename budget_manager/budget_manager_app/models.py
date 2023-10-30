@@ -17,7 +17,7 @@ CATEGORY_TYPES = [
 class Category(models.Model):
     name = models.CharField(max_length=120)
     description = models.TextField()
-    type = models.CharField(choices=CATEGORY_TYPES)
+    type = models.CharField(max_length=60, choices=CATEGORY_TYPES)
     builtin = models.BooleanField(default=False)
 
     def delete(self, *args, **kwargs):
@@ -46,3 +46,10 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class SavingGoal(models.Model):
+    name = models.CharField(max_length=120)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    goal = models.DecimalField(max_digits=10, decimal_places=2)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)

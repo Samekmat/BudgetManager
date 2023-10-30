@@ -28,6 +28,10 @@ urlpatterns = [
     path("tag/", views.TagListView.as_view(), name="tags"),
     path("tag/create/", views.TagCreateView.as_view(), name="tag_create"),
     path("tag/update/<int:pk>", views.TagUpdateView.as_view(), name="tag_update"),
+    path("goal/", views.SavingGoalListView.as_view(), name="goals"),
+    path("goal/create/", views.SavingGoalCreateView.as_view(), name="goal_create"),
+    path("goal/update/<int:pk>", views.SavingGoalUpdateView.as_view(), name="goal_update"),
+    path("goal/delete/<int:pk>", views.SavingGoalDeleteView.as_view(), name="goal_delete"),
     # apps
     path("api/", include("api.urls")),
     path("users/", include("users.urls")),

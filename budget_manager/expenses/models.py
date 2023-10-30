@@ -7,7 +7,7 @@ class Expense(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField(null=True, blank=True)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, limit_choices_to={"type": "Expense"}, null=True, blank=True
+        Category, on_delete=models.CASCADE, limit_choices_to={"type": "expense"}, null=True, blank=True
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     payment_method = models.CharField(max_length=30, choices=PAYMENT_METHOD_CHOICES, default="cash")

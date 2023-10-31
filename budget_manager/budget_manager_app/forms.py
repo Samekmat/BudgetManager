@@ -31,7 +31,7 @@ class SavingGoalForm(forms.ModelForm):
 
     class Meta:
         model = SavingGoal
-        fields = '__all__'
+        fields = ("name", "amount", "goal", "currency",)
         widgets = {
             "name": forms.TextInput(attrs={"class": CLASSES}),
             "amount": forms.NumberInput(attrs={"class": CLASSES}),

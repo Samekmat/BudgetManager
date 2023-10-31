@@ -15,3 +15,6 @@ class Income(models.Model):
     tags = models.ManyToManyField(Tag, null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to="income_images/", blank=True, null=True)
+
+    class Meta:
+        ordering = ('date',)

@@ -4,6 +4,8 @@ from django.views.generic import CreateView, ListView, UpdateView
 from expenses.forms import ExpenseForm
 from expenses.models import Expense
 
+from budget_manager_app.filters import ExpenseFilter
+
 
 class ExpenseListView(ListView):
     model = Expense
@@ -14,7 +16,9 @@ class ExpenseListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs["form"] = ExpenseForm()
-        return super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        context['filter'] = ExpenseFilter(self.request.GET, queryset=self.get_queryset())
+        return context
 
 
 class ExpenseCreateView(CreateView):

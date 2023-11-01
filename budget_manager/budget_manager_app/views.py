@@ -6,6 +6,8 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from budget_manager_app.forms import CategoryForm, TagForm, SavingGoalForm
 from budget_manager_app.models import Category, Tag, SavingGoal
+from budget_manager_app.filters import CategoryFilter, TagFilter
+
 
 
 def index(request):
@@ -21,7 +23,9 @@ class CategoryListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs["form"] = CategoryForm()
-        return super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        context['filter'] = CategoryFilter(self.request.GET, queryset=self.get_queryset())
+        return context
 
 
 class CategoryCreateView(CreateView):
@@ -61,7 +65,10 @@ class TagListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs["form"] = TagForm()
-        return super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        context['filter'] = TagFilter(self.request.GET, queryset=self.get_queryset())
+        return context
+
 
 
 class TagCreateView(CreateView):

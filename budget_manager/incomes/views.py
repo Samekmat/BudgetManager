@@ -4,6 +4,8 @@ from django.views.generic import CreateView, ListView, UpdateView
 from incomes.forms import IncomeForm
 from incomes.models import Income
 
+from budget_manager_app.filters import IncomeFilter
+
 
 class IncomeListView(ListView):
     model = Income
@@ -14,7 +16,9 @@ class IncomeListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs["form"] = IncomeForm()
-        return super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        context['filter'] = IncomeFilter(self.request.GET, queryset=self.get_queryset())
+        return context
 
 
 class IncomeCreateView(CreateView):

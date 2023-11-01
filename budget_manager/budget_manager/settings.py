@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "compressor",
     "rest_framework",
+    'django_filters',
 ]
 
 INSTALLED_EXTENSIONS = [

@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.views import LogoutView
 from django.urls import reverse_lazy
@@ -13,6 +14,7 @@ class RegisterView(FormView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
+        messages.success(self.request, "Registration successful. You are now logged in.")
         return super().form_valid(form)
 
 
@@ -24,6 +26,7 @@ class LoginView(FormView):
     def form_valid(self, form):
         user = form.get_user()
         login(self.request, user)
+        messages.success(self.request, "Login successful. Welcome back!")
         return super().form_valid(form)
 
 
@@ -33,3 +36,7 @@ class CustomLogoutView(LogoutView):
     def get_next_page(self):
         next_page = self.request.POST.get("next", self.request.GET.get("next", ""))
         return next_page if next_page else self.next_page
+
+    def dispatch(self, request, *args, **kwargs):
+        messages.success(request, "You have been successfully logged out.")
+        return super().dispatch(request, *args, **kwargs)

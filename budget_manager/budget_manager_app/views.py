@@ -33,14 +33,14 @@ class SavingGoalListView(ListView):
             amount_to_add = Decimal(request.POST.get('amount_to_add'))
             if amount_to_add > Decimal(0):
                 goal.amount += amount_to_add
-                messages.success(request, f"Added {amount_to_add} to the goal.")
+                messages.success(request, f"Added {amount_to_add}{goal.currency.symbol} to the goal.")
             else:
                 messages.error(request, "Invalid amount to add.")
         elif 'amount_to_subtract' in request.POST:
             amount_to_subtract = Decimal(request.POST.get('amount_to_subtract'))
             if goal.amount - amount_to_subtract >= Decimal(0):
                 goal.amount -= amount_to_subtract
-                messages.success(request, f"Subtracted {amount_to_subtract} from the goal.")
+                messages.success(request, f"Subtracted {amount_to_subtract}{goal.currency.symbol}  from the goal.")
             else:
                 messages.error(request, "Invalid amount to subtract")
 
@@ -54,6 +54,10 @@ class SavingGoalCreateView(CreateView):
     template_name = 'saving_goals/goal_form.html'
     success_url = reverse_lazy('goals')
 
+    def form_valid(self, form):
+        messages.success(self.request, 'Saving goal created successfully.')
+        return super().form_valid(form)
+
 
 class SavingGoalUpdateView(UpdateView):
     model = SavingGoal
@@ -61,11 +65,19 @@ class SavingGoalUpdateView(UpdateView):
     template_name = 'saving_goals/goal_form.html'
     success_url = reverse_lazy('goals')
 
+    def form_valid(self, form):
+        messages.success(self.request, 'Saving goal updated successfully.')
+        return super().form_valid(form)
+
 
 class SavingGoalDeleteView(DeleteView):
     model = SavingGoal
     template_name = 'saving_goals/goal_confirm_delete.html'
     success_url = reverse_lazy('goals')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, 'Saving goal deleted successfully.')
+        return super().delete(request, *args, **kwargs)
 
 
 class DashboardListView(ListView):
@@ -110,6 +122,10 @@ class BudgetCreateView(CreateView):
     template_name = 'budgets/budget_form.html'
     success_url = reverse_lazy('budgets')
 
+    def form_valid(self, form):
+        messages.success(self.request, 'Budget created successfully.')
+        return super().form_valid(form)
+
 
 class BudgetUpdateView(UpdateView):
     model = Budget
@@ -117,8 +133,16 @@ class BudgetUpdateView(UpdateView):
     template_name = 'budgets/budget_form.html'
     success_url = reverse_lazy('budgets')
 
+    def form_valid(self, form):
+        messages.success(self.request, 'Budget updated successfully.')
+        return super().form_valid(form)
+
 
 class BudgetDeleteView(DeleteView):
     model = Budget
     template_name = 'budgets/budget_confirm_delete.html'
     success_url = reverse_lazy('budgets')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, 'Budget deleted successfully.')
+        return super().delete(request, *args, **kwargs)

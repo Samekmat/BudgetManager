@@ -2,7 +2,7 @@ from expenses.models import Expense
 from incomes.models import Income
 from rest_framework import serializers
 
-from budget_manager_app.models import Category
+from helper_models.models import Category
 
 
 class IncomeSerializer(serializers.ModelSerializer):

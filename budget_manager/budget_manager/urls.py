@@ -22,12 +22,7 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index, name="index"),
-    path("category/", views.CategoryListView.as_view(), name="categories"),
-    path("category/create/", views.CategoryCreateView.as_view(), name="category_create"),
-    path("category/update/<int:pk>", views.CategoryUpdateView.as_view(), name="category_update"),
-    path("tag/", views.TagListView.as_view(), name="tags"),
-    path("tag/create/", views.TagCreateView.as_view(), name="tag_create"),
-    path("tag/update/<int:pk>", views.TagUpdateView.as_view(), name="tag_update"),
+
     path("goal/", views.SavingGoalListView.as_view(), name="goals"),
     path("goal/create/", views.SavingGoalCreateView.as_view(), name="goal_create"),
     path("goal/update/<int:pk>", views.SavingGoalUpdateView.as_view(), name="goal_update"),
@@ -38,6 +33,7 @@ urlpatterns = [
     path("users/", include("users.urls")),
     path("incomes/", include("incomes.urls")),
     path("expenses/", include("expenses.urls")),
+    path("helper/", include("helper_models.urls")),
 ]
 
 if settings.DEBUG:

@@ -1,6 +1,6 @@
 from api.serializers import ExpenseSerializer, IncomeSerializer, CategorySerializer, TagSerializer
 from django.contrib import messages
-from budget_manager_app.models import Category, Tag
+from helper_models.models import Category, Tag
 from expenses.models import Expense
 from incomes.models import Income
 from rest_framework import generics, status

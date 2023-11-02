@@ -1,28 +1,8 @@
-from budget_manager_app.models import Category, Tag, SavingGoal, CATEGORY_TYPES
 from django import forms
 
 from budget_manager_app.styles import CLASSES
 
-
-class CategoryForm(forms.ModelForm):
-    class Meta:
-        model = Category
-        fields = ('name', 'description', 'type')
-        widgets = {
-            "name": forms.TextInput(attrs={"class": CLASSES}),
-            "description": forms.TextInput(attrs={"class": CLASSES}),
-            "type": forms.Select(attrs={"class": CLASSES}, choices=CATEGORY_TYPES),
-        }
-
-
-class TagForm(forms.ModelForm):
-
-    class Meta:
-        model = Tag
-        fields = ('name', )
-        widgets = {
-            "name": forms.TextInput(attrs={"class": CLASSES}),
-        }
+from budget_manager_app.models import SavingGoal
 
 
 class SavingGoalForm(forms.ModelForm):

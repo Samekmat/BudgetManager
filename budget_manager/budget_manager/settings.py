@@ -44,6 +44,7 @@ INSTALLED_EXTENSIONS = [
     "expenses",
     "incomes",
     "users",
+    "helper_models",
 ]
 
 INSTALLED_APPS += INSTALLED_EXTENSIONS

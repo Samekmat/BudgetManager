@@ -1,6 +1,6 @@
 [
   {
-    "model": "budget_manager_app.currency",
+    "model": "helper_models.currency",
     "pk": 1,
     "fields": {
       "name": "US dollar",
@@ -9,7 +9,7 @@
     }
   },
   {
-    "model": "budget_manager_app.currency",
+    "model": "helper_models.currency",
     "pk": 2,
     "fields": {
       "name": "Euro",
@@ -18,7 +18,7 @@
     }
   },
   {
-    "model": "budget_manager_app.currency",
+    "model": "helper_models.currency",
     "pk": 3,
     "fields": {
       "name": "Japanese yen",
@@ -27,7 +27,7 @@
     }
   },
   {
-    "model": "budget_manager_app.currency",
+    "model": "helper_models.currency",
     "pk": 4,
     "fields": {
       "name": "Pound sterling",
@@ -36,7 +36,7 @@
     }
   },
   {
-    "model": "budget_manager_app.currency",
+    "model": "helper_models.currency",
     "pk": 5,
     "fields": {
       "name": "Australian dollar",
@@ -45,7 +45,7 @@
     }
   },
   {
-    "model": "budget_manager_app.currency",
+    "model": "helper_models.currency",
     "pk": 6,
     "fields": {
       "name": "Canadian dollar",
@@ -54,7 +54,7 @@
     }
   },
   {
-    "model": "budget_manager_app.currency",
+    "model": "helper_models.currency",
     "pk": 7,
     "fields": {
       "name": "Swiss franc",
@@ -63,7 +63,7 @@
     }
   },
   {
-    "model": "budget_manager_app.currency",
+    "model": "helper_models.currency",
     "pk": 8,
     "fields": {
       "name": "Chinese renminbi",
@@ -72,7 +72,7 @@
     }
   },
   {
-    "model": "budget_manager_app.currency",
+    "model": "helper_models.currency",
     "pk": 9,
     "fields": {
       "name": "Polish Zloty",

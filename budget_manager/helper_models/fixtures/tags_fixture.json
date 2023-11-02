@@ -1,20 +1,20 @@
 [
   {
-    "model": "budget_manager_app.tag",
+    "model": "helper_models.tag",
     "pk": 1,
     "fields": {
       "name": "test tag 1"
     }
   },
   {
-    "model": "budget_manager_app.tag",
+    "model": "helper_models.tag",
     "pk": 2,
     "fields": {
       "name": "test tag 2"
     }
   },
   {
-    "model": "budget_manager_app.tag",
+    "model": "helper_models.tag",
     "pk": 3,
     "fields": {
       "name": "test tag 3"

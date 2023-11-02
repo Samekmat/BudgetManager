@@ -3,7 +3,8 @@ from django import forms
 from incomes.models import Income
 from expenses.models import Expense
 from budget_manager_app.styles import CLASSES
-from budget_manager_app.models import PAYMENT_METHOD_CHOICES, Tag, Currency, Category, CATEGORY_TYPES
+from budget_manager_app.choices import PAYMENT_METHOD_CHOICES, CATEGORY_TYPES
+from helper_models.models import Tag, Currency, Category
 
 
 class IncomeFilter(django_filters.FilterSet):

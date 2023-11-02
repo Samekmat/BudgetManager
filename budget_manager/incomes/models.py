@@ -1,6 +1,7 @@
-from budget_manager_app.models import PAYMENT_METHOD_CHOICES, Category, Currency, Tag
+from helper_models.models import Category, Currency, Tag
+from budget_manager_app.choices import PAYMENT_METHOD_CHOICES
+from django.contrib.auth.models import User
 from django.db import models
-from users.models import User
 
 
 class Income(models.Model):

@@ -32,6 +32,7 @@ urlpatterns = [
     path("goal/create/", views.SavingGoalCreateView.as_view(), name="goal_create"),
     path("goal/update/<int:pk>", views.SavingGoalUpdateView.as_view(), name="goal_update"),
     path("goal/delete/<int:pk>", views.SavingGoalDeleteView.as_view(), name="goal_delete"),
+    path("dashboard/", views.DashboardListView.as_view(), name="dashboard"),
     # apps
     path("api/", include("api.urls")),
     path("users/", include("users.urls")),

@@ -8,6 +8,9 @@ from budget_manager_app.forms import CategoryForm, TagForm, SavingGoalForm
 from budget_manager_app.models import Category, Tag, SavingGoal
 from budget_manager_app.filters import CategoryFilter, TagFilter
 
+from incomes.models import Income
+from expenses.models import Expense
+
 
 
 def index(request):
@@ -68,7 +71,6 @@ class TagListView(ListView):
         context = super().get_context_data(**kwargs)
         context['filter'] = TagFilter(self.request.GET, queryset=self.get_queryset())
         return context
-
 
 
 class TagCreateView(CreateView):
@@ -139,3 +141,17 @@ class SavingGoalDeleteView(DeleteView):
     model = SavingGoal
     template_name = 'saving_goals/goal_confirm_delete.html'
     success_url = reverse_lazy('goals')
+
+
+class DashboardListView(ListView):
+    template_name = 'dashboard.html'
+    context_object_name = 'dashboard'
+
+    def get_queryset(self):
+        income_query = Income.objects.order_by('-date')[:2]
+        expense_query = Expense.objects.order_by('-date')[:2]
+
+        recent_transactions = list(income_query) + list(expense_query)
+        recent_transactions.sort(key=lambda x: x.date, reverse=True)
+
+        return recent_transactions

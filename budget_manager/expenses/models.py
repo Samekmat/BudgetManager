@@ -19,3 +19,6 @@ class Expense(models.Model):
 
     class Meta:
         ordering = ('date',)
+
+    def __str__(self):
+        return f'Expense({self.pk}) - {self.amount}{self.currency.symbol}'

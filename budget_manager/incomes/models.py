@@ -19,3 +19,6 @@ class Income(models.Model):
 
     class Meta:
         ordering = ('date',)
+
+    def __str__(self):
+        return f'Income({self.pk}) - {self.amount}{self.currency.symbol}'

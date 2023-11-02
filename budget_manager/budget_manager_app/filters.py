@@ -1,9 +1,11 @@
 import django_filters
 from django import forms
-from incomes.models import Income
-from expenses.models import Expense
+
 from budget_manager_app.styles import CLASSES
 from budget_manager_app.choices import PAYMENT_METHOD_CHOICES, CATEGORY_TYPES
+from budget_manager_app.models import Budget
+from incomes.models import Income
+from expenses.models import Expense
 from helper_models.models import Tag, Currency, Category
 
 

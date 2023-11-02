@@ -13,6 +13,9 @@ class SavingGoal(models.Model):
     goal = models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 
 class Budget(models.Model):
     name = models.CharField(max_length=120)

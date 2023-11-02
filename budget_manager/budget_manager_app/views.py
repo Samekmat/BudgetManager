@@ -4,8 +4,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
-from budget_manager_app.forms import SavingGoalForm
-from budget_manager_app.models import SavingGoal
+from budget_manager_app.forms import BudgetForm, SavingGoalForm
+from budget_manager_app.models import Budget, SavingGoal
 
 
 from incomes.models import Income
@@ -96,3 +96,29 @@ class DashboardListView(ListView):
         context['exchange_rates'] = exchange_rates
 
         return context
+
+
+class BudgetListView(ListView):
+    model = Budget
+    template_name = 'budgets/budgets.html'
+    context_object_name = 'budgets'
+
+
+class BudgetCreateView(CreateView):
+    model = Budget
+    form_class = BudgetForm
+    template_name = 'budgets/budget_form.html'
+    success_url = reverse_lazy('budgets')
+
+
+class BudgetUpdateView(UpdateView):
+    model = Budget
+    form_class = BudgetForm
+    template_name = 'budgets/budget_form.html'
+    success_url = reverse_lazy('budgets')
+
+
+class BudgetDeleteView(DeleteView):
+    model = Budget
+    template_name = 'budgets/budget_confirm_delete.html'
+    success_url = reverse_lazy('budgets')

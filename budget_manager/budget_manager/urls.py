@@ -28,6 +28,11 @@ urlpatterns = [
     path("goal/update/<int:pk>", views.SavingGoalUpdateView.as_view(), name="goal_update"),
     path("goal/delete/<int:pk>", views.SavingGoalDeleteView.as_view(), name="goal_delete"),
     path("dashboard/", views.DashboardListView.as_view(), name="dashboard"),
+    path("budget/", views.BudgetListView.as_view(), name="budgets"),
+    path("budget/create/", views.BudgetCreateView.as_view(), name="budget_create"),
+    path("budget/update/<int:pk>", views.BudgetUpdateView.as_view(), name="budget_update"),
+    path("budget/delete/<int:pk>", views.BudgetDeleteView.as_view(), name="budget_delete"),
+
     # apps
     path("api/", include("api.urls")),
     path("users/", include("users.urls")),

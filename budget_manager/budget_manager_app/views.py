@@ -11,6 +11,9 @@ from budget_manager_app.filters import CategoryFilter, TagFilter
 from incomes.models import Income
 from expenses.models import Expense
 
+import freecurrencyapi
+
+from django.conf import settings
 
 
 def index(request):
@@ -21,12 +24,12 @@ class CategoryListView(ListView):
     model = Category
     template_name = "categories/categories.html"
     context_object_name = "categories"
-    paginate_by = 10
+    paginate_by = 2
     ordering = ['type']
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        kwargs["form"] = CategoryForm()
         context = super().get_context_data(**kwargs)
+        context["form"] = CategoryForm()
         context['filter'] = CategoryFilter(self.request.GET, queryset=self.get_queryset())
         return context
 
@@ -154,4 +157,20 @@ class DashboardListView(ListView):
         recent_transactions = list(income_query) + list(expense_query)
         recent_transactions.sort(key=lambda x: x.date, reverse=True)
 
-        return recent_transactions
+        exchange_rates = self.get_exchange_rates()
+
+        return recent_transactions, exchange_rates
+
+    def get_exchange_rates(self):
+        api_key = settings.FREE_CURRENCY_API_KEY
+        client = freecurrencyapi.Client(api_key)
+        return client.latest()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        recent_transactions, exchange_rates = self.get_queryset()
+
+        context['dashboard'] = recent_transactions
+        context['exchange_rates'] = exchange_rates
+
+        return context

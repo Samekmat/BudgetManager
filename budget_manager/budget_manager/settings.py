@@ -153,3 +153,6 @@ STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
 
 # Messages storage
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
+
+# Currency API key
+FREE_CURRENCY_API_KEY = env('FREE_CURRENCY_API_KEY')

@@ -22,6 +22,7 @@ class Budget(models.Model):
                                          help_text="Users with whom the budget is shared")
     incomes = models.ManyToManyField(Income)
     expenses = models.ManyToManyField(Expense)
+    goals = models.ManyToManyField(SavingGoal)
 
     def __str__(self):
         return self.name

@@ -6,17 +6,24 @@ from incomes.models import Income
 
 from budget_manager_app.filters import IncomeFilter
 
+from budget_manager_app.decorators import keep_parameters
 
+
+@keep_parameters
 class IncomeListView(ListView):
     model = Income
     template_name = "incomes/incomes.html"
     context_object_name = "incomes"
-    paginate_by = 10
-    ordering = ['date']
+    paginate_by = 5
+    ordering = ['-date']
+
+    def get_queryset(self):
+        income_filter = IncomeFilter(self.request.GET, queryset=super().get_queryset())
+        return income_filter.qs
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        kwargs["form"] = IncomeForm()
         context = super().get_context_data(**kwargs)
+        context['form'] = IncomeForm()
         context['filter'] = IncomeFilter(self.request.GET, queryset=self.get_queryset())
         return context
 

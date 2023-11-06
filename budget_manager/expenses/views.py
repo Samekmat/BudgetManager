@@ -5,18 +5,24 @@ from expenses.forms import ExpenseForm
 from expenses.models import Expense
 
 from budget_manager_app.filters import ExpenseFilter
+from budget_manager_app.decorators import keep_parameters
 
 
+@keep_parameters
 class ExpenseListView(ListView):
     model = Expense
     template_name = "expenses/expenses.html"
     context_object_name = "expenses"
-    paginate_by = 10
-    ordering = ['date']
+    paginate_by = 5
+    ordering = ['-date']
+
+    def get_queryset(self):
+        expense_filter = ExpenseFilter(self.request.GET, queryset=super().get_queryset())
+        return expense_filter.qs
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        kwargs["form"] = ExpenseForm()
         context = super().get_context_data(**kwargs)
+        context["form"] = ExpenseForm()
         context['filter'] = ExpenseFilter(self.request.GET, queryset=self.get_queryset())
         return context
 

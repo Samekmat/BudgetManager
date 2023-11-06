@@ -1,19 +1,25 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, CreateView, UpdateView
 
 from helper_models.forms import CategoryForm, TagForm
 from helper_models.models import Category, Tag
 from budget_manager_app.filters import CategoryFilter, TagFilter
-from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, CreateView, UpdateView
+from budget_manager_app.decorators import keep_parameters
 
 
+@keep_parameters
 class CategoryListView(ListView):
     model = Category
     template_name = "categories/categories.html"
     context_object_name = "categories"
-    paginate_by = 2
+    paginate_by = 5
     ordering = ['type']
+
+    def get_queryset(self):
+        category_filter = CategoryFilter(self.request.GET, queryset=super().get_queryset())
+        return category_filter.qs
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,16 +57,21 @@ class CategoryUpdateView(UpdateView):
         return super().post(request, *args, **kwargs)
 
 
+@keep_parameters
 class TagListView(ListView):
     model = Tag
     template_name = "tags/tags.html"
     context_object_name = "tags"
-    paginate_by = 10
+    paginate_by = 5
     ordering = ['name']
 
+    def get_queryset(self):
+        tag_filter = TagFilter(self.request.GET, queryset=super().get_queryset())
+        return tag_filter.qs
+
     def get_context_data(self, *, object_list=None, **kwargs):
-        kwargs["form"] = TagForm()
         context = super().get_context_data(**kwargs)
+        context["form"] = TagForm()
         context['filter'] = TagFilter(self.request.GET, queryset=self.get_queryset())
         return context
 

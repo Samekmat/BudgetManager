@@ -1,0 +1,23 @@
+{% extends "_base.html" %}
+{% block content %}
+
+    <h1>Pie Chart - Incomes vs Expenses</h1>
+    <div>{{ income_chart | safe }}</div>
+
+    <h1>Budget Chart - Total Balance</h1>
+    <div>{{ budget_chart | safe }}</div>
+
+    <h1>Bar Chart - Incomes vs Expenses</h1>
+    <div>{{ bar_chart | safe }}</div>
+
+    <h1>Pie Chart - Incomes by categories</h1>
+    <div>{{ income_category_chart | safe }}</div>
+
+    <h1>Bar Chart - Expenses by categories</h1>
+    <div>{{ expense_category_chart | safe }}</div>
+
+    <h1>Line Chart - Expenses vs Incomes with total balance</h1>
+    <div>{{ line_chart | safe }}</div>
+
+
+{% endblock %}}

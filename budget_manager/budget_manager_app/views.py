@@ -1,7 +1,10 @@
 from decimal import Decimal
 
 from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -23,7 +26,7 @@ def index(request):
     return render(request, "index.html")
 
 
-class SavingGoalListView(ListView):
+class SavingGoalListView(LoginRequiredMixin, ListView):
     model = SavingGoal
     template_name = 'saving_goals/goals.html'
     context_object_name = 'goals'
@@ -50,19 +53,24 @@ class SavingGoalListView(ListView):
         goal.save()
         return redirect('budgets:goals')
 
+    def get_queryset(self):
+        user_goals = SavingGoal.objects.filter(user=self.request.user)
+        return user_goals
 
-class SavingGoalCreateView(CreateView):
+
+class SavingGoalCreateView(LoginRequiredMixin, CreateView):
     model = SavingGoal
     form_class = SavingGoalForm
     template_name = 'saving_goals/goal_form.html'
     success_url = reverse_lazy('budgets:goals')
 
     def form_valid(self, form):
+        form.instance.user = self.request.user
         messages.success(self.request, 'Saving goal created successfully.')
         return super().form_valid(form)
 
 
-class SavingGoalUpdateView(UpdateView):
+class SavingGoalUpdateView(LoginRequiredMixin, UpdateView):
     model = SavingGoal
     form_class = SavingGoalForm
     template_name = 'saving_goals/goal_form.html'
@@ -72,27 +80,39 @@ class SavingGoalUpdateView(UpdateView):
         messages.success(self.request, 'Saving goal updated successfully.')
         return super().form_valid(form)
 
+    def get_queryset(self):
+        user_goals = SavingGoal.objects.filter(user=self.request.user)
+        return user_goals
 
-class SavingGoalDetailView(DetailView):
+
+class SavingGoalDetailView(LoginRequiredMixin, DetailView):
     model = SavingGoal
     template_name = 'saving_goals/goal_detail.html'
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.user != self.request.user:
+            return HttpResponseForbidden("You don't have permission to access this goal.")
+        return obj
 
-class SavingGoalDeleteView(DeleteView):
+
+class SavingGoalDeleteView(LoginRequiredMixin, DeleteView):
     model = SavingGoal
     template_name = 'saving_goals/goal_confirm_delete.html'
     success_url = reverse_lazy('budgets:goals')
 
     def delete(self, request, *args, **kwargs):
-        messages.success(self.request, 'Saving goal deleted successfully.')
-        return super().delete(request, *args, **kwargs)
+        goal = self.get_object()
+        if goal.user == self.request.user:
+            messages.success(self.request, 'Saving goal deleted successfully.')
+            return super().delete(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden("You don't have permission to delete this goal.")
 
 
-class DashboardListView(TemplateView):
+class DashboardListView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
     context_object_name = 'dashboard'
-
-
 
     def get_exchange_rates(self):
         api_key = settings.FREE_CURRENCY_API_KEY
@@ -100,8 +120,10 @@ class DashboardListView(TemplateView):
         return client.latest()
 
     def get_context_data(self, **kwargs):
-        income_query = Income.objects.order_by('-date')[:2]
-        expense_query = Expense.objects.order_by('-date')[:2]
+        user = self.request.user
+
+        income_query = Income.objects.filter(user=user).order_by('-date')[:2]
+        expense_query = Expense.objects.filter(user=user).order_by('-date')[:2]
 
         recent_transactions = list(income_query) + list(expense_query)
         recent_transactions.sort(key=lambda x: x.date, reverse=True)
@@ -116,45 +138,64 @@ class DashboardListView(TemplateView):
         return context
 
 
-class BudgetListView(ListView):
+class BudgetListView(LoginRequiredMixin, ListView):
     model = Budget
     template_name = 'budgets/budgets.html'
     context_object_name = 'budgets'
 
+    def get_queryset(self):
+        user_budgets = Budget.objects.filter(user=self.request.user)
+        return user_budgets
 
-class BudgetCreateView(CreateView):
+
+class BudgetCreateView(LoginRequiredMixin, CreateView):
     model = Budget
     form_class = BudgetForm
     template_name = 'budgets/budget_form.html'
     success_url = reverse_lazy('budgets:budgets')
 
     def form_valid(self, form):
+        form.instance.user = self.request.user
         messages.success(self.request, 'Budget created successfully.')
         return super().form_valid(form)
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        logged_in_user = self.request.user
+        form.fields['shared_with'].queryset = User.objects.exclude(id=logged_in_user.id)
+        return form
 
-class BudgetUpdateView(UpdateView):
+
+class BudgetUpdateView(LoginRequiredMixin, UpdateView):
     model = Budget
     form_class = BudgetForm
     template_name = 'budgets/budget_form.html'
     success_url = reverse_lazy('budgets:budgets')
+
+    def get_queryset(self):
+        user_budgets = Budget.objects.filter(user=self.request.user)
+        return user_budgets
 
     def form_valid(self, form):
         messages.success(self.request, 'Budget updated successfully.')
         return super().form_valid(form)
 
 
-class BudgetDeleteView(DeleteView):
+class BudgetDeleteView(LoginRequiredMixin, DeleteView):
     model = Budget
     template_name = 'budgets/budget_confirm_delete.html'
     success_url = reverse_lazy('budgets:budgets')
 
     def delete(self, request, *args, **kwargs):
-        messages.success(self.request, 'Budget deleted successfully.')
-        return super().delete(request, *args, **kwargs)
+        budget = self.get_object()
+        if budget.user == self.request.user:
+            messages.success(self.request, 'Budget deleted successfully.')
+            return super().delete(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden("You don't have permission to delete this budget.")
 
 
-class ChartView(View):
+class ChartView(LoginRequiredMixin, View):
     template_name = 'budgets/charts.html'
 
     def get_context_data(self, budget):
@@ -288,7 +329,8 @@ class ChartView(View):
         return chart_div
 
     def get(self, request, budget_id):
-        budget = Budget.objects.get(pk=budget_id)
+        user = self.request.user
+        budget = Budget.objects.get(pk=budget_id, user=user)
 
         income_chart = self.generate_pie_chart(budget)
         budget_chart = self.generate_budget_chart(budget)

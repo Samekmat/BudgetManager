@@ -1,4 +1,7 @@
 from django.contrib import messages
+from django.contrib.auth import get_user
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
 from incomes.forms import IncomeForm
@@ -10,7 +13,7 @@ from budget_manager_app.decorators import keep_parameters
 
 
 @keep_parameters
-class IncomeListView(ListView):
+class IncomeListView(LoginRequiredMixin, ListView):
     model = Income
     template_name = "incomes/incomes.html"
     context_object_name = "incomes"
@@ -18,32 +21,54 @@ class IncomeListView(ListView):
     ordering = ['-date']
 
     def get_queryset(self):
-        income_filter = IncomeFilter(self.request.GET, queryset=super().get_queryset())
-        return income_filter.qs
+        user_incomes = Income.objects.filter(user=self.request.user).order_by('-date')
+        return user_incomes
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = IncomeForm()
-        context['filter'] = IncomeFilter(self.request.GET, queryset=self.get_queryset())
+
+        # Apply the IncomeFilter on the filtered queryset
+        filtered_queryset = IncomeFilter(self.request.GET, queryset=self.get_queryset()).qs
+
+        # Paginate the filtered queryset
+        paginator = Paginator(filtered_queryset, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            incomes = paginator.page(page)
+        except PageNotAnInteger:
+            incomes = paginator.page(1)
+        except EmptyPage:
+            incomes = paginator.page(paginator.num_pages)
+
+        context['filter'] = IncomeFilter(self.request.GET, queryset=filtered_queryset)
+        context['incomes'] = incomes
+
         return context
 
 
-class IncomeCreateView(CreateView):
+class IncomeCreateView(LoginRequiredMixin, CreateView):
     model = Income
     form_class = IncomeForm
     template_name = "incomes/incomes.html"
     success_url = reverse_lazy("incomes:incomes")
 
     def form_valid(self, form):
+        form.instance.user = self.request.user
         messages.success(self.request, "Income created successfully.")
         return super().form_valid(form)
 
 
-class IncomeUpdateView(UpdateView):
+class IncomeUpdateView(LoginRequiredMixin, UpdateView):
     model = Income
     form_class = IncomeForm
     template_name = "incomes/edit_income.html"
     success_url = reverse_lazy("incomes:incomes")
+
+    def get_queryset(self):
+        user_incomes = Income.objects.filter(user=self.request.user)
+        return user_incomes
 
     def form_valid(self, form):
         messages.success(self.request, "Income updated successfully.")

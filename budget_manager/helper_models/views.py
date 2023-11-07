@@ -1,4 +1,6 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView
@@ -10,7 +12,7 @@ from budget_manager_app.decorators import keep_parameters
 
 
 @keep_parameters
-class CategoryListView(ListView):
+class CategoryListView(LoginRequiredMixin, ListView):
     model = Category
     template_name = "categories/categories.html"
     context_object_name = "categories"
@@ -18,17 +20,34 @@ class CategoryListView(ListView):
     ordering = ['type']
 
     def get_queryset(self):
-        category_filter = CategoryFilter(self.request.GET, queryset=super().get_queryset())
-        return category_filter.qs
+        user = self.request.user
+        categories = Category.get_categories_for_user(user).order_by('type')
+        return categories
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = CategoryForm()
-        context['filter'] = CategoryFilter(self.request.GET, queryset=self.get_queryset())
+
+        # Apply the CategoryFilter on the filtered queryset
+        filtered_queryset = CategoryFilter(self.request.GET, queryset=self.get_queryset()).qs
+
+        # Paginate the filtered queryset
+        paginator = Paginator(filtered_queryset, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            categories = paginator.page(page)
+        except PageNotAnInteger:
+            categories = paginator.page(1)
+        except EmptyPage:
+            categories = paginator.page(paginator.num_pages)
+
+        context['filter'] = CategoryFilter(self.request.GET, queryset=filtered_queryset)
+        context['categories'] = categories
         return context
 
 
-class CategoryCreateView(CreateView):
+class CategoryCreateView(LoginRequiredMixin, CreateView):
     model = Category
     form_class = CategoryForm
     template_name = "categories/categories.html"
@@ -39,7 +58,7 @@ class CategoryCreateView(CreateView):
         return super().form_valid(form)
 
 
-class CategoryUpdateView(UpdateView):
+class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = Category
     form_class = CategoryForm
     template_name = "categories/edit_category.html"
@@ -58,7 +77,7 @@ class CategoryUpdateView(UpdateView):
 
 
 @keep_parameters
-class TagListView(ListView):
+class TagListView(LoginRequiredMixin, ListView):
     model = Tag
     template_name = "tags/tags.html"
     context_object_name = "tags"
@@ -66,17 +85,34 @@ class TagListView(ListView):
     ordering = ['name']
 
     def get_queryset(self):
-        tag_filter = TagFilter(self.request.GET, queryset=super().get_queryset())
-        return tag_filter.qs
+        user_tags = Tag.objects.filter(user=self.request.user).order_by('name')
+        return user_tags
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = TagForm()
-        context['filter'] = TagFilter(self.request.GET, queryset=self.get_queryset())
+
+        # Apply the TagFilter on the filtered queryset
+        filtered_queryset = TagFilter(self.request.GET, queryset=self.get_queryset()).qs
+
+        # Paginate the filtered queryset
+        paginator = Paginator(filtered_queryset, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            tags = paginator.page(page)
+        except PageNotAnInteger:
+            tags = paginator.page(1)
+        except EmptyPage:
+            tags = paginator.page(paginator.num_pages)
+
+        context['filter'] = TagFilter(self.request.GET, queryset=filtered_queryset)
+        context['tags'] = tags
+
         return context
 
 
-class TagCreateView(CreateView):
+class TagCreateView(LoginRequiredMixin, CreateView):
     model = Tag
     form_class = TagForm
     template_name = "tags/tags.html"
@@ -87,7 +123,7 @@ class TagCreateView(CreateView):
         return super().form_valid(form)
 
 
-class TagUpdateView(UpdateView):
+class TagUpdateView(LoginRequiredMixin, UpdateView):
     model = Tag
     form_class = TagForm
     template_name = "tags/edit_tag.html"

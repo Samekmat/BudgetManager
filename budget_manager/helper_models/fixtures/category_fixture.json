@@ -6,7 +6,8 @@
       "name": "Salary",
       "description": "Base category for income",
       "type": "income",
-      "builtin": true
+      "builtin": true,
+      "user": null
     }
   },
   {
@@ -16,7 +17,8 @@
       "name": "Freelance Income",
       "description": "Base category for income",
       "type": "income",
-      "builtin": true
+      "builtin": true,
+      "user": null
     }
   },
   {
@@ -26,7 +28,8 @@
       "name": "Investment Returns",
       "description": "Base category for income",
       "type": "income",
-      "builtin": true
+      "builtin": true,
+      "user": null
     }
   },
   {
@@ -36,7 +39,8 @@
       "name": "Rental Income",
       "description": "Base category for income",
       "type": "income",
-      "builtin": true
+      "builtin": true,
+      "user": null
     }
   },
   {
@@ -46,7 +50,8 @@
       "name": "Other income",
       "description": "Base category for income",
       "type": "income",
-      "builtin": true
+      "builtin": true,
+      "user": null
     }
   },
   {
@@ -56,7 +61,8 @@
       "name": "Housing",
       "description": "Base category for expense",
       "type": "expense",
-      "builtin": true
+      "builtin": true,
+      "user": null
     }
   },
   {
@@ -66,7 +72,8 @@
       "name": "Transportation",
       "description": "Base category for expense",
       "type": "expense",
-      "builtin": true
+      "builtin": true,
+      "user": null
     }
   },
   {
@@ -76,7 +83,8 @@
       "name": "Entertainment",
       "description": "Base category for expense",
       "type": "expense",
-      "builtin": true
+      "builtin": true,
+      "user": null
     }
   },
   {
@@ -86,7 +94,8 @@
       "name": "Food",
       "description": "Base category for expense",
       "type": "expense",
-      "builtin": true
+      "builtin": true,
+      "user": null
     }
   },
   {
@@ -96,7 +105,8 @@
       "name": "Utilities",
       "description": "Base category for expense",
       "type": "expense",
-      "builtin": true
+      "builtin": true,
+      "user": null
     }
   },
   {
@@ -106,7 +116,8 @@
       "name": "Healthcare",
       "description": "Base category for expense",
       "type": "expense",
-      "builtin": true
+      "builtin": true,
+      "user": null
     }
   }
   ]

@@ -13,10 +13,16 @@ class IncomeDeleteAPIView(generics.DestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        idx = instance.id
-        self.perform_destroy(instance)
-        messages.success(request, f"Income with ID {idx} has been deleted.")
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if instance.user == request.user:
+            idx = instance.id
+            self.perform_destroy(instance)
+            messages.success(request, f"Income with ID {idx} has been deleted.")
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(
+                {"detail": "You do not have permission to delete this income."},
+                status=status.HTTP_403_FORBIDDEN
+            )
 
 
 class ExpenseDeleteAPIView(generics.DestroyAPIView):

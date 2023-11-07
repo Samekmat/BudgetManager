@@ -6,6 +6,7 @@ from incomes.models import Income
 class IncomeForm(forms.ModelForm):
     class Meta:
         model = Income
+        exclude = ("user", )
         fields = "__all__"
         widgets = {
             "date": forms.DateInput(attrs={"type": "date", "class": CLASSES}),

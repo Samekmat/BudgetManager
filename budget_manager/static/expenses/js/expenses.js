@@ -13,9 +13,9 @@ async function deleteExpense(expenseID) {
 
     console.log(response)
 
-    let statusCode = await response.status;
+    let statusCode = response.status;
 
-    if(statusCode == 204) {
+    if(statusCode === 204) {
         let trToRemove = document.getElementById(`expense-${expenseID}`);
         trToRemove.remove();
 

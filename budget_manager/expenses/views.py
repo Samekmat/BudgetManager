@@ -1,4 +1,6 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
 from expenses.forms import ExpenseForm
@@ -9,7 +11,7 @@ from budget_manager_app.decorators import keep_parameters
 
 
 @keep_parameters
-class ExpenseListView(ListView):
+class ExpenseListView(LoginRequiredMixin, ListView):
     model = Expense
     template_name = "expenses/expenses.html"
     context_object_name = "expenses"
@@ -17,32 +19,53 @@ class ExpenseListView(ListView):
     ordering = ['-date']
 
     def get_queryset(self):
-        expense_filter = ExpenseFilter(self.request.GET, queryset=super().get_queryset())
-        return expense_filter.qs
+        user_expenses = Expense.objects.filter(user=self.request.user).order_by('-date')
+        return user_expenses
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = ExpenseForm()
-        context['filter'] = ExpenseFilter(self.request.GET, queryset=self.get_queryset())
+
+        # Apply the ExpenseFilter on the filtered queryset
+        filtered_queryset = ExpenseFilter(self.request.GET, queryset=self.get_queryset()).qs
+
+        # Paginate the filtered queryset
+        paginator = Paginator(filtered_queryset, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            expenses = paginator.page(page)
+        except PageNotAnInteger:
+            expenses = paginator.page(1)
+        except EmptyPage:
+            expenses = paginator.page(paginator.num_pages)
+
+        context['filter'] = ExpenseFilter(self.request.GET, queryset=filtered_queryset)
+        context['expenses'] = expenses
         return context
 
 
-class ExpenseCreateView(CreateView):
+class ExpenseCreateView(LoginRequiredMixin, CreateView):
     model = Expense
     form_class = ExpenseForm
     template_name = "expenses/expenses.html"
     success_url = reverse_lazy("expenses:expenses")
 
     def form_valid(self, form):
+        form.instance.user = self.request.user
         messages.success(self.request, "Expense created successfully.")
         return super().form_valid(form)
 
 
-class ExpenseUpdateView(UpdateView):
+class ExpenseUpdateView(LoginRequiredMixin, UpdateView):
     model = Expense
     form_class = ExpenseForm
     template_name = "expenses/edit_expense.html"
     success_url = reverse_lazy("expenses:expenses")
+
+    def get_queryset(self):
+        user_expenses = Expense.objects.filter(user=self.request.user)
+        return user_expenses
 
     def form_valid(self, form):
         messages.success(self.request, "Expense updated successfully.")

@@ -24,6 +24,7 @@ class BudgetForm(forms.ModelForm):
 
     class Meta:
         model = Budget
+        exclude = ("user", )
         fields = ("name", "user", "shared_with", "incomes", "expenses", "goals")
         widgets = {
             "name": forms.TextInput(attrs={"class": CLASSES}),

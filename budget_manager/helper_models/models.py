@@ -1,6 +1,8 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 from budget_manager_app.choices import CATEGORY_TYPES
+from django.db.models import Q
 
 
 class Category(models.Model):
@@ -8,6 +10,7 @@ class Category(models.Model):
     description = models.TextField()
     type = models.CharField(max_length=60, choices=CATEGORY_TYPES)
     builtin = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def delete(self, *args, **kwargs):
         if not self.builtin:
@@ -19,6 +22,13 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+    @staticmethod
+    def get_categories_for_user(user):
+        if user.is_authenticated:
+            return Category.objects.filter(Q(user=user) | Q(builtin=True))
+        else:
+            return Category.objects.filter(builtin=True)
 
 
 class Currency(models.Model):
@@ -32,6 +42,7 @@ class Currency(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=32)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

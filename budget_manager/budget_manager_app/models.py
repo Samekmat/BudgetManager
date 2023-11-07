@@ -12,6 +12,7 @@ class SavingGoal(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     goal = models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -26,6 +27,7 @@ class Budget(models.Model):
     incomes = models.ManyToManyField(Income)
     expenses = models.ManyToManyField(Expense)
     goals = models.ManyToManyField(SavingGoal, blank=True)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return self.name

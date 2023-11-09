@@ -116,7 +116,7 @@ class SavingGoalDeleteView(LoginRequiredMixin, DeleteView):
             return HttpResponseForbidden("You don't have permission to delete this goal.")
 
 
-class DashboardView(LoginRequiredMixin, View):
+class DashboardTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
     context_object_name = 'dashboard'
 

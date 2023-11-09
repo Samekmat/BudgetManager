@@ -27,10 +27,10 @@
 <div class="max-w-3xl mx-auto bg-white p-4 rounded-lg shadow-md">
     <div class="max-h-64 overflow-y-auto">
         <table class="w-full">
+            <caption>Exchange rates from {{base_currency}}</caption>
             <thead>
                 <tr>
                     <th class="px-4 py-2">Currency</th>
-                    <th class="px-4 py-2">Exchange Rate to USD</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,6 +43,15 @@
             </tbody>
         </table>
     </div>
+   <h1 class="mb-6 text-3xl text-gray-900 align-middle dark:text-white">Select Base Currency</h1>
+<form method="get" class="w-full max-w-sm mx-auto">
+  {% csrf_token %}
+  <div class="mb-4">
+    {{ currency_form.base_currency.label_tag }}
+    {{ currency_form.base_currency }}
+  </div>
+  <button type="submit" class="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold py-2 px-4 rounded-full">Submit</button>
+</form>
 </div>
 
 {% endblock content %}

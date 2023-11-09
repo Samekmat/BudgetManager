@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+import requests
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -9,8 +10,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView, TemplateView, DetailView
-from budget_manager_app.forms import BudgetForm, SavingGoalForm
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, TemplateView, DetailView, FormView
+from budget_manager_app.forms import BudgetForm, SavingGoalForm, IncomeExpenseSelectForm
 from budget_manager_app.models import Budget, SavingGoal
 
 from incomes.models import Income
@@ -20,6 +21,11 @@ import freecurrencyapi
 
 from plotly.offline import plot
 import plotly.graph_objs as go
+
+import pandas as pd
+import plotly.express as px
+
+from budget_manager_app.forms import CurrencyBaseForm
 
 
 def index(request):
@@ -110,14 +116,14 @@ class SavingGoalDeleteView(LoginRequiredMixin, DeleteView):
             return HttpResponseForbidden("You don't have permission to delete this goal.")
 
 
-class DashboardListView(LoginRequiredMixin, TemplateView):
+class DashboardView(LoginRequiredMixin, View):
     template_name = 'dashboard.html'
     context_object_name = 'dashboard'
 
-    def get_exchange_rates(self):
+    def get_exchange_rates(self, base_currency):
         api_key = settings.FREE_CURRENCY_API_KEY
         client = freecurrencyapi.Client(api_key)
-        return client.latest()
+        return client.latest(base_currency=base_currency)
 
     def get_context_data(self, **kwargs):
         user = self.request.user
@@ -128,13 +134,17 @@ class DashboardListView(LoginRequiredMixin, TemplateView):
         recent_transactions = list(income_query) + list(expense_query)
         recent_transactions.sort(key=lambda x: x.date, reverse=True)
 
-        exchange_rates = self.get_exchange_rates()
+        currency_form = CurrencyBaseForm()
+        base_currency = self.request.GET.get('base_currency', 'USD')
+
+        exchange_rates = self.get_exchange_rates(base_currency)
 
         context = super().get_context_data(**kwargs)
 
         context['dashboard'] = recent_transactions
         context['exchange_rates'] = exchange_rates
-
+        context['base_currency'] = base_currency
+        context['currency_form'] = currency_form
         return context
 
 
@@ -213,43 +223,31 @@ class ChartView(LoginRequiredMixin, View):
             'expenses': expenses,
         }
 
-    def generate_pie_chart(self, budget):
-        context = self.get_context_data(budget)
-
-        labels = ["Incomes", "Expenses"]
-        values = [sum(item['total'] for item in context['incomes']), sum(item['total'] for item in context['expenses'])]
-
-        fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
-
-        return plot(fig, output_type='div')
-
-    def generate_budget_chart(self, budget):
-        context = self.get_context_data(budget)
-
-        fig = go.Figure(go.Indicator(
-            mode="number+delta",
-            value=context['total_balance'],
-            title="Total Balance",
-            number={'prefix': "$"},
-        ))
-
-        return plot(fig, output_type='div')
-
     def generate_bar_chart(self, budget):
         context = self.get_context_data(budget)
 
+        # Calculate the total income and total expenses
+        total_incomes = sum(item['total'] for item in context['incomes'])
+        total_expenses = sum(item['total'] for item in context['expenses'])
+
+        # Calculate the percentages
+        income_percentage = (total_incomes / (total_incomes + total_expenses)) * 100
+        expense_percentage = (total_expenses / (total_incomes + total_expenses)) * 100
+
         fig = go.Figure()
 
-        # Create two bars for "Incomes" and "Expenses"
+        # Create two bars for "Incomes" and "Expenses" and display percentages on the bars
         fig.add_trace(go.Bar(
             x=["Incomes"],
-            y=[sum(item['total'] for item in context['incomes'])],
+            y=[total_incomes],
+            text=[f'{income_percentage:.2f}%'],  # Format the percentage
             name='Incomes',
         ))
 
         fig.add_trace(go.Bar(
             x=["Expenses"],
-            y=[sum(item['total'] for item in context['expenses'])],
+            y=[total_expenses],
+            text=[f'{expense_percentage:.2f}%'],  # Format the percentage
             name='Expenses',
         ))
 
@@ -259,6 +257,31 @@ class ChartView(LoginRequiredMixin, View):
             yaxis_title='Amount',
             barmode='group',  # Use 'group' for grouped bars
         )
+
+        return plot(fig, output_type='div')
+
+    def generate_pie_chart(self, budget):
+        context = self.get_context_data(budget)
+
+        labels = ["Incomes", "Expenses"]
+        values = [sum(item['total'] for item in context['incomes']), sum(item['total'] for item in context['expenses'])]
+
+        fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
+        fig.update_layout(
+            height=450,
+            width=450
+        )
+        return plot(fig, output_type='div')
+
+    def generate_budget_chart(self, budget):
+        total_balance = budget.calculate_balance
+
+        fig = go.Figure(go.Indicator(
+            mode="number+delta",
+            value=total_balance,
+            title="Total Balance",
+            number={'prefix': budget.currency.symbol},
+        ))
 
         return plot(fig, output_type='div')
 
@@ -297,7 +320,7 @@ class ChartView(LoginRequiredMixin, View):
         # Collect and process expense data by date
         expense_data = budget.expenses.values('date').annotate(total=Sum('amount')).order_by('date')
         expense_dates = [item['date'] for item in expense_data]
-        expense_totals = [item['total'] for item in expense_data]
+        expense_totals = [-item['total'] for item in expense_data]
 
         # Create a list of all unique dates (union of income and expense dates)
         all_dates = sorted(set(income_dates + expense_dates))
@@ -307,7 +330,7 @@ class ChartView(LoginRequiredMixin, View):
         for date in all_dates:
             income = income_totals[income_dates.index(date)] if date in income_dates else 0
             expense = expense_totals[expense_dates.index(date)] if date in expense_dates else 0
-            daily_differences.append(income - expense)
+            daily_differences.append(income + expense)
 
         # Create a Plotly figure
         fig = go.Figure()
@@ -334,17 +357,49 @@ class ChartView(LoginRequiredMixin, View):
 
         income_chart = self.generate_pie_chart(budget)
         budget_chart = self.generate_budget_chart(budget)
-        bar_chart = self.generate_bar_chart(budget)
-
         income_category_chart = self.generate_income_category_pie_chart(budget)
         expense_category_chart = self.generate_expense_category_pie_chart(budget)
         line_chart = self.generate_line_chart(budget)
+        bar_chart = self.generate_bar_chart(budget)
 
         return render(request, self.template_name, {
             'income_chart': income_chart,
             'budget_chart': budget_chart,
-            'bar_chart': bar_chart,
             'income_category_chart': income_category_chart,
             'expense_category_chart': expense_category_chart,
-            'line_chart': line_chart
+            'line_chart': line_chart,
+            'bar_chart': bar_chart
         })
+
+
+class AddIncomeExpenseView(View):
+    template_name = 'budgets/add_income_expense.html'
+
+    def get(self, request, budget_id):
+        budget = Budget.objects.get(pk=budget_id)
+        form = IncomeExpenseSelectForm()
+
+        # Filter incomes and expenses by the specified currency
+        selected_currency = budget.currency
+        form.fields['incomes'].queryset = Income.objects.filter(currency=selected_currency)
+        form.fields['expenses'].queryset = Expense.objects.filter(currency=selected_currency)
+
+        return render(request, self.template_name, {'form': form, 'budget': budget})
+
+    def post(self, request, budget_id):
+        budget = Budget.objects.get(pk=budget_id)
+        form = IncomeExpenseSelectForm(request.POST)
+
+        if form.is_valid():
+            selected_incomes = form.cleaned_data['incomes']
+            selected_expenses = form.cleaned_data['expenses']
+
+            for income in selected_incomes:
+                budget.incomes.add(income)
+
+            for expense in selected_expenses:
+                budget.expenses.add(expense)
+
+            return redirect('budgets:budgets')  # Redirect to the budget list view
+
+        return render(request, self.template_name, {'form': form, 'budget': budget})

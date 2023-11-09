@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.contrib.auth import get_user
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse_lazy
@@ -44,7 +43,6 @@ class IncomeListView(LoginRequiredMixin, ListView):
 
         context['filter'] = IncomeFilter(self.request.GET, queryset=filtered_queryset)
         context['incomes'] = incomes
-
         return context
 
 

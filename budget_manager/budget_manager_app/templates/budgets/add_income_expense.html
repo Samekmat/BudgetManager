@@ -1,0 +1,32 @@
+{% extends "_base.html" %}
+
+{% block content %}
+  <div class="bg-white rounded-lg shadow p-4 dark:bg-gray-800 dark:text-white">
+    <h2 class="text-2xl font-semibold mb-4">Add Income/Expense to {{ budget.name }}</h2>
+    <form method="post">
+      {% csrf_token %}
+      <table class="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th class="text-left px-6 py-3" scope="col">Select Incomes</th>
+            <th class="text-left px-6 py-3" scope="col">Select Expenses</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 font-bold">
+            <td class="border-b px-6 py-4">
+              {{ form.incomes }}
+            </td>
+            <td class="border-b px-6 py-4">
+              {{ form.expenses }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="mt-4">
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 dark:text-white">Save</button>
+        <a href="{% url 'budgets:budgets' %}" class="px-4 py-2 text-white bg-purple-500 rounded hover:underline dark:text-white">Back to Budget List</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

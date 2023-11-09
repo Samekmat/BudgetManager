@@ -42,7 +42,9 @@
               {% endfor %}
                 </ul>
             </td>
-            <td class="px-6 py-4">{{ budget.calculate_balance }}</td>
+            <td class="px-6 py-4">
+              {{ budget.calculate_balance }}{{budget.currency.symbol}}
+            </td>
             <td class="px-6 py-4">
                 <ul>
               {% for goal in budget.goals.all %}
@@ -54,6 +56,7 @@
             <a href="{% url 'budgets:budget-update' budget.pk %}" class="text-blue-500 dark:text-blue-300 hover:underline">Edit</a> |
             <a href="{% url 'budgets:budget-delete' budget.pk %}" class="text-red-500 dark:text-red-400 hover:underline">Delete</a> |
             <a href="{% url 'budgets:budget-chart' budget.pk %}">View Chart</a>
+            <a href="{% url 'budgets:add-income-expense' budget.id %}">Add Income/Expense</a>
           </td>
         </tr>
       {% endfor %}

@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -139,8 +139,6 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-print(STATIC_ROOT)
-
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
@@ -154,11 +152,15 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/users/login/"
 
 
-COMPRESS_ROOT = BASE_DIR / "tailwind_static"
+COMPRESS_ROOT = BASE_DIR / "static"
 
 COMPRESS_ENABLED = True
 
-STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    "compressor.finders.CompressorFinder"
+]
 
 # Messages storage
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"

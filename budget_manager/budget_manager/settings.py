@@ -19,10 +19,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+
+INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
 
 # Application definition
 
@@ -36,6 +38,8 @@ INSTALLED_APPS = [
     "compressor",
     "rest_framework",
     'django_filters',
+    'debug_toolbar',
+    'silk',
 ]
 
 INSTALLED_EXTENSIONS = [
@@ -45,11 +49,14 @@ INSTALLED_EXTENSIONS = [
     "incomes",
     "users",
     "helper_models",
+    "saving_goals",
 ]
 
 INSTALLED_APPS += INSTALLED_EXTENSIONS
 
 MIDDLEWARE = [
+    # 'silk.middleware.SilkyMiddleware',
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -129,8 +136,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+print(STATIC_ROOT)
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -144,9 +153,8 @@ LOGIN_URL = "/users/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/users/login/"
 
-# Compress
 
-COMPRESS_ROOT = BASE_DIR / "static"
+COMPRESS_ROOT = BASE_DIR / "tailwind_static"
 
 COMPRESS_ENABLED = True
 
@@ -157,3 +165,5 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 # Currency API key
 FREE_CURRENCY_API_KEY = env('FREE_CURRENCY_API_KEY')
+
+

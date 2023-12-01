@@ -6,7 +6,7 @@ module.exports = {
       './expenses/templates/expenses/*html',
       './users/templates/users/*html',
       './budget_manager_app/templates/budgets/*html',
-      './budget_manager_app/templates/saving_goals/*html',
+      './saving_goals/templates/saving_goals/*html',
       './helper_models/templates/categories/*html',
       './helper_models/templates/tags/*html',
       './node_modules/flowbite/**/*.js'

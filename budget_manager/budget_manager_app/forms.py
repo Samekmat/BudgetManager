@@ -2,27 +2,12 @@ from django import forms
 
 from budget_manager_app.styles import CLASSES
 
-from budget_manager_app.models import Budget, SavingGoal
+from budget_manager_app.models import Budget
 
 from expenses.models import Expense
 from incomes.models import Income
 
 from helper_models.models import Currency
-
-
-class SavingGoalForm(forms.ModelForm):
-    amount_to_add = forms.DecimalField(max_digits=10, decimal_places=2, required=False)
-    amount_to_subtract = forms.DecimalField(max_digits=10, decimal_places=2, required=False)
-
-    class Meta:
-        model = SavingGoal
-        fields = ("name", "amount", "goal", "currency",)
-        widgets = {
-            "name": forms.TextInput(attrs={"class": CLASSES}),
-            "amount": forms.NumberInput(attrs={"class": CLASSES}),
-            "goal": forms.NumberInput(attrs={"class": CLASSES}),
-            "currency": forms.Select(attrs={"class": CLASSES}),
-        }
 
 
 class BudgetForm(forms.ModelForm):
@@ -62,3 +47,9 @@ class CurrencyBaseForm(forms.Form):
         empty_label=None,
         to_field_name='code')
 
+
+class ChartForm(forms.Form):
+    date_from = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': CLASSES, 'type': 'date'}))
+    date_to = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': CLASSES, 'type': 'date'}))
+    currency = forms.ModelChoiceField(queryset=Currency.objects.all(), required=True,
+                                      widget=forms.Select(attrs={'class': CLASSES}))

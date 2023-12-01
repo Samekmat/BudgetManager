@@ -9,9 +9,27 @@ from expenses.models import Expense
 from budget_manager_app.filters import ExpenseFilter
 from budget_manager_app.decorators import keep_parameters
 
+class FilteredPaginationMixin:
+
+    def get_filtered_queryset(self, filter_object):
+        return filter_object(self.request.GET, queryset=self.get_queryset()).qs
+
+    def get_paginated_result(self, filter_object):
+        filtered_queryset = self.get_filtered_queryset(filter_object)
+        paginator = Paginator(filtered_queryset, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            pagination = paginator.page(page)
+        except PageNotAnInteger:
+            pagination = paginator.page(1)
+        except EmptyPage:
+            pagination = paginator.page(paginator.num_pages)
+
+        return pagination
 
 @keep_parameters
-class ExpenseListView(LoginRequiredMixin, ListView):
+class ExpenseListView(LoginRequiredMixin, FilteredPaginationMixin, ListView):
     model = Expense
     template_name = "expenses/expenses.html"
     context_object_name = "expenses"

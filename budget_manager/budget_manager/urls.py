@@ -29,8 +29,15 @@ urlpatterns = [
     path("incomes/", include("incomes.urls")),
     path("expenses/", include("expenses.urls")),
     path("helper/", include("helper_models.urls")),
-    path("budgets/", include("budget_manager_app.urls"))
+    path("budgets/", include("budget_manager_app.urls")),
+    path("goals/", include("saving_goals.urls")),
+    path("dashboard/", views.DashboardView.as_view(), name="dashboard")
 ]
 
 if settings.DEBUG:
+    print('OK')
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    # urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]
+    # urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]

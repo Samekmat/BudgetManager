@@ -5,17 +5,7 @@ from helper_models.models import Currency
 
 from expenses.models import Expense
 from incomes.models import Income
-
-
-class SavingGoal(models.Model):
-    name = models.CharField(max_length=120)
-    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    goal = models.DecimalField(max_digits=10, decimal_places=2)
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
+from saving_goals.models import SavingGoal
 
 
 class Budget(models.Model):

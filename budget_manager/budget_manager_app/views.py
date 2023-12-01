@@ -1,151 +1,27 @@
-from decimal import Decimal
-
-import requests
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView, TemplateView, DetailView, FormView
-from budget_manager_app.forms import BudgetForm, SavingGoalForm, IncomeExpenseSelectForm
-from budget_manager_app.models import Budget, SavingGoal
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from budget_manager_app.forms import BudgetForm, ChartForm, CurrencyBaseForm, IncomeExpenseSelectForm
+from budget_manager_app.models import Budget
 
 from incomes.models import Income
 from expenses.models import Expense
 
 import freecurrencyapi
 
-from plotly.offline import plot
-import plotly.graph_objs as go
-
-import pandas as pd
-import plotly.express as px
-
-from budget_manager_app.forms import CurrencyBaseForm
+from budget_manager_app.charts.generate_dashboard_charts import ChartGenerator
+from budget_manager_app.charts.generate_budget_charts import ChartsGenerator
 
 
 def index(request):
     return render(request, "index.html")
-
-
-class SavingGoalListView(LoginRequiredMixin, ListView):
-    model = SavingGoal
-    template_name = 'saving_goals/goals.html'
-    context_object_name = 'goals'
-
-    def post(self, request, *args, **kwargs):
-        goal_id = request.POST.get('goal_id')
-        goal = SavingGoal.objects.get(id=goal_id)
-
-        if 'amount_to_add' in request.POST:
-            amount_to_add = Decimal(request.POST.get('amount_to_add'))
-            if amount_to_add > Decimal(0):
-                goal.amount += amount_to_add
-                messages.success(request, f"Added {amount_to_add}{goal.currency.symbol} to the goal.")
-            else:
-                messages.error(request, "Invalid amount to add.")
-        elif 'amount_to_subtract' in request.POST:
-            amount_to_subtract = Decimal(request.POST.get('amount_to_subtract'))
-            if goal.amount - amount_to_subtract >= Decimal(0):
-                goal.amount -= amount_to_subtract
-                messages.success(request, f"Subtracted {amount_to_subtract}{goal.currency.symbol}  from the goal.")
-            else:
-                messages.error(request, "Invalid amount to subtract")
-
-        goal.save()
-        return redirect('budgets:goals')
-
-    def get_queryset(self):
-        user_goals = SavingGoal.objects.filter(user=self.request.user)
-        return user_goals
-
-
-class SavingGoalCreateView(LoginRequiredMixin, CreateView):
-    model = SavingGoal
-    form_class = SavingGoalForm
-    template_name = 'saving_goals/goal_form.html'
-    success_url = reverse_lazy('budgets:goals')
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        messages.success(self.request, 'Saving goal created successfully.')
-        return super().form_valid(form)
-
-
-class SavingGoalUpdateView(LoginRequiredMixin, UpdateView):
-    model = SavingGoal
-    form_class = SavingGoalForm
-    template_name = 'saving_goals/goal_form.html'
-    success_url = reverse_lazy('budgets:goals')
-
-    def form_valid(self, form):
-        messages.success(self.request, 'Saving goal updated successfully.')
-        return super().form_valid(form)
-
-    def get_queryset(self):
-        user_goals = SavingGoal.objects.filter(user=self.request.user)
-        return user_goals
-
-
-class SavingGoalDetailView(LoginRequiredMixin, DetailView):
-    model = SavingGoal
-    template_name = 'saving_goals/goal_detail.html'
-
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset)
-        if obj.user != self.request.user:
-            return HttpResponseForbidden("You don't have permission to access this goal.")
-        return obj
-
-
-class SavingGoalDeleteView(LoginRequiredMixin, DeleteView):
-    model = SavingGoal
-    template_name = 'saving_goals/goal_confirm_delete.html'
-    success_url = reverse_lazy('budgets:goals')
-
-    def delete(self, request, *args, **kwargs):
-        goal = self.get_object()
-        if goal.user == self.request.user:
-            messages.success(self.request, 'Saving goal deleted successfully.')
-            return super().delete(request, *args, **kwargs)
-        else:
-            return HttpResponseForbidden("You don't have permission to delete this goal.")
-
-
-class DashboardTemplateView(LoginRequiredMixin, TemplateView):
-    template_name = 'dashboard.html'
-    context_object_name = 'dashboard'
-
-    def get_exchange_rates(self, base_currency):
-        api_key = settings.FREE_CURRENCY_API_KEY
-        client = freecurrencyapi.Client(api_key)
-        return client.latest(base_currency=base_currency)
-
-    def get_context_data(self, **kwargs):
-        user = self.request.user
-
-        income_query = Income.objects.filter(user=user).order_by('-date')[:2]
-        expense_query = Expense.objects.filter(user=user).order_by('-date')[:2]
-
-        recent_transactions = list(income_query) + list(expense_query)
-        recent_transactions.sort(key=lambda x: x.date, reverse=True)
-
-        currency_form = CurrencyBaseForm()
-        base_currency = self.request.GET.get('base_currency', 'USD')
-
-        exchange_rates = self.get_exchange_rates(base_currency)
-
-        context = super().get_context_data(**kwargs)
-
-        context['dashboard'] = recent_transactions
-        context['exchange_rates'] = exchange_rates
-        context['base_currency'] = base_currency
-        context['currency_form'] = currency_form
-        return context
 
 
 class BudgetListView(LoginRequiredMixin, ListView):
@@ -154,7 +30,8 @@ class BudgetListView(LoginRequiredMixin, ListView):
     context_object_name = 'budgets'
 
     def get_queryset(self):
-        user_budgets = Budget.objects.filter(user=self.request.user)
+        user = self.request.user
+        user_budgets = Budget.objects.filter(Q(user=user) | Q(shared_with=user)).distinct()
         return user_budgets
 
 
@@ -216,6 +93,7 @@ class ChartView(LoginRequiredMixin, View):
         expenses = budget.expenses.values('date').annotate(total=Sum('amount'))
 
         return {
+            'budget': budget,
             'income_categories': income_categories,
             'expense_categories': expense_categories,
             'total_balance': total_balance,
@@ -223,144 +101,18 @@ class ChartView(LoginRequiredMixin, View):
             'expenses': expenses,
         }
 
-    def generate_bar_chart(self, budget):
-        context = self.get_context_data(budget)
-
-        # Calculate the total income and total expenses
-        total_incomes = sum(item['total'] for item in context['incomes'])
-        total_expenses = sum(item['total'] for item in context['expenses'])
-
-        # Calculate the percentages
-        income_percentage = (total_incomes / (total_incomes + total_expenses)) * 100
-        expense_percentage = (total_expenses / (total_incomes + total_expenses)) * 100
-
-        fig = go.Figure()
-
-        # Create two bars for "Incomes" and "Expenses" and display percentages on the bars
-        fig.add_trace(go.Bar(
-            x=["Incomes"],
-            y=[total_incomes],
-            text=[f'{income_percentage:.2f}%'],  # Format the percentage
-            name='Incomes',
-        ))
-
-        fig.add_trace(go.Bar(
-            x=["Expenses"],
-            y=[total_expenses],
-            text=[f'{expense_percentage:.2f}%'],  # Format the percentage
-            name='Expenses',
-        ))
-
-        fig.update_layout(
-            title='Total Incomes vs Total Expenses',
-            xaxis_title='',
-            yaxis_title='Amount',
-            barmode='group',  # Use 'group' for grouped bars
-        )
-
-        return plot(fig, output_type='div')
-
-    def generate_pie_chart(self, budget):
-        context = self.get_context_data(budget)
-
-        labels = ["Incomes", "Expenses"]
-        values = [sum(item['total'] for item in context['incomes']), sum(item['total'] for item in context['expenses'])]
-
-        fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
-        fig.update_layout(
-            height=450,
-            width=450
-        )
-        return plot(fig, output_type='div')
-
-    def generate_budget_chart(self, budget):
-        total_balance = budget.calculate_balance
-
-        fig = go.Figure(go.Indicator(
-            mode="number+delta",
-            value=total_balance,
-            title="Total Balance",
-            number={'prefix': budget.currency.symbol},
-        ))
-
-        return plot(fig, output_type='div')
-
-    def generate_income_category_pie_chart(self, budget):
-        context = self.get_context_data(budget)
-
-        # Extract category names and their total incomes
-        labels = [item['category__name'] for item in context['income_categories']]
-        values = [item['total'] for item in context['income_categories']]
-
-        fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
-
-        fig.update_layout(title='Income Categories')
-
-        return plot(fig, output_type='div')
-
-    def generate_expense_category_pie_chart(self, budget):
-        context = self.get_context_data(budget)
-
-        # Extract category names and their total expenses
-        labels = [item['category__name'] for item in context['expense_categories']]
-        values = [item['total'] for item in context['expense_categories']]
-
-        fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
-
-        fig.update_layout(title='Expense Categories')
-
-        return plot(fig, output_type='div')
-
-    def generate_line_chart(self, budget):
-        # Collect and process income data by date
-        income_data = budget.incomes.values('date').annotate(total=Sum('amount')).order_by('date')
-        income_dates = [item['date'] for item in income_data]
-        income_totals = [item['total'] for item in income_data]
-
-        # Collect and process expense data by date
-        expense_data = budget.expenses.values('date').annotate(total=Sum('amount')).order_by('date')
-        expense_dates = [item['date'] for item in expense_data]
-        expense_totals = [-item['total'] for item in expense_data]
-
-        # Create a list of all unique dates (union of income and expense dates)
-        all_dates = sorted(set(income_dates + expense_dates))
-
-        # Calculate the daily differences (profit/loss)
-        daily_differences = []
-        for date in all_dates:
-            income = income_totals[income_dates.index(date)] if date in income_dates else 0
-            expense = expense_totals[expense_dates.index(date)] if date in expense_dates else 0
-            daily_differences.append(income + expense)
-
-        # Create a Plotly figure
-        fig = go.Figure()
-
-        # Add lines for income, expenses, and difference with markers
-        fig.add_trace(go.Scatter(x=income_dates, y=income_totals, mode='lines+markers', name='Income'))
-        fig.add_trace(go.Scatter(x=expense_dates, y=expense_totals, mode='lines+markers', name='Expenses'))
-        fig.add_trace(go.Scatter(x=all_dates, y=daily_differences, mode='lines+markers', name='Difference'))
-
-        # Update the layout
-        fig.update_layout(
-            title="Budget Overview",
-            xaxis_title="Date",
-            yaxis_title="Amount",
-        )
-
-        chart_div = plot(fig, output_type='div', include_plotlyjs=False)
-
-        return chart_div
-
     def get(self, request, budget_id):
         user = self.request.user
         budget = Budget.objects.get(pk=budget_id, user=user)
 
-        income_chart = self.generate_pie_chart(budget)
-        budget_chart = self.generate_budget_chart(budget)
-        income_category_chart = self.generate_income_category_pie_chart(budget)
-        expense_category_chart = self.generate_expense_category_pie_chart(budget)
-        line_chart = self.generate_line_chart(budget)
-        bar_chart = self.generate_bar_chart(budget)
+        context = self.get_context_data(budget)
+
+        income_chart = ChartsGenerator.generate_pie_chart(context)
+        budget_chart = ChartsGenerator.generate_budget_chart(context)
+        income_category_chart = ChartsGenerator.generate_income_category_pie_chart(context)
+        expense_category_chart = ChartsGenerator.generate_expense_category_pie_chart(context)
+        line_chart = ChartsGenerator.generate_line_chart(context)
+        bar_chart = ChartsGenerator.generate_bar_chart(context)
 
         return render(request, self.template_name, {
             'income_chart': income_chart,
@@ -377,14 +129,22 @@ class AddIncomeExpenseView(View):
 
     def get(self, request, budget_id):
         budget = Budget.objects.get(pk=budget_id)
-        form = IncomeExpenseSelectForm()
 
-        # Filter incomes and expenses by the specified currency
-        selected_currency = budget.currency
-        form.fields['incomes'].queryset = Income.objects.filter(currency=selected_currency)
-        form.fields['expenses'].queryset = Expense.objects.filter(currency=selected_currency)
+        # Check if the user is the owner of the budget or in the shared_with list
+        if request.user == budget.user or request.user in budget.shared_with.all():
+            form = IncomeExpenseSelectForm()
 
-        return render(request, self.template_name, {'form': form, 'budget': budget})
+            # Filter incomes and expenses by the specified currency
+            selected_currency = budget.currency
+
+            all_users = [budget.user] + list(budget.shared_with.all())
+            form.fields['incomes'].queryset = Income.objects.filter(currency=selected_currency, user__in=all_users)
+            form.fields['expenses'].queryset = Expense.objects.filter(currency=selected_currency, user__in=all_users)
+
+            return render(request, self.template_name, {'form': form, 'budget': budget})
+        else:
+            # If the user is not the owner and not in the shared_with list, display an error
+            return HttpResponseForbidden("You do not have permission to access this budget.")
 
     def post(self, request, budget_id):
         budget = Budget.objects.get(pk=budget_id)
@@ -403,3 +163,69 @@ class AddIncomeExpenseView(View):
             return redirect('budgets:budgets')  # Redirect to the budget list view
 
         return render(request, self.template_name, {'form': form, 'budget': budget})
+
+
+class DashboardView(View):
+    template_name = 'budgets/dashboard.html'
+
+    def get(self, request):
+        form = ChartForm(request.GET or None)
+        currency_form = CurrencyBaseForm()
+        user = request.user
+
+        # Load exchange rates independently
+        base_currency = self.request.GET.get('base_currency', 'USD')
+        exchange_rates = self.get_exchange_rates(base_currency)
+
+        # Load recent transactions
+        income_query = Income.objects.filter(user=user).order_by('-date')[:2]
+        expense_query = Expense.objects.filter(user=user).order_by('-date')[:2]
+
+        recent_transactions = list(income_query) + list(expense_query)
+        recent_transactions.sort(key=lambda x: x.date, reverse=True)
+
+        # Check if the currency_form is submitted and valid
+        if currency_form.is_valid():
+            return render(
+                request,
+                self.template_name,
+                {'form': form, 'currency_form': currency_form, 'exchange_rates': exchange_rates}
+            )
+
+        # Check if the form is submitted and valid
+        if request.GET and form.is_valid():
+            expenses = Expense.objects.filter(user=user)
+            incomes = Income.objects.filter(user=user)
+
+            line_chart = ChartGenerator.generate_line_chart(form, expenses, incomes)
+            income_pie_chart = ChartGenerator.generate_pie_chart(Income, form.cleaned_data.get('date_from'),
+                                                                 form.cleaned_data.get('date_to'),
+                                                                 form.cleaned_data.get('currency'), 'Income Categories')
+            expense_pie_chart = ChartGenerator.generate_pie_chart(Expense, form.cleaned_data.get('date_from'),
+                                                                  form.cleaned_data.get('date_to'),
+                                                                  form.cleaned_data.get('currency'),
+                                                                  'Expense Categories')
+            percentage_bar_chart = ChartGenerator.generate_percentage_bar_chart(form, expenses, incomes)
+
+            return render(
+                request,
+                self.template_name,
+                {'form': form, 'line_chart': line_chart, 'income_pie_chart': income_pie_chart,
+                 'expense_pie_chart': expense_pie_chart, 'percentage_bar_chart': percentage_bar_chart,
+                 'recent_transactions': recent_transactions, 'base_currency': base_currency,
+                 'currency_form': currency_form, 'exchange_rates': exchange_rates}
+            )
+
+        # Render the initial form and currency_form
+        return render(
+            request,
+            self.template_name,
+            {'form': form, 'currency_form': currency_form,
+             'exchange_rates': exchange_rates, 'base_currency': base_currency,
+             'recent_transactions': recent_transactions}
+        )
+
+    def get_exchange_rates(self, base_currency):
+        api_key = settings.FREE_CURRENCY_API_KEY
+        client = freecurrencyapi.Client(api_key)
+        return client.latest(base_currency=base_currency)

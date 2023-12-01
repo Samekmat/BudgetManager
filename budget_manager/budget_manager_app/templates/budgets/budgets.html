@@ -48,14 +48,14 @@
             <td class="px-6 py-4">
                 <ul>
               {% for goal in budget.goals.all %}
-                <li><a href="{% url 'budgets:goal-detail' goal.pk %}" class="text-blue-500 hover:underline">{{ goal.name }}</a></li>
+                <li><a href="{% url 'saving_goals:goal-detail' goal.pk %}" class="text-blue-500 hover:underline">{{ goal.name }}</a></li>
               {% endfor %}
                 </ul>
             </td>
           <td class="px-6 py-4">
             <a href="{% url 'budgets:budget-update' budget.pk %}" class="text-blue-500 dark:text-blue-300 hover:underline">Edit</a> |
             <a href="{% url 'budgets:budget-delete' budget.pk %}" class="text-red-500 dark:text-red-400 hover:underline">Delete</a> |
-            <a href="{% url 'budgets:budget-chart' budget.pk %}">View Chart</a>
+            <a href="{% url 'budgets:budget-chart' budget.pk %}" class="text-yellow-500 hover:underline">View Charts</a> |
             <a href="{% url 'budgets:add-income-expense' budget.id %}">Add Income/Expense</a>
           </td>
         </tr>

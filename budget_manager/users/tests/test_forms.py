@@ -41,7 +41,7 @@ class LoginFormTestCase(TestCase):
     def test_login_form_valid(self):
         form_data = {
             'username': self.user.username,
-            'password': self.user.password,
+            'password': 'ZAQ!2wsx',
         }
         form = LoginForm(data=form_data)
         self.assertTrue(form.is_valid())

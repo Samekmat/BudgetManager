@@ -1,8 +1,7 @@
 from expenses.models import Expense
+from helper_models.models import Category
 from incomes.models import Income
 from rest_framework import serializers
-
-from helper_models.models import Category
 
 
 class IncomeSerializer(serializers.ModelSerializer):
@@ -18,14 +17,12 @@ class ExpenseSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Category
-        fields = ('name', 'description', 'is_income')
+        fields = ("name", "description", "is_income")
 
 
 class TagSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Category
-        fields = ('name', )
+        fields = ("name",)

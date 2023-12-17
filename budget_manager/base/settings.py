@@ -21,7 +21,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 
 INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
@@ -37,9 +37,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "compressor",
     "rest_framework",
-    'django_filters',
-    'debug_toolbar',
-    'silk',
+    "django_filters",
+    "debug_toolbar",
+    "silk",
 ]
 
 INSTALLED_EXTENSIONS = [
@@ -55,8 +55,8 @@ INSTALLED_EXTENSIONS = [
 INSTALLED_APPS += INSTALLED_EXTENSIONS
 
 MIDDLEWARE = [
-    # 'silk.middleware.SilkyMiddleware',
-    # "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "silk.middleware.SilkyMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -66,7 +66,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "budget_manager.urls"
+ROOT_URLCONF = "base.urls"
 
 TEMPLATES = [
     {
@@ -84,7 +84,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "budget_manager.wsgi.application"
+WSGI_APPLICATION = "base.wsgi.application"
 
 
 # Database
@@ -157,15 +157,13 @@ COMPRESS_ROOT = BASE_DIR / "static"
 COMPRESS_ENABLED = True
 
 STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    "compressor.finders.CompressorFinder"
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
 ]
 
 # Messages storage
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 # Currency API key
-FREE_CURRENCY_API_KEY = env('FREE_CURRENCY_API_KEY')
-
-
+FREE_CURRENCY_API_KEY = env("FREE_CURRENCY_API_KEY")

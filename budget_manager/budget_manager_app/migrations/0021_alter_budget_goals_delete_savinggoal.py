@@ -4,19 +4,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('budget_manager_app', '0020_remove_savinggoal_currency_remove_savinggoal_user'),
-        ('saving_goals', '0001_initial'),
+        (
+            "budget_manager_app",
+            "0020_remove_savinggoal_currency_remove_savinggoal_user",
+        ),
+        ("saving_goals", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='budget',
-            name='goals',
-            field=models.ManyToManyField(blank=True, to='saving_goals.savinggoal'),
+            model_name="budget",
+            name="goals",
+            field=models.ManyToManyField(blank=True, to="saving_goals.savinggoal"),
         ),
         migrations.DeleteModel(
-            name='SavingGoal',
+            name="SavingGoal",
         ),
     ]

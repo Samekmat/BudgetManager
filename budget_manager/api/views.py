@@ -1,7 +1,12 @@
-from api.serializers import ExpenseSerializer, IncomeSerializer, CategorySerializer, TagSerializer
+from api.serializers import (
+    CategorySerializer,
+    ExpenseSerializer,
+    IncomeSerializer,
+    TagSerializer,
+)
 from django.contrib import messages
-from helper_models.models import Category, Tag
 from expenses.models import Expense
+from helper_models.models import Category, Tag
 from incomes.models import Income
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -21,7 +26,7 @@ class IncomeDeleteAPIView(generics.DestroyAPIView):
         else:
             return Response(
                 {"detail": "You do not have permission to delete this income."},
-                status=status.HTTP_403_FORBIDDEN
+                status=status.HTTP_403_FORBIDDEN,
             )
 
 

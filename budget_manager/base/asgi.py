@@ -10,6 +10,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "budget_manager.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "base.settings")
 
 application = get_asgi_application()

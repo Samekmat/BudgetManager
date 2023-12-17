@@ -1,19 +1,25 @@
 from django.contrib.auth.models import User
 from django.db import models
-
-from helper_models.models import Currency
-
 from expenses.models import Expense
+from helper_models.models import Currency
 from incomes.models import Income
 from saving_goals.models import SavingGoal
 
 
 class Budget(models.Model):
     name = models.CharField(max_length=120)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='budgets',
-                             help_text="User who owns the budget")
-    shared_with = models.ManyToManyField(User, related_name='shared_budgets', blank=True,
-                                         help_text="Users with whom the budget is shared")
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="budgets",
+        help_text="User who owns the budget",
+    )
+    shared_with = models.ManyToManyField(
+        User,
+        related_name="shared_budgets",
+        blank=True,
+        help_text="Users with whom the budget is shared",
+    )
     incomes = models.ManyToManyField(Income)
     expenses = models.ManyToManyField(Expense)
     goals = models.ManyToManyField(SavingGoal, blank=True)
@@ -31,4 +37,4 @@ class Budget(models.Model):
         return total_result
 
     class Meta:
-        ordering = ['-id']
+        ordering = ["-id"]

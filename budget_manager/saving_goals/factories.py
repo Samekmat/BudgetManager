@@ -1,22 +1,21 @@
-import factory
-from users.factories import UserFactory
-from decimal import Decimal
+from decimal import ROUND_DOWN, Decimal
 from random import randint
-from .models import SavingGoal
 
-from helper_models.factories import CurrencyFactory
+import factory
+
+from .models import SavingGoal
 
 
 class SavingGoalFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = SavingGoal
 
-    name = 'default_goal'
-    amount = factory.LazyFunction(lambda: Decimal(randint(100, 10_000)))
-    goal = factory.LazyFunction(lambda: Decimal(randint(500, 5000)))
-    currency = factory.SubFactory(CurrencyFactory)
-    user = factory.SubFactory(UserFactory)
-
-
-currency = CurrencyFactory()
-SavingGoalFactory.create(name='new computer', currency=currency)
+    name = "default_goal"
+    amount = factory.LazyFunction(
+        lambda: Decimal(randint(0, 1000_000_000) / 100).quantize(Decimal("0.00"), rounding=ROUND_DOWN)
+    )
+    goal = factory.LazyFunction(
+        lambda: Decimal(randint(0, 1000_000_000) / 100).quantize(Decimal("0.00"), rounding=ROUND_DOWN)
+    )
+    currency = factory.SubFactory("helper_models.factories.CurrencyFactory")
+    user = factory.SubFactory("users.factories.UserFactory")

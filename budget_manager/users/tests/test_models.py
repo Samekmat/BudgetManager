@@ -16,4 +16,3 @@ class UserTestCase(TestCase):
 
         # Check if the password is correctly hashed
         self.assertTrue(check_password("ZAQ!2wsx", self.user.password))
-

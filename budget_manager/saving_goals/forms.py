@@ -1,7 +1,6 @@
-from django import forms
-
-from saving_goals.models import SavingGoal
 from budget_manager_app.styles import CLASSES
+from django import forms
+from saving_goals.models import SavingGoal
 
 
 class SavingGoalForm(forms.ModelForm):
@@ -10,7 +9,12 @@ class SavingGoalForm(forms.ModelForm):
 
     class Meta:
         model = SavingGoal
-        fields = ("name", "amount", "goal", "currency",)
+        fields = (
+            "name",
+            "amount",
+            "goal",
+            "currency",
+        )
         widgets = {
             "name": forms.TextInput(attrs={"class": CLASSES}),
             "amount": forms.NumberInput(attrs={"class": CLASSES}),

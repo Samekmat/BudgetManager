@@ -1,15 +1,13 @@
-from django import forms
-
-from helper_models.models import Category, Tag
-
 from budget_manager_app.choices import CATEGORY_TYPES
 from budget_manager_app.styles import CLASSES
+from django import forms
+from helper_models.models import Category, Tag
 
 
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ('name', 'description', 'type')
+        fields = ("name", "description", "type")
         widgets = {
             "name": forms.TextInput(attrs={"class": CLASSES}),
             "description": forms.TextInput(attrs={"class": CLASSES}),
@@ -18,10 +16,9 @@ class CategoryForm(forms.ModelForm):
 
 
 class TagForm(forms.ModelForm):
-
     class Meta:
         model = Tag
-        fields = ('name', )
+        fields = ("name",)
         widgets = {
             "name": forms.TextInput(attrs={"class": CLASSES}),
         }

@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LogoutView
-from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from users.forms import LoginForm, RegisterForm
@@ -16,7 +16,7 @@ class RegisterView(FormView):
         user = form.save()
         login(self.request, user)
         messages.success(self.request, "Registration successful. You are now logged in.")
-        return redirect(self.get_success_url())
+        return super().form_valid(form)
 
 
 class LoginView(FormView):
@@ -28,10 +28,10 @@ class LoginView(FormView):
         user = form.get_user()
         login(self.request, user)
         messages.success(self.request, "Login successful. Welcome back!")
-        return redirect(self.get_success_url())
+        return super().form_valid(form)
 
 
-class CustomLogoutView(LogoutView):
+class CustomLogoutView(LoginRequiredMixin, LogoutView):
     next_page = reverse_lazy("users:login")
 
     def get_next_page(self):

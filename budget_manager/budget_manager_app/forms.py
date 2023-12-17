@@ -1,17 +1,12 @@
-from django import forms
-
-from budget_manager_app.styles import CLASSES
-
 from budget_manager_app.models import Budget
-
+from budget_manager_app.styles import CLASSES
+from django import forms
 from expenses.models import Expense
-from incomes.models import Income
-
 from helper_models.models import Currency
+from incomes.models import Income
 
 
 class BudgetForm(forms.ModelForm):
-
     class Meta:
         model = Budget
         exclude = ("user", "incomes", "expenses")
@@ -42,14 +37,18 @@ class IncomeExpenseSelectForm(forms.Form):
 
 class CurrencyBaseForm(forms.Form):
     base_currency = forms.ModelChoiceField(
-        label='Base Currency',
+        label="Base Currency",
         queryset=Currency.objects.all(),
         empty_label=None,
-        to_field_name='code')
+        to_field_name="code",
+    )
 
 
 class ChartForm(forms.Form):
-    date_from = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': CLASSES, 'type': 'date'}))
-    date_to = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': CLASSES, 'type': 'date'}))
-    currency = forms.ModelChoiceField(queryset=Currency.objects.all(), required=True,
-                                      widget=forms.Select(attrs={'class': CLASSES}))
+    date_from = forms.DateField(required=False, widget=forms.DateInput(attrs={"class": CLASSES, "type": "date"}))
+    date_to = forms.DateField(required=False, widget=forms.DateInput(attrs={"class": CLASSES, "type": "date"}))
+    currency = forms.ModelChoiceField(
+        queryset=Currency.objects.all(),
+        required=True,
+        widget=forms.Select(attrs={"class": CLASSES}),
+    )

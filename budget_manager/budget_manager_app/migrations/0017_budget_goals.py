@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('budget_manager_app', '0016_alter_savinggoal_amount_budget'),
+        ("budget_manager_app", "0016_alter_savinggoal_amount_budget"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='budget',
-            name='goals',
-            field=models.ManyToManyField(to='budget_manager_app.savinggoal'),
+            model_name="budget",
+            name="goals",
+            field=models.ManyToManyField(to="budget_manager_app.savinggoal"),
         ),
     ]

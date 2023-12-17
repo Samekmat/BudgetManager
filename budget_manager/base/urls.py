@@ -22,7 +22,6 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index, name="index"),
-
     # apps
     path("api/", include("api.urls")),
     path("users/", include("users.urls")),
@@ -31,12 +30,12 @@ urlpatterns = [
     path("helper/", include("helper_models.urls")),
     path("budgets/", include("budget_manager_app.urls")),
     path("goals/", include("saving_goals.urls")),
-    path("dashboard/", views.DashboardView.as_view(), name="dashboard")
+    path("dashboard/", views.DashboardView.as_view(), name="dashboard"),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-    # urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]
-    # urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]
+    urlpatterns += [path("silk/", include("silk.urls", namespace="silk"))]
+    urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]

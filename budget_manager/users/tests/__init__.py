@@ -1,2 +1,0 @@
-from users.tests import *
-

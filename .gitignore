@@ -153,5 +153,5 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
-static/CACHE/
+static/CACHE/*
 todo.md

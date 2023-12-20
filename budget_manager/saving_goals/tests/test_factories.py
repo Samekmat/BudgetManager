@@ -1,11 +1,10 @@
 from django.contrib.auth.models import User
-from django.test import TestCase, tag
+from django.test import TestCase
 from helper_models.models import Currency
 from saving_goals.factories import SavingGoalFactory
 from saving_goals.models import SavingGoal
 
 
-@tag("x")
 class SavingGoalFactoriesTest(TestCase):
     def test_create_saving_goal_correct_create_object(self):
         SavingGoalFactory()

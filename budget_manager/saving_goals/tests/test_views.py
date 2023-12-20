@@ -3,14 +3,13 @@ from decimal import Decimal
 from django.contrib.messages import Message
 from django.contrib.messages.test import MessagesTestMixin
 from django.http import HttpResponseForbidden
-from django.test import Client, TestCase, tag
+from django.test import Client, TestCase
 from django.urls import reverse
 from saving_goals.factories import SavingGoalFactory
 from saving_goals.models import SavingGoal
 from users.factories import UserFactory
 
 
-@tag("x")
 class SavingGoalViewsTest(MessagesTestMixin, TestCase):
     def setUp(self):
         # Create a user and a saving_goal using factories

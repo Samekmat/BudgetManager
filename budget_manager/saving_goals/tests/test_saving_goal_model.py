@@ -1,7 +1,7 @@
 from decimal import Decimal
-from unittest import TestCase
 
 from django.db import DataError
+from django.test import TestCase
 from saving_goals.factories import SavingGoalFactory
 from saving_goals.models import SavingGoal
 
@@ -61,3 +61,6 @@ class SavingGoalTestCase(TestCase):
         # Check if an error is raised when the name exceeds max_length
         with self.assertRaises(DataError):
             SavingGoalFactory(name="a" * 121)
+
+    def test_saving_goal_str(self):
+        self.assertEqual(str(self.test_goal), "default_goal")

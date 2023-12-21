@@ -1,11 +1,12 @@
 from budget_manager_app.choices import PAYMENT_METHOD_CHOICES
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator
 from django.db import models
 from helper_models.models import Category, Currency, Tag
 
 
 class Expense(models.Model):
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     date = models.DateField()
     category = models.ForeignKey(
         Category,

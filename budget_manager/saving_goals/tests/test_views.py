@@ -68,8 +68,8 @@ class SavingGoalViewsTest(MessagesTestMixin, TestCase):
         # Check that the redirect URL is correct
         self.assertEqual(response.status_code, 302)
 
-        # Check that the redirect URL is correct
-        self.assertRedirects(response, reverse("saving_goals:goals"))
+        # Check that redirect is correct
+        self.assertRedirects(response, self.list_url)
 
         # Check that the SavingGoal was created in the database
         created_goal = SavingGoal.objects.get(name=self.goal.name, user=self.user, id=self.goal.id)
@@ -95,7 +95,7 @@ class SavingGoalViewsTest(MessagesTestMixin, TestCase):
         self.assertEqual(response.status_code, 302)
 
         # Check that the redirect URL is correct
-        self.assertRedirects(response, reverse("saving_goals:goals"))
+        self.assertRedirects(response, self.list_url)
 
         # Check that the SavingGoal was updated in the database
         updated_goal = SavingGoal.objects.get(id=self.goal.id)

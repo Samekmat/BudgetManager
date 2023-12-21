@@ -24,7 +24,7 @@ class Category(models.Model):
 
     @staticmethod
     def get_categories_for_user(user):
-        if user.is_authenticated:
+        if user and hasattr(user, "is_authenticated") and user.is_authenticated:
             return Category.objects.filter(Q(user=user) | Q(builtin=True))
         else:
             return Category.objects.filter(builtin=True)

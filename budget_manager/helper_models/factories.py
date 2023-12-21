@@ -17,7 +17,7 @@ class CategoryIncomeFactory(factory.django.DjangoModelFactory):
 
     name = "Test Income Category"
     type = "income"
-    builtin = False
+    description = "Test Income Category"
     user = factory.SubFactory("users.factories.UserFactory")
 
 
@@ -27,7 +27,7 @@ class CategoryExpenseFactory(factory.django.DjangoModelFactory):
 
     name = "Test Expense Category"
     type = "expense"
-    builtin = False
+    description = "Test Expense Category"
     user = factory.SubFactory("users.factories.UserFactory")
 
 

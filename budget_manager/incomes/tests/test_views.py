@@ -23,9 +23,6 @@ class IncomeViewsTest(MessagesTestMixin, TestCase):
         # Log in user
         self.client.force_login(self.user)
 
-        # Create another user
-        self.other_user = UserFactory(username="otheruser", email="otheruser@user.com", password="ZAQ!2wsx")
-
     def test_income_list_view(self):
         response = self.client.get(self.list_url)
 

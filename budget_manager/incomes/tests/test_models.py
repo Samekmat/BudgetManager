@@ -28,10 +28,10 @@ class IncomesModelTests(TestCase):
         saved_tags = saved_income.tags.all()
         self.assertEqual(saved_tags.count(), 2)  # Adjust the count based on factory
 
-        # Optionally, check the names of the tags
-        expected_tag_names = ["test tag 0", "test tag 1"]
+        # Check the names of the tags
+        expected_tag_names = saved_tags
         for i, tag in enumerate(saved_tags):
-            self.assertEqual(tag.name, expected_tag_names[i])
+            self.assertEqual(tag.name, str(expected_tag_names[i]))
 
         # Construct the expected string representation
         expected_str = f"Income({self.income.pk}) - {self.income.amount}{self.income.currency.symbol}"

@@ -98,11 +98,11 @@ class IncomeViewsTest(MessagesTestMixin, TestCase):
         # Check that the redirect URL is correct
         self.assertRedirects(response, self.list_url)
 
-        # Check that the SavingGoal was updated in the database
+        # Check that the Income was updated in the database
         updated_income = Income.objects.get(id=self.income.id)
         self.assertEqual(updated_income.amount, self.income.amount + Decimal(20))
-        (self.assertEqual(updated_income.date, self.income.date),)
-        (self.assertEqual(updated_income.category, self.income.category),)
+        self.assertEqual(updated_income.date, self.income.date)
+        self.assertEqual(updated_income.category, self.income.category)
         self.assertEqual(updated_income.payment_method, updated_income_data["payment_method"])
         self.assertEqual(updated_income.currency, self.income.currency)
 

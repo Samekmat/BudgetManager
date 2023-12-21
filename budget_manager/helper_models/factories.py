@@ -11,12 +11,22 @@ class CurrencyFactory(factory.django.DjangoModelFactory):
     symbol = "$"
 
 
-class CategoryFactory(factory.django.DjangoModelFactory):
+class CategoryIncomeFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Category
 
     name = "Test Income Category"
     type = "income"
+    builtin = False
+    user = factory.SubFactory("users.factories.UserFactory")
+
+
+class CategoryExpenseFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Category
+
+    name = "Test Expense Category"
+    type = "expense"
     builtin = False
     user = factory.SubFactory("users.factories.UserFactory")
 

@@ -19,6 +19,6 @@ class ExpenseUrlsTestcase(TestCase):
         self.assertEqual(resolve(self.update_url).func.view_class, ExpenseUpdateView)
 
     def test_urls_reverse(self):
-        self.assertEqual(self.list_url, "/expenses/expenses/")
-        self.assertEqual(self.create_url, "/expenses/expenses/create/")
-        self.assertEqual(self.update_url, f"/expenses/expenses/{self.expense.id}/update/")
+        self.assertEqual(self.list_url, "/expenses/")
+        self.assertEqual(self.create_url, "/expenses/create/")
+        self.assertEqual(self.update_url, f"/expenses/{self.expense.id}/update/")

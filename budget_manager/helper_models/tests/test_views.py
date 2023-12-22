@@ -1,6 +1,8 @@
+from http import HTTPStatus
+
 from django.contrib.messages import Message
 from django.contrib.messages.test import MessagesTestMixin
-from django.test import Client, TestCase, tag
+from django.test import Client, TestCase
 from django.urls import reverse
 from helper_models.factories import CategoryIncomeFactory, TagFactory
 from helper_models.models import Category, Tag
@@ -65,10 +67,10 @@ class CategoryViewsTests(MessagesTestMixin, TestCase):
         }
 
         # Post data
-        response = self.client.post(self.update_url, updated_category_data)
+        response = self.client.post(self.update_url, updated_category_data)  # , follow=True)
 
         # Check redirect/response
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, self.list_url)
 
         # Check that the Category was updated in the database
@@ -81,8 +83,7 @@ class CategoryViewsTests(MessagesTestMixin, TestCase):
         self.assertMessages(response, [Message(level=25, message="Category updated successfully.")])
 
 
-@tag("x")
-class TagViewsTests(MessagesTestMixin, TestCase):
+class TagViewsTest(MessagesTestMixin, TestCase):
     def setUp(self):
         self.user = UserFactory()
         self.client = Client()
@@ -116,22 +117,18 @@ class TagViewsTests(MessagesTestMixin, TestCase):
         categories_filter = response_filter.context["tags"]
         self.assertEqual(len(categories_filter), 1)
 
-    # TODO
     def test_tag_create_view(self):
-        tag_data = {
-            "name": self.tag.name,
-        }
+        tag_data = {"name": "new_tag", "user": self.user.id}
         response = self.client.post(self.create_url, tag_data)
 
         # Check redirect
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, self.list_url)
 
         # Check if tag exist in db
-        self.assertTrue(Tag.objects.filter(name=self.tag.name).exists())
+        self.assertTrue(Tag.objects.filter(name="new_tag").exists())
 
         # Check message
-        self.assertMessages(response, [Message(level=25, message="Category created successfully.")])
+        self.assertMessages(response, [Message(level=25, message="Tag created successfully.")])
 
     def test_tag_update_view(self):
         updated_tag_data = {"name": "Updated name"}

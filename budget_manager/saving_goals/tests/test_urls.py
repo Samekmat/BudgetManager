@@ -29,8 +29,8 @@ class SavingGoalsUrlsTestCase(TestCase):
         self.assertEqual(resolve(self.delete_url).func.view_class, SavingGoalDeleteView)
 
     def test_urls_reverse(self):
-        self.assertEqual(self.list_url, "/goals/goals/")
-        self.assertEqual(self.create_url, "/goals/goals/create/")
-        self.assertEqual(self.update_url, f"/goals/goals/{self.goal.id}/update/")
-        self.assertEqual(self.detail_url, f"/goals/goals/{self.goal.id}/detail/")
-        self.assertEqual(self.delete_url, f"/goals/goals/{self.goal.id}/delete/")
+        self.assertEqual(self.list_url, "/goals/")
+        self.assertEqual(self.create_url, "/goals/create/")
+        self.assertEqual(self.update_url, f"/goals/{self.goal.id}/update/")
+        self.assertEqual(self.detail_url, f"/goals/{self.goal.id}/detail/")
+        self.assertEqual(self.delete_url, f"/goals/{self.goal.id}/delete/")

@@ -33,10 +33,10 @@ class CategoryUrlsTestcase(TestCase):
         self.assertEqual(resolve(self.cat_exp_update_url).func.view_class, CategoryUpdateView)
 
     def test_urls_reverse(self):
-        self.assertEqual(self.list_url, "/helper/categories/")
-        self.assertEqual(self.create_url, "/helper/categories/create/")
-        self.assertEqual(self.cat_inc_update_url, f"/helper/categories/{self.category_income.id}/update/")
-        self.assertEqual(self.cat_exp_update_url, f"/helper/categories/{self.category_expense.id}/update/")
+        self.assertEqual(self.list_url, "/categories/")
+        self.assertEqual(self.create_url, "/categories/create/")
+        self.assertEqual(self.cat_inc_update_url, f"/categories/{self.category_income.id}/update/")
+        self.assertEqual(self.cat_exp_update_url, f"/categories/{self.category_expense.id}/update/")
 
 
 class TagUrlsTestcase(TestCase):
@@ -54,6 +54,6 @@ class TagUrlsTestcase(TestCase):
         self.assertEqual(resolve(self.update_url).func.view_class, TagUpdateView)
 
     def test_urls_reverse(self):
-        self.assertEqual(self.list_url, "/helper/tags/")
-        self.assertEqual(self.create_url, "/helper/tags/create/")
-        self.assertEqual(self.update_url, f"/helper/tags/{self.tag.id}/update/")
+        self.assertEqual(self.list_url, "/tags/")
+        self.assertEqual(self.create_url, "/tags/create/")
+        self.assertEqual(self.update_url, f"/tags/{self.tag.id}/update/")

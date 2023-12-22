@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, tag
 from helper_models.factories import (
     CategoryExpenseFactory,
     CategoryIncomeFactory,
@@ -7,6 +7,8 @@ from helper_models.factories import (
     TagFactory,
 )
 from helper_models.models import Category, Currency, Tag
+from incomes.factories import IncomeFactory
+from users.factories import UserFactory
 
 
 class CurrencyFactoriesTest(TestCase):
@@ -49,3 +51,12 @@ class TagFactoriesTest(TestCase):
 
         self.assertEqual(Tag.objects.count(), 5)
         self.assertEqual(User.objects.count(), 5)
+
+
+@tag("x")
+class TestRandom(TestCase):
+    def test_xyz_test(self):
+        user = UserFactory.create()
+        IncomeFactory.create(user=user)
+
+        print(User.objects.count())

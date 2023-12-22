@@ -12,7 +12,7 @@ class ExpenseFactoryTest(TestCase):
         self.assertEqual(Expense.objects.count(), 1)
         self.assertEqual(Category.objects.count(), 1)
         self.assertEqual(Currency.objects.count(), 1)
-        self.assertEqual(User.objects.count(), 4)  # 2-tag 1-expense 1-category
+        self.assertEqual(User.objects.count(), 1)
 
     def test_create_expense_factory_batch_size_works_correctly(self):
         ExpenseFactory.create_batch(5)
@@ -20,4 +20,4 @@ class ExpenseFactoryTest(TestCase):
         self.assertEqual(Expense.objects.count(), 5)
         self.assertEqual(Category.objects.count(), 5)
         self.assertEqual(Currency.objects.count(), 5)
-        self.assertEqual(User.objects.count(), 20)
+        self.assertEqual(User.objects.count(), 5)

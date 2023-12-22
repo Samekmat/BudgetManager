@@ -1,10 +1,10 @@
 from budget_manager_app.decorators import keep_parameters
-from budget_manager_app.filters import IncomeFilter
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
+from incomes.filters import IncomeFilter
 from incomes.forms import IncomeForm
 from incomes.models import Income
 

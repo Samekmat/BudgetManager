@@ -1,11 +1,11 @@
 from budget_manager_app.decorators import keep_parameters
-from budget_manager_app.filters import CategoryFilter, TagFilter
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
+from helper_models.filters import CategoryFilter, TagFilter
 from helper_models.forms import CategoryForm, TagForm
 from helper_models.models import Category, Tag
 

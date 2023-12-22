@@ -18,7 +18,7 @@ class CategoryForm(forms.ModelForm):
 class TagForm(forms.ModelForm):
     class Meta:
         model = Tag
-        fields = ("name",)
+        fields = ("name", "user")
         widgets = {
             "name": forms.TextInput(attrs={"class": CLASSES}),
         }

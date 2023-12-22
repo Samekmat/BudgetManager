@@ -13,7 +13,7 @@ class IncomeFactoryTest(TestCase):
         self.assertEqual(Category.objects.count(), 1)
         self.assertEqual(Currency.objects.count(), 1)
         self.assertEqual(Tag.objects.count(), 2)
-        self.assertEqual(User.objects.count(), 4)  # 1-income 1-category 2-tag
+        self.assertEqual(User.objects.count(), 1)
 
     def test_create_income_factory_batch_size_works_correctly(self):
         IncomeFactory.create_batch(5)
@@ -21,5 +21,5 @@ class IncomeFactoryTest(TestCase):
         self.assertEqual(Income.objects.count(), 5)
         self.assertEqual(Category.objects.count(), 5)
         self.assertEqual(Currency.objects.count(), 5)
-        self.assertEqual(Tag.objects.count(), 10)
-        self.assertEqual(User.objects.count(), 20)  # 5-income 5-category 10-tag
+        self.assertEqual(Tag.objects.count(), 10)  # Tests: If tag is not specified, by default create 2 per obj
+        self.assertEqual(User.objects.count(), 5)

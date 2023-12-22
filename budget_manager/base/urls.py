@@ -24,12 +24,12 @@ urlpatterns = [
     path("", views.index, name="index"),
     # apps
     path("api/", include("api.urls")),
-    path("users/", include("users.urls")),
-    path("incomes/", include("incomes.urls")),
-    path("expenses/", include("expenses.urls")),
-    path("helper/", include("helper_models.urls")),
-    path("budgets/", include("budget_manager_app.urls")),
-    path("goals/", include("saving_goals.urls")),
+    path("", include("users.urls")),
+    path("", include("incomes.urls")),
+    path("", include("expenses.urls")),
+    path("", include("helper_models.urls")),
+    path("", include("budget_manager_app.urls")),
+    path("", include("saving_goals.urls")),
     path("dashboard/", views.DashboardView.as_view(), name="dashboard"),
 ]
 

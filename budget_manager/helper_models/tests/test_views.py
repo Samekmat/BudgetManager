@@ -26,7 +26,7 @@ class CategoryViewsTests(MessagesTestMixin, TestCase):
     def test_category_list_view(self):
         # Access the category list view
         response = self.client.get(self.list_url)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
         # Check for categories in context
         self.assertIn("categories", response.context)
@@ -36,7 +36,7 @@ class CategoryViewsTests(MessagesTestMixin, TestCase):
         # Check with filter params
         filter_params = {"name": self.category.name, "type": self.category.type}
         response_filter = self.client.get(self.list_url, filter_params)
-        self.assertEqual(response_filter.status_code, 200)
+        self.assertEqual(response_filter.status_code, HTTPStatus.OK)
         self.assertIn("categories", response_filter.context)
         categories_filter = response_filter.context["categories"]
         self.assertEqual(len(categories_filter), 1)
@@ -50,7 +50,7 @@ class CategoryViewsTests(MessagesTestMixin, TestCase):
         response = self.client.post(self.create_url, category_data)
 
         # Check redirect
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, self.list_url)
 
         # Check if category exist in db
@@ -67,10 +67,10 @@ class CategoryViewsTests(MessagesTestMixin, TestCase):
         }
 
         # Post data
-        response = self.client.post(self.update_url, updated_category_data)  # , follow=True)
+        response = self.client.post(self.update_url, updated_category_data, follow=True)
 
-        # Check redirect/response
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        # Check redirect/response | if follow True status=200
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertRedirects(response, self.list_url)
 
         # Check that the Category was updated in the database
@@ -100,7 +100,7 @@ class TagViewsTest(MessagesTestMixin, TestCase):
     def test_tag_list_view(self):
         # Access the tag list view
         response = self.client.get(self.list_url)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
         # Check for tags in context
         self.assertIn("tags", response.context)
@@ -112,7 +112,7 @@ class TagViewsTest(MessagesTestMixin, TestCase):
             "name": self.tag.name,
         }
         response_filter = self.client.get(self.list_url, filter_params)
-        self.assertEqual(response_filter.status_code, 200)
+        self.assertEqual(response_filter.status_code, HTTPStatus.OK)
         self.assertIn("tags", response_filter.context)
         categories_filter = response_filter.context["tags"]
         self.assertEqual(len(categories_filter), 1)
@@ -122,7 +122,7 @@ class TagViewsTest(MessagesTestMixin, TestCase):
         response = self.client.post(self.create_url, tag_data)
 
         # Check redirect
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
         # Check if tag exist in db
         self.assertTrue(Tag.objects.filter(name="new_tag").exists())
@@ -131,13 +131,13 @@ class TagViewsTest(MessagesTestMixin, TestCase):
         self.assertMessages(response, [Message(level=25, message="Tag created successfully.")])
 
     def test_tag_update_view(self):
-        updated_tag_data = {"name": "Updated name"}
+        updated_tag_data = {"name": "Updated name", "user": self.user.id}
 
         # Post the updated form data to the update view
-        response = self.client.post(self.update_url, updated_tag_data)
+        response = self.client.post(self.update_url, updated_tag_data, follow=True)
 
-        # Check that the response is a redirect
-        self.assertEqual(response.status_code, 302)
+        # Check that the response is a redirect (302 or 200 if follow=True
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
         # Check that the redirect URL is correct
         self.assertRedirects(response, self.list_url)

@@ -17,7 +17,7 @@
     <tbody>
       {% for goal in goals %}
         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <td class="px-6 py-4">{{ goal.name }}</td>
+            <td class="px-6 py-4"><a href="{% url 'saving_goals:goal-detail' goal.pk %}">{{ goal.name }}</a></td>
           <td class="px-6 py-4">{{ goal.amount }}{{goal.currency.symbol}}</td>
           <td class="px-6 py-4">{{ goal.goal }}{{goal.currency.symbol}}</td>
           <td class="px-6 py-4">

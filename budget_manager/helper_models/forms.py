@@ -7,7 +7,7 @@ from helper_models.models import Category, Tag
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ("name", "description", "type")
+        fields = ("name", "description", "type", "user")
         widgets = {
             "name": forms.TextInput(attrs={"class": CLASSES}),
             "description": forms.TextInput(attrs={"class": CLASSES}),

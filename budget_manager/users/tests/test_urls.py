@@ -15,6 +15,6 @@ class UrlsTestCase(SimpleTestCase):
         self.assertEqual(resolve(self.logout_url).func.view_class, CustomLogoutView)
 
     def test_urls_reverse(self):
-        self.assertEqual(self.register_url, "/register/")
-        self.assertEqual(self.login_url, "/login/")
-        self.assertEqual(self.logout_url, "/logout/")
+        self.assertEqual(self.register_url, "/users/register/")
+        self.assertEqual(self.login_url, "/users/login/")
+        self.assertEqual(self.logout_url, "/users/logout/")

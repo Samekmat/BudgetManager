@@ -24,7 +24,7 @@ urlpatterns = [
     path("", views.index, name="index"),
     # apps
     path("api/", include("api.urls")),
-    path("", include("users.urls")),
+    path("users/", include("users.urls")),
     path("", include("incomes.urls")),
     path("", include("expenses.urls")),
     path("", include("helper_models.urls")),

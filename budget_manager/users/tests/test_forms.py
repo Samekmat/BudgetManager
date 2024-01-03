@@ -40,7 +40,7 @@ class RegisterFormTestCase(TestCase):
 
 class LoginFormTestCase(TestCase):
     def setUp(self):
-        self.user = UserFactory()
+        self.user = UserFactory.create()
 
     def test_login_form_valid(self):
         form_data = {

@@ -10,7 +10,7 @@ from users.factories import UserFactory
 class AuthenticationViewsTestCase(MessagesTestMixin, TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = UserFactory.create(password="<RandomPassword>")
+        self.user = UserFactory.create()
 
     def test_register_view(self):
         user_data = {
@@ -60,13 +60,13 @@ class AuthenticationViewsTestCase(MessagesTestMixin, TestCase):
 
     def test_logout_view(self):
         # Log in user
-        self.client.login(username=self.user.username, password=self.user.password)
+        self.client.force_login(self.user)
 
         logout_url = reverse("users:logout")
-        response = self.client.get(logout_url)
+        response = self.client.post(logout_url, follow=True)
 
         # Check if the user is redirected to the login page after logout
-        expected_redirect_url = reverse("users:login") + "?next=" + reverse("users:logout")
+        expected_redirect_url = reverse("users:login")
         self.assertRedirects(response, expected_redirect_url, status_code=302, target_status_code=200)
 
         # Check if the user is actually logged out

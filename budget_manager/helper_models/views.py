@@ -53,6 +53,7 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("helper_models:categories")
 
     def form_valid(self, form):
+        form.instance.user = self.request.user
         messages.success(self.request, "Category created successfully.")
         return super().form_valid(form)
 
@@ -118,6 +119,7 @@ class TagCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("helper_models:tags")
 
     def form_valid(self, form):
+        form.instance.user = self.request.user
         messages.success(self.request, "Tag created successfully.")
         return super().form_valid(form)
 

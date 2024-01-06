@@ -3,7 +3,7 @@ from django.db.models import Sum
 from plotly.offline import plot
 
 
-class ChartsGenerator:  # TODO ChartsBudgetsGenerator
+class ChartsBudgetsGenerator:
     @staticmethod
     def generate_bar_chart(context):
         total_incomes = sum(item["total"] for item in context["incomes"])

@@ -3,7 +3,7 @@ from django.db.models import Sum
 from plotly.offline import plot
 
 
-class ChartGenerator:  # TODO  ChartsDashboardGenerator
+class ChartsDashboardGenerator:
     @staticmethod
     def generate_line_chart(form, expenses, incomes):
         if form.is_valid():
@@ -11,8 +11,8 @@ class ChartGenerator:  # TODO  ChartsDashboardGenerator
             date_to = form.cleaned_data.get("date_to")
             currency = form.cleaned_data.get("currency")
 
-            expenses = ChartGenerator.filter_data(expenses, date_from, date_to, currency)
-            incomes = ChartGenerator.filter_data(incomes, date_from, date_to, currency)
+            expenses = ChartsDashboardGenerator.filter_data(expenses, date_from, date_to, currency)
+            incomes = ChartsDashboardGenerator.filter_data(incomes, date_from, date_to, currency)
 
             expenses = expenses.values("date").annotate(total_amount=Sum("amount")).order_by("date")
             incomes = incomes.values("date").annotate(total_amount=Sum("amount")).order_by("date")
@@ -77,8 +77,8 @@ class ChartGenerator:  # TODO  ChartsDashboardGenerator
             date_to = form.cleaned_data.get("date_to")
             currency = form.cleaned_data.get("currency")
 
-            expenses = ChartGenerator.filter_data(expenses, date_from, date_to, currency)
-            incomes = ChartGenerator.filter_data(incomes, date_from, date_to, currency)
+            expenses = ChartsDashboardGenerator.filter_data(expenses, date_from, date_to, currency)
+            incomes = ChartsDashboardGenerator.filter_data(incomes, date_from, date_to, currency)
 
             total_expenses = expenses.aggregate(total_amount=Sum("amount"))["total_amount"] or 0
             total_incomes = incomes.aggregate(total_amount=Sum("amount"))["total_amount"] or 0

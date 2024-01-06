@@ -27,10 +27,8 @@ class CategoryListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["form"] = CategoryForm()
 
-        # Apply the CategoryFilter on the filtered queryset
         filtered_queryset = CategoryFilter(self.request.GET, queryset=self.get_queryset()).qs
 
-        # Paginate the filtered queryset
         paginator = Paginator(filtered_queryset, self.paginate_by)
         page = self.request.GET.get("page")
 
@@ -72,7 +70,7 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
         obj = self.get_object()
         if obj.builtin:
             messages.error(self.request, "Cannot edit a non-editable category.")
-            return HttpResponseRedirect(reverse("helper_models:categories"))  # Redirect to the category list page
+            return HttpResponseRedirect(reverse("helper_models:categories"))
         return super().post(request, *args, **kwargs)
 
 
@@ -92,10 +90,8 @@ class TagListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["form"] = TagForm()
 
-        # Apply the TagFilter on the filtered queryset
         filtered_queryset = TagFilter(self.request.GET, queryset=self.get_queryset()).qs
 
-        # Paginate the filtered queryset
         paginator = Paginator(filtered_queryset, self.paginate_by)
         page = self.request.GET.get("page")
 

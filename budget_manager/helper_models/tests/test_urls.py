@@ -43,7 +43,6 @@ class TagUrlsTestcase(TestCase):
     def setUp(self):
         self.tag = TagFactory()
 
-        # Urls
         self.list_url = reverse("helper_models:tags")
         self.create_url = reverse("helper_models:tag-create")
         self.update_url = reverse("helper_models:tag-update", kwargs={"pk": self.tag.id})

@@ -8,7 +8,6 @@ class ExpenseUrlsTestcase(TestCase):
     def setUp(self):
         self.expense = ExpenseFactory()
 
-        # Urls
         self.list_url = reverse("expenses:expenses")
         self.create_url = reverse("expenses:expense-create")
         self.update_url = reverse("expenses:expense-update", kwargs={"pk": self.expense.id})

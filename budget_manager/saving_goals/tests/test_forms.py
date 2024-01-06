@@ -27,7 +27,7 @@ class SavingGoalFormTestCase(TestCase):
         saving_goal_data_invalid = {
             "name": self.saving_goal.name,
             "amount": self.saving_goal.amount,
-            "goal": -100,  # Invalid amount - negative number
+            "goal": -100,
             "currency": self.saving_goal.currency,
             "user": self.saving_goal.user,
         }

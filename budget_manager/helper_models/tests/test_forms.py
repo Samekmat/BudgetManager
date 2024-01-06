@@ -32,14 +32,14 @@ class CategoryFormTestCase(TestCase):
 
     def test_category_form_invalid_data(self):
         category_income_data_invalid = {
-            "name": 0,  # expected str
+            "name": 0,
             "type": self.category_income.type,
             "builtin": self.category_income.builtin,
             "user": self.category_income.user,
         }
         category_expense_data_invalid = {
             "name": self.category_expense.name,
-            "type": 10,  # expected str
+            "type": 10,
             "builtin": self.category_expense.builtin,
             "user": self.category_expense.user,
         }

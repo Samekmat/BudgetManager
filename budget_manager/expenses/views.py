@@ -9,27 +9,8 @@ from expenses.forms import ExpenseForm
 from expenses.models import Expense
 
 
-class FilteredPaginationMixin:
-    def get_filtered_queryset(self, filter_object):
-        return filter_object(self.request.GET, queryset=self.get_queryset()).qs
-
-    def get_paginated_result(self, filter_object):
-        filtered_queryset = self.get_filtered_queryset(filter_object)
-        paginator = Paginator(filtered_queryset, self.paginate_by)
-        page = self.request.GET.get("page")
-
-        try:
-            pagination = paginator.page(page)
-        except PageNotAnInteger:
-            pagination = paginator.page(1)
-        except EmptyPage:
-            pagination = paginator.page(paginator.num_pages)
-
-        return pagination
-
-
 @keep_parameters
-class ExpenseListView(LoginRequiredMixin, FilteredPaginationMixin, ListView):
+class ExpenseListView(LoginRequiredMixin, ListView):
     model = Expense
     template_name = "expenses/expenses.html"
     context_object_name = "expenses"
@@ -44,10 +25,8 @@ class ExpenseListView(LoginRequiredMixin, FilteredPaginationMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["form"] = ExpenseForm()
 
-        # Apply the ExpenseFilter on the filtered queryset
         filtered_queryset = ExpenseFilter(self.request.GET, queryset=self.get_queryset()).qs
 
-        # Paginate the filtered queryset
         paginator = Paginator(filtered_queryset, self.paginate_by)
         page = self.request.GET.get("page")
 

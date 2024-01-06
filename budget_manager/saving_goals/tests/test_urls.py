@@ -14,7 +14,6 @@ class SavingGoalsUrlsTestCase(TestCase):
     def setUp(self):
         self.goal = SavingGoalFactory()
 
-        # Urls
         self.list_url = reverse("saving_goals:goals")
         self.create_url = reverse("saving_goals:goal-create")
         self.update_url = reverse("saving_goals:goal-update", kwargs={"pk": self.goal.id})

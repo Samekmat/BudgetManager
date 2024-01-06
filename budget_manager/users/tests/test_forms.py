@@ -17,7 +17,7 @@ class RegisterFormTestCase(TestCase):
     def test_register_form_invalid_data(self):
         user_data_invalid = {
             "username": "test_user",
-            "email": "invalid_email",  # Invalid email format
+            "email": "invalid_email",
             "password1": "test_pass_123",
             "password2": "test_pass_123",
         }

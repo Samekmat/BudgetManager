@@ -19,7 +19,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ("name", "description", "is_income")
+        fields = ("name", "description", "type")
 
 
 class TagSerializer(serializers.ModelSerializer):

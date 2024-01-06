@@ -25,10 +25,8 @@ class IncomeListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["form"] = IncomeForm()
 
-        # Apply the IncomeFilter on the filtered queryset
         filtered_queryset = IncomeFilter(self.request.GET, queryset=self.get_queryset()).qs
 
-        # Paginate the filtered queryset
         paginator = Paginator(filtered_queryset, self.paginate_by)
         page = self.request.GET.get("page")
 

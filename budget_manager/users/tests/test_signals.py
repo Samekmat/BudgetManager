@@ -11,11 +11,10 @@ User = get_user_model()
 class ProfileSignalTestCase(TestCase):
     def setUp(self):
         self.user = UserFactory()
-        # Connect signal before the test
+
         post_save.connect(create_profile, sender=User, dispatch_uid="test_create_profile_handler")
 
     def tearDown(self):
-        # Disconnect the signal after the test
         post_save.disconnect(create_profile, sender=User, dispatch_uid="test_create_profile_handler")
 
     def test_profile_created_signal(self):

@@ -8,7 +8,6 @@ class IncomeUrlsTestcase(TestCase):
     def setUp(self):
         self.income = IncomeFactory()
 
-        # Urls
         self.list_url = reverse("incomes:incomes")
         self.create_url = reverse("incomes:income-create")
         self.update_url = reverse("incomes:income-update", kwargs={"pk": self.income.id})

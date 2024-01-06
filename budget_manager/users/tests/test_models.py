@@ -11,8 +11,6 @@ class UserTestCase(TestCase):
     def test_user_creation(self):
         self.assertIsInstance(self.user, get_user_model())
 
-        # Check if the user has a non-empty username
         self.assertTrue(self.user.username)
 
-        # Check if the password is correctly hashed
         self.assertTrue(check_password("ZAQ!2wsx", self.user.password))

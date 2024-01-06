@@ -15,29 +15,23 @@ class ExpenseViewsTest(MessagesTestMixin, TestCase):
         self.expense = ExpenseFactory(user=self.user)
         self.client = Client()
 
-        # Urls
         self.list_url = reverse("expenses:expenses")
         self.create_url = reverse("expenses:expense-create")
         self.update_url = reverse("expenses:expense-update", kwargs={"pk": self.expense.id})
 
-        # Log in user
         self.client.force_login(self.user)
 
-        # Create another user
         self.other_user = UserFactory(username="otheruser", email="otheruser@user.com", password="ZAQ!2wsx")
 
     def test_expense_list_view(self):
         response = self.client.get(self.list_url)
 
-        # Check if the response status code is 200 (OK)
         self.assertEqual(response.status_code, 200)
 
-        # Check if the expenses are present in the context
         self.assertIn("expenses", response.context)
         expenses = response.context["expenses"]
         self.assertEqual(len(expenses), 1)
 
-        # Check with filter params given
         filter_params = {
             "date": str(self.expense.date),
             "payment_method": self.expense.payment_method,
@@ -53,7 +47,6 @@ class ExpenseViewsTest(MessagesTestMixin, TestCase):
         self.assertEqual(len(incomes_filter), 1)
 
     def test_expense_create_view(self):
-        # Use ExpenseFactory to generate data
         expense_data = {
             "amount": self.expense.amount,
             "date": self.expense.date,
@@ -62,14 +55,11 @@ class ExpenseViewsTest(MessagesTestMixin, TestCase):
             "currency": self.expense.currency.id,
         }
 
-        # Post the data to the create view
         response = self.client.post(self.create_url, expense_data)
 
-        # Check redirect
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, self.list_url)
 
-        # Check that Expense was created in db
         created_income = Expense.objects.get(amount=self.expense.amount, user=self.user, id=self.expense.id)
         self.assertEqual(created_income.amount, self.expense.amount)
         self.assertEqual(created_income.date, self.expense.date)
@@ -89,16 +79,12 @@ class ExpenseViewsTest(MessagesTestMixin, TestCase):
             "currency": self.expense.currency.id,
         }
 
-        # Post the updated form data to the update view
         response = self.client.post(self.update_url, updated_expense_data)
 
-        # Check that the response is a redirect
         self.assertEqual(response.status_code, 302)
 
-        # Check that the redirect URL is correct
         self.assertRedirects(response, self.list_url)
 
-        # Check that the Expense was updated in the database
         updated_expense = Expense.objects.get(id=self.expense.id)
         self.assertEqual(updated_expense.amount, self.expense.amount + Decimal(20))
         self.assertEqual(updated_expense.date, self.expense.date)
@@ -106,5 +92,4 @@ class ExpenseViewsTest(MessagesTestMixin, TestCase):
         self.assertEqual(updated_expense.payment_method, updated_expense_data["payment_method"])
         self.assertEqual(updated_expense.currency, self.expense.currency)
 
-        # Check message
         self.assertMessages(response, [Message(level=25, message="Expense updated successfully.")])

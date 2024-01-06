@@ -11,14 +11,12 @@ from users.factories import UserFactory
 
 class CategoryModelTest(TestCase):
     def setUp(self):
-        # Create a user for testing
         self.user = UserFactory()
         self.category_income = CategoryIncomeFactory(user=self.user)
         self.category_expense = CategoryExpenseFactory(user=self.user)
         self.client = Client()
 
     def test_category_creation(self):
-        # category income
         saved_category_income = Category.objects.get(pk=self.category_income.pk)
         self.assertEqual(saved_category_income.name, self.category_income.name)
         self.assertEqual(saved_category_income.description, self.category_income.description)
@@ -26,7 +24,6 @@ class CategoryModelTest(TestCase):
         self.assertFalse(saved_category_income.builtin)
         self.assertEqual(saved_category_income.user, self.user)
 
-        # category expense
         saved_category_expense = Category.objects.get(pk=self.category_expense.pk)
         self.assertEqual(saved_category_expense.name, self.category_expense.name)
         self.assertEqual(saved_category_expense.description, self.category_expense.description)
@@ -35,7 +32,6 @@ class CategoryModelTest(TestCase):
         self.assertEqual(saved_category_expense.user, self.user)
 
     def test_get_categories_for_user_authenticated(self):
-        # Log in the user
         self.client.force_login(self.user)
 
         categories = Category.get_categories_for_user(self.user)
@@ -59,7 +55,6 @@ class CurrencyModelTest(TestCase):
 
 class TagModelTest(TestCase):
     def setUp(self):
-        # Create using factories
         self.user = UserFactory()
         self.tag = TagFactory(user=self.user)
 

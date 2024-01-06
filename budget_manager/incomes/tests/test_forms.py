@@ -21,7 +21,7 @@ class IncomeFormTestCase(TestCase):
 
     def test_income_form_invalid_data(self):
         income_data_invalid = {
-            "amount": -10,  # Invalid amount negative number
+            "amount": -10,
             "date": self.income.date,
             "category": self.income.category.id,
             "payment_method": self.income.payment_method,

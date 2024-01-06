@@ -21,7 +21,7 @@ class ExpenseFormTestCase(TestCase):
 
     def test_expense_form_invalid_data(self):
         expense_data_invalid = {
-            "amount": -100,  # Invalid amount negative number
+            "amount": -100,
             "date": self.expense.date,
             "category": self.expense.category.id,
             "payment_method": self.expense.payment_method,

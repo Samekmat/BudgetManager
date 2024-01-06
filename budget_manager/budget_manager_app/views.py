@@ -1,6 +1,6 @@
 import freecurrencyapi
-from budget_manager_app.charts.generate_budget_charts import ChartsGenerator
-from budget_manager_app.charts.generate_dashboard_charts import ChartGenerator
+from budget_manager_app.charts.generate_budget_charts import ChartsBudgetsGenerator
+from budget_manager_app.charts.generate_dashboard_charts import ChartsDashboardGenerator
 from budget_manager_app.forms import (
     BudgetForm,
     ChartForm,
@@ -109,12 +109,12 @@ class ChartView(LoginRequiredMixin, View):
 
         context = self.get_context_data(budget)
 
-        income_chart = ChartsGenerator.generate_pie_chart(context)
-        budget_chart = ChartsGenerator.generate_budget_chart(context)
-        income_category_chart = ChartsGenerator.generate_income_category_pie_chart(context)
-        expense_category_chart = ChartsGenerator.generate_expense_category_pie_chart(context)
-        line_chart = ChartsGenerator.generate_line_chart(context)
-        bar_chart = ChartsGenerator.generate_bar_chart(context)
+        income_chart = ChartsBudgetsGenerator.generate_pie_chart(context)
+        budget_chart = ChartsBudgetsGenerator.generate_budget_chart(context)
+        income_category_chart = ChartsBudgetsGenerator.generate_income_category_pie_chart(context)
+        expense_category_chart = ChartsBudgetsGenerator.generate_expense_category_pie_chart(context)
+        line_chart = ChartsBudgetsGenerator.generate_line_chart(context)
+        bar_chart = ChartsBudgetsGenerator.generate_bar_chart(context)
 
         return render(
             request,
@@ -136,11 +136,9 @@ class AddIncomeExpenseView(View):
     def get(self, request, budget_id):
         budget = Budget.objects.get(pk=budget_id)
 
-        # Check if the user is the owner of the budget or in the shared_with list
         if request.user == budget.user or request.user in budget.shared_with.all():
             form = IncomeExpenseSelectForm()
 
-            # Filter incomes and expenses by the specified currency
             selected_currency = budget.currency
 
             all_users = [budget.user] + list(budget.shared_with.all())
@@ -149,7 +147,6 @@ class AddIncomeExpenseView(View):
 
             return render(request, self.template_name, {"form": form, "budget": budget})
         else:
-            # If the user is not the owner and not in the shared_with list, display an error
             return HttpResponseForbidden("You do not have permission to access this budget.")
 
     def post(self, request, budget_id):
@@ -179,18 +176,15 @@ class DashboardView(View):
         currency_form = CurrencyBaseForm()
         user = request.user
 
-        # Load exchange rates independently
         base_currency = self.request.GET.get("base_currency", "USD")
         exchange_rates = self.get_exchange_rates(base_currency)
 
-        # Load recent transactions
         income_query = Income.objects.filter(user=user).order_by("-date")[:2]
         expense_query = Expense.objects.filter(user=user).order_by("-date")[:2]
 
         recent_transactions = list(income_query) + list(expense_query)
         recent_transactions.sort(key=lambda x: x.date, reverse=True)
 
-        # Check if the currency_form is submitted and valid
         if currency_form.is_valid():
             return render(
                 request,
@@ -202,27 +196,26 @@ class DashboardView(View):
                 },
             )
 
-        # Check if the form is submitted and valid
         if request.GET and form.is_valid():
             expenses = Expense.objects.filter(user=user)
             incomes = Income.objects.filter(user=user)
 
-            line_chart = ChartGenerator.generate_line_chart(form, expenses, incomes)
-            income_pie_chart = ChartGenerator.generate_pie_chart(
+            line_chart = ChartsDashboardGenerator.generate_line_chart(form, expenses, incomes)
+            income_pie_chart = ChartsDashboardGenerator.generate_pie_chart(
                 Income,
                 form.cleaned_data.get("date_from"),
                 form.cleaned_data.get("date_to"),
                 form.cleaned_data.get("currency"),
                 "Income Categories",
             )
-            expense_pie_chart = ChartGenerator.generate_pie_chart(
+            expense_pie_chart = ChartsDashboardGenerator.generate_pie_chart(
                 Expense,
                 form.cleaned_data.get("date_from"),
                 form.cleaned_data.get("date_to"),
                 form.cleaned_data.get("currency"),
                 "Expense Categories",
             )
-            percentage_bar_chart = ChartGenerator.generate_percentage_bar_chart(form, expenses, incomes)
+            percentage_bar_chart = ChartsDashboardGenerator.generate_percentage_bar_chart(form, expenses, incomes)
 
             return render(
                 request,
@@ -240,7 +233,6 @@ class DashboardView(View):
                 },
             )
 
-        # Render the initial form and currency_form
         return render(
             request,
             self.template_name,

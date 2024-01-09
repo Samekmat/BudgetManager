@@ -24,4 +24,4 @@ class Income(models.Model):
         ordering = ("date",)
 
     def __str__(self):
-        return f"Income({self.pk}) - {self.amount}{self.currency.symbol}"
+        return f"Income-{self.pk}({self.user.username}) - {self.amount}{self.currency.symbol}"

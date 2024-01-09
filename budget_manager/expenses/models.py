@@ -24,4 +24,4 @@ class Expense(models.Model):
         ordering = ("date",)
 
     def __str__(self):
-        return f"Expense({self.pk}) - {self.amount}{self.currency.symbol}"
+        return f"Expense-{self.pk}({self.user.username}) - {self.amount}{self.currency.symbol}"

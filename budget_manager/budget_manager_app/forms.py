@@ -1,34 +1,55 @@
+from budget_manager_app.models import Budget
+from budget_manager_app.styles import CLASSES
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
-from budget_manager_app.styles import CLASSES, REMEMBER_ME
+
+from expenses.models import Expense
+from helper_models.models import Currency
+from incomes.models import Income
 
 
-class RegisterForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # self.fields['username'].label_tag(attrs={'class': "text-gray-900 dark:text-white"}) TODO add class
-        self.fields['username'].widget.attrs['class'] = CLASSES
-        self.fields['email'].widget.attrs['class'] = CLASSES
-        self.fields['password1'].widget.attrs['class'] = CLASSES
-        self.fields['password2'].widget.attrs['class'] = CLASSES
-
+class BudgetForm(forms.ModelForm):
     class Meta:
-        model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        model = Budget
+        exclude = ("user", "incomes", "expenses")
+        fields = ("name", "currency", "shared_with", "incomes", "expenses", "goals")
+        widgets = {
+            "name": forms.TextInput(attrs={"class": CLASSES}),
+            "user": forms.Select(attrs={"class": CLASSES}),
+            "shared_with": forms.SelectMultiple(attrs={"class": CLASSES}),
+            "incomes": forms.SelectMultiple(attrs={"class": CLASSES}),
+            "expenses": forms.SelectMultiple(attrs={"class": CLASSES}),
+            "goals": forms.SelectMultiple(attrs={"class": CLASSES}),
+            "currency": forms.Select(attrs={"class": CLASSES}),
+        }
 
 
-class LoginForm(AuthenticationForm):
-    remember_me = forms.BooleanField(
+class IncomeExpenseSelectForm(forms.Form):
+    incomes = forms.ModelMultipleChoiceField(
+        queryset=Income.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
         required=False,
-        initial=True,
-        widget=forms.CheckboxInput(),
+    )
+    expenses = forms.ModelMultipleChoiceField(
+        queryset=Expense.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
     )
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs['class'] = CLASSES
-        self.fields['password'].widget.attrs['class'] = CLASSES
-        self.fields['remember_me'].widget.attrs['class'] = REMEMBER_ME
+
+class CurrencyBaseForm(forms.Form):
+    base_currency = forms.ModelChoiceField(
+        label="Base Currency",
+        queryset=Currency.objects.all(),
+        empty_label=None,
+        to_field_name="code",
+    )
+
+
+class ChartForm(forms.Form):
+    date_from = forms.DateField(required=False, widget=forms.DateInput(attrs={"class": CLASSES, "type": "date"}))
+    date_to = forms.DateField(required=False, widget=forms.DateInput(attrs={"class": CLASSES, "type": "date"}))
+    currency = forms.ModelChoiceField(
+        queryset=Currency.objects.all(),
+        required=True,
+        widget=forms.Select(attrs={"class": CLASSES}),
+    )

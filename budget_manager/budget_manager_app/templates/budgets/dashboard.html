@@ -1,0 +1,107 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+    <h1 class="text-3xl font-bold mb-4 text-center">Expense and Income Chart</h1>
+    <form method="GET" class="flex items-center mb-6 max-w-sm mx-auto">
+        {{ form.as_p }}
+        <input class="button rounded bg-purple-500 hover:underline hover:bg-purple-200 py-2 px-4 ml-2 mt-6" type="submit" value="Generate Chart">
+    </form>
+
+    <div class="grid grid-cols-2 gap-4">
+    {% if line_chart %}
+        <div id="line-chart" class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md">
+            <h2 class="text-lg font-bold mb-2 dark:text-white">Line Chart</h2>
+            {{ line_chart | safe }}
+        </div>
+    {% else %}
+        <h2 class="dark:text-white">No data available for the line chart</h2>
+    {% endif %}
+
+    {% if percentage_bar_chart %}
+        <div id="percentage-bar-chart" class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md">
+            <h2 class="text-lg font-bold mb-2 dark:text-white">Incomes vs Expenses (Percentage) Bar Chart</h2>
+            {{ percentage_bar_chart | safe }}
+        </div>
+    {% else %}
+        <h2 class="dark:text-white">No data available for the expense pie chart</h2>
+    {% endif %}
+
+    {% if income_pie_chart %}
+        <div id="income-pie-chart" class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md">
+            <h2 class="text-lg font-bold mb-2 dark:text-white">Income Pie Chart</h2>
+            {{ income_pie_chart | safe }}
+        </div>
+    {% else %}
+        <h2 class="dark:text-white">No data available for the income pie chart</h2>
+    {% endif %}
+
+    {% if expense_pie_chart %}
+        <div id="expense-pie-chart" class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md">
+            <h2 class="text-lg font-bold mb-2 dark:text-white">Expense Pie Chart</h2>
+            {{ expense_pie_chart | safe }}
+        </div>
+    {% else %}
+        <h2 class="dark:text-white">No data available for the expense pie chart</h2>
+    {% endif %}
+</div>
+
+
+    <!-- Recent Transactions Section -->
+    <div class="my-8 mt-6">
+        <h1 class="text-3xl font-bold mb-4 text-center">Recent Transactions</h1>
+        <ul class="space-y-4">
+            {% for transaction in recent_transactions %}
+                <li class="border p-4 rounded-md shadow-md">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-lg font-semibold">{{ transaction.date }}</span>
+                        <span class="ml-4">{{ transaction.amount }}{{ transaction.currency.symbol }}</span>
+                    </div>
+                    <div class="mb-2">{{ transaction.description }}</div>
+                    {% if transaction.category.type == "income" %}
+                        <span class="text-green-500 font-semibold">
+                            ({{ transaction.category.type }})
+                        </span>
+                    {% elif transaction.category.type == "expense" %}
+                        <span class="text-red-500 font-semibold">
+                            ({{ transaction.category.type }})
+                        </span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Currency Selection Section -->
+    <div class="max-w-3xl mx-auto bg-white p-4 rounded-lg shadow-md mt-6">
+        <div class="max-h-64 overflow-y-auto">
+            <table class="w-full">
+                <caption class="bg-gray-200 text-lg font-bold py-2 text-center mb-4">Exchange rates from {{ base_currency }}</caption>
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Currency</th>
+                        <th class="px-4 py-2">Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for currency, rate in exchange_rates.data.items %}
+                        <tr>
+                            <td class="px-4 py-2">{{ currency }}</td>
+                            <td class="px-4 py-2">{{ rate }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <h1 class="mb-6 text-3xl text-gray-900 dark:text-white text-center">Select Base Currency</h1>
+        <form method="get" class="w-full max-w-sm mx-auto">
+            {% csrf_token %}
+            <div class="mb-4">
+                {{ currency_form.base_currency.label_tag }}
+                {{ currency_form.base_currency }}
+            </div>
+            <button type="submit" class="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold py-2 px-4 rounded-full">Submit</button>
+        </form>
+    </div>
+
+{% endblock %}

@@ -30,7 +30,7 @@ Proposed
 > - * Integrate with bank to count expenses and incomes
 > - * Automatically assign categories to transaction
 > - * Expense forecasting
-> - * Expense approval in shared budget 
+> - * Expense approval in shared budget
 
 ## Context
 > We need to prepare a list of functionalities for a budget manager project

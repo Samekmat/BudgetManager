@@ -52,3 +52,5 @@ class ChartForm(forms.Form):
         required=True,
         widget=forms.Select(attrs={"class": CLASSES}),
     )
+
+

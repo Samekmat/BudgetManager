@@ -5,7 +5,7 @@ from budget_manager_app.forms import (
     BudgetForm,
     ChartForm,
     CurrencyBaseForm,
-    IncomeExpenseSelectForm,
+    IncomeExpenseSelectForm, ImageUploadForm,
 )
 from budget_manager_app.models import Budget
 from django.conf import settings
@@ -17,7 +17,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView, FormView
 from expenses.models import Expense
 from incomes.models import Income
 

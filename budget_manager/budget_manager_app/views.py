@@ -1,7 +1,9 @@
 import re
-
 import freecurrencyapi
 import pytesseract
+
+import freecurrencyapi
+
 from budget_manager_app.charts.generate_budget_charts import ChartsBudgetsGenerator
 from budget_manager_app.charts.generate_dashboard_charts import ChartsDashboardGenerator
 from budget_manager_app.forms import (
@@ -10,6 +12,7 @@ from budget_manager_app.forms import (
     CurrencyBaseForm,
     ImageUploadForm,
     IncomeExpenseSelectForm,
+
 )
 from budget_manager_app.models import Budget
 from django.conf import settings
@@ -21,6 +24,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
+
 from django.views.generic import CreateView, DeleteView, FormView, ListView, UpdateView
 from expenses.models import Expense
 from incomes.models import Income
@@ -191,7 +195,7 @@ class DashboardView(View):
         recent_transactions.sort(key=lambda x: x.date, reverse=True)
 
         expense_comparison = Expense.compare_expenses(request)
-
+        
         if currency_form.is_valid():
             return render(
                 request,
@@ -257,7 +261,6 @@ class DashboardView(View):
         api_key = settings.FREE_CURRENCY_API_KEY
         client = freecurrencyapi.Client(api_key)
         return client.latest(base_currency=base_currency)
-
 
 class ProcessImageView(FormView):
     template_name = "process-image.html"

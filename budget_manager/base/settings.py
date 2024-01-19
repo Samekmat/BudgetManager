@@ -4,6 +4,7 @@ from pathlib import Path
 import environ
 import pytesseract
 
+
 env = environ.Env(
     DEBUG=(bool, True),
 )
@@ -54,7 +55,6 @@ INSTALLED_EXTENSIONS = [
 ]
 
 INSTALLED_APPS += INSTALLED_EXTENSIONS
-
 
 MIDDLEWARE = [
     "silk.middleware.SilkyMiddleware",
@@ -170,5 +170,4 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 # Currency API key
 FREE_CURRENCY_API_KEY = env("FREE_CURRENCY_API_KEY")
 
-# Tesseract engine path
 pytesseract.pytesseract.tesseract_cmd = env("TESSERACT_CMD")

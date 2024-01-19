@@ -104,4 +104,26 @@
         </form>
     </div>
 
+    <!-- Compare expenses Section -->
+   <h2 class="text-2xl font-bold mb-4">Expense Comparison Results of today compared to the previous month</h2>
+<ul class="list-disc ml-4">
+  {% for category, currency_results in expense_comparison_results.items %}
+    <li class="mb-2">
+      <span class="font-bold">{{ category }}:</span>
+      {% for currency, result_data in currency_results.items %}
+        <div class="ml-4">
+          <span class="{% if result_data.result == 'increased' %}text-red-500{% elif result_data.result == 'decreased' %}text-green-500{% else %}text-yellow-500{% endif %}">
+            {{ currency }}: {{ result_data.result }}
+          </span>
+          {% if result_data.result != 'unchanged' %}
+            <span class="{% if result_data.percentage_change > 0 %}text-red-500{% elif result_data.percentage_change < 0 %}text-green-500{% endif %}">
+              {% if result_data.percentage_change > 0 %}+{% endif %}{{ result_data.percentage_change|floatformat:2 }}%
+            </span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </li>
+  {% endfor %}
+</ul>
+
 {% endblock %}

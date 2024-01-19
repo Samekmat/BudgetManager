@@ -1,0 +1,14 @@
+{% extends '_base.html' %}
+
+{% block content %}
+  <h2>Processed Text</h2>
+  <pre>{{ text_result }}</pre>
+    <hr>
+    <pre>{{ extracted_info }}</pre>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Process Image</button>
+  </form>
+{% endblock %}

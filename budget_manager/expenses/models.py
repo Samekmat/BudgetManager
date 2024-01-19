@@ -2,6 +2,9 @@ from budget_manager_app.choices import PAYMENT_METHOD_CHOICES
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.db.models import Sum
+from django.utils import timezone
+
 from helper_models.models import Category, Currency, Tag
 
 
@@ -25,3 +28,57 @@ class Expense(models.Model):
 
     def __str__(self):
         return f"Expense-{self.pk}({self.user.username}) - {self.amount}{self.currency.symbol}"
+
+    @staticmethod
+    def compare_expenses(request):
+        user = request.user
+
+        today = timezone.now()
+        first_day_previous_month = timezone.datetime(today.year, today.month, 1) - timezone.timedelta(days=1)
+
+        results = {}
+
+        distinct_currencies = Currency.objects.filter(expense__user=user).distinct()
+
+        for category in Category.objects.filter(type="expense"):
+            category_results = {}
+
+            for currency in distinct_currencies:
+                total_expenses = (
+                    Expense.objects.filter(
+                        user=user,
+                        category=category,
+                        currency=currency,
+                        date__range=(first_day_previous_month, today),
+                    ).aggregate(Sum("amount"))["amount__sum"]
+                    or 0
+                )
+
+                total_entire_period = (
+                    Expense.objects.filter(
+                        user=user,
+                        category=category,
+                        currency=currency,
+                        date__lte=today,
+                    ).aggregate(
+                        Sum("amount")
+                    )["amount__sum"]
+                    or 0
+                )
+
+                if total_expenses > total_entire_period:
+                    result = "increased"
+                elif total_expenses < total_entire_period:
+                    result = "decreased"
+                else:
+                    result = "unchanged"
+
+                percentage_change = 0
+                if total_entire_period != 0:
+                    percentage_change = ((total_expenses - total_entire_period) / total_entire_period) * 100
+
+                category_results[currency.symbol] = {"result": result, "percentage_change": percentage_change}
+
+            results[category.name] = category_results
+
+        return results

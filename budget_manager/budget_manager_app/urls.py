@@ -26,4 +26,5 @@ urlpatterns = [
         views.AddIncomeExpenseView.as_view(),
         name="add-income-expense",
     ),
+    path("process-image/", views.ProcessImageView.as_view(), name="process_image"),
 ]

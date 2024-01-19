@@ -1,11 +1,15 @@
+import re
+
 import freecurrencyapi
+import pytesseract
 from budget_manager_app.charts.generate_budget_charts import ChartsBudgetsGenerator
 from budget_manager_app.charts.generate_dashboard_charts import ChartsDashboardGenerator
 from budget_manager_app.forms import (
     BudgetForm,
     ChartForm,
     CurrencyBaseForm,
-    IncomeExpenseSelectForm, ImageUploadForm,
+    ImageUploadForm,
+    IncomeExpenseSelectForm,
 )
 from budget_manager_app.models import Budget
 from django.conf import settings
@@ -17,9 +21,10 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView, FormView
+from django.views.generic import CreateView, DeleteView, FormView, ListView, UpdateView
 from expenses.models import Expense
 from incomes.models import Income
+from PIL import Image
 
 
 def index(request):
@@ -185,6 +190,8 @@ class DashboardView(View):
         recent_transactions = list(income_query) + list(expense_query)
         recent_transactions.sort(key=lambda x: x.date, reverse=True)
 
+        expense_comparison = Expense.compare_expenses(request)
+
         if currency_form.is_valid():
             return render(
                 request,
@@ -242,6 +249,7 @@ class DashboardView(View):
                 "exchange_rates": exchange_rates,
                 "base_currency": base_currency,
                 "recent_transactions": recent_transactions,
+                "expense_comparison_results": expense_comparison,
             },
         )
 
@@ -249,3 +257,43 @@ class DashboardView(View):
         api_key = settings.FREE_CURRENCY_API_KEY
         client = freecurrencyapi.Client(api_key)
         return client.latest(base_currency=base_currency)
+
+
+class ProcessImageView(FormView):
+    template_name = "process-image.html"
+    form_class = ImageUploadForm
+    success_url = reverse_lazy("process_image")
+
+    def form_valid(self, form):
+        image = form.cleaned_data["image"]
+
+        text_result = self.process_image(image)
+
+        amount_pattern = re.compile(r"TOTAL\s+\$([\d.]+)", re.IGNORECASE)
+        date_pattern = re.compile(r"\b\d{1,2}/\d{1,2}/\d{4}\b")
+        currency_pattern = re.compile(r"(\$|USD|EUR|PLN|€|zł)")
+        payment_method_pattern = re.compile(r"(Bank|Card|Cash)", re.IGNORECASE)
+
+        # Extract information using regex
+        amount_match = amount_pattern.search(text_result)
+        date_match = date_pattern.search(text_result)
+        currency_match = currency_pattern.search(text_result)
+        payment_method_match = payment_method_pattern.search(text_result)
+
+        extracted_info = {
+            "amount": amount_match.group(1) if amount_match else None,
+            "date": date_match.group() if date_match else None,
+            "currency": currency_match.group() if currency_match else None,
+            "payment_method": payment_method_match.group() if payment_method_match else None,
+        }
+
+        return self.render_to_response(self.get_context_data(extracted_info=extracted_info, text_result=text_result))
+
+    def process_image(self, image):
+        # Convert image to grayscale
+        image = Image.open(image).convert("L")
+
+        # Use pytesseract to extract text
+        text_result = pytesseract.image_to_string(image)
+
+        return text_result

@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 import environ
+import pytesseract
 
 env = environ.Env(
     DEBUG=(bool, True),
@@ -40,7 +41,6 @@ INSTALLED_APPS = [
     "django_filters",
     "debug_toolbar",
     "silk",
-    # "django_nose"
 ]
 
 INSTALLED_EXTENSIONS = [
@@ -55,15 +55,6 @@ INSTALLED_EXTENSIONS = [
 
 INSTALLED_APPS += INSTALLED_EXTENSIONS
 
-# # Use nose to run all tests
-# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-#
-# # Tell nose to measure coverage on the selected apps
-# NOSE_ARGS = [
-#     '--with-coverage',
-#     '--cover-package=users,saving_goals,incomes,helper_models,expenses',  # api, budget_manager_app
-#     '--cover-html'
-# ]
 
 MIDDLEWARE = [
     "silk.middleware.SilkyMiddleware",
@@ -178,3 +169,6 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 # Currency API key
 FREE_CURRENCY_API_KEY = env("FREE_CURRENCY_API_KEY")
+
+# Tesseract engine path
+pytesseract.pytesseract.tesseract_cmd = env("TESSERACT_CMD")

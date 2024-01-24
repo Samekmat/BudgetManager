@@ -4,7 +4,6 @@ from pathlib import Path
 import environ
 import pytesseract
 
-
 env = environ.Env(
     DEBUG=(bool, True),
 )
@@ -103,6 +102,25 @@ DATABASES = {
     }
 }
 
+# if env('ENVIRONMENT') == 'ci':
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.sqlite3",
+#             "NAME": "ci_db",
+#         }
+#     }
+# else:
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.postgresql_psycopg2",
+#             "NAME": env("DB_NAME"),
+#             "USER": env("DB_USER"),
+#             "PASSWORD": env("DB_PASSWORD"),
+#             "HOST": env("DB_HOST"),
+#             "PORT": env("DB_PORT"),
+#         }
+#     }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -171,3 +189,9 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 FREE_CURRENCY_API_KEY = env("FREE_CURRENCY_API_KEY")
 
 pytesseract.pytesseract.tesseract_cmd = env("TESSERACT_CMD")
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ]
+}

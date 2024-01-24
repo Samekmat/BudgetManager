@@ -40,7 +40,9 @@
                 {{filter.form}}
                 <button type="submit" class="py-2.5 px-5 mr-2 mt-6 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Search</button>
             </form>
-
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              <a href="{% url 'budgets:process_image' %}" class="text-white no-underline">Add new Expense by Image</a>
+            </button>
             <button id="createExpenseButton" class="mt-6 text-white bg-lime-700 hover:bg-lime-800 focus:ring-4 focus:ring-lime-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-lime-600 dark:hover:bg-lime-700 focus:outline-none dark:focus:ring-lime-800" type="button" data-drawer-target="drawer-create-product-default" data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default" data-drawer-placement="right">
                 Add new Expense
             </button>
@@ -91,9 +93,9 @@
                         <tr id="expense-{{ expense.id }}" class="hover:bg-gray-100 dark:hover:bg-gray-700">
                             <td class="w-4 p-4">
                                 <div class="flex items-center">
-                                    <input id="checkbox-{{ .id }}" aria-describedby="checkbox-1" type="checkbox"
+                                    <input id="checkbox-{{ expense.id }}" aria-describedby="checkbox-1" type="checkbox"
                                         class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="checkbox-{{ .id }}" class="sr-only">checkbox</label>
+                                    <label for="checkbox-{{ expense.id }}" class="sr-only">checkbox</label>
                                 </div>
                             </td>
 

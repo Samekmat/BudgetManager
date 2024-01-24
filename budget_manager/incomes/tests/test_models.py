@@ -27,6 +27,8 @@ class IncomesModelTests(TestCase):
         for i, tag in enumerate(saved_tags):
             self.assertEqual(tag.name, str(expected_tag_names[i]))
 
-        expected_str = f"Income({self.income.pk}) - {self.income.amount}{self.income.currency.symbol}"
+        expected_str = (
+            f"Income-{self.income.pk}({self.income.user}) - {self.income.amount}{self.income.currency.symbol}"
+        )
 
         self.assertEqual(str(self.income), expected_str)

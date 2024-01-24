@@ -1,14 +1,47 @@
 {% extends '_base.html' %}
 
 {% block content %}
-  <h2>Processed Text</h2>
-  <pre>{{ text_result }}</pre>
-    <hr>
-    <pre>{{ extracted_info }}</pre>
+  {% if text_result %}
+    <div class="flex justify-between p-8">
+        <div class="w-1/2 pr-4">
+            <h2 class="text-2xl">Processed Text</h2>
+            <pre>{{ text_result }}</pre>
+            <hr>
+            <h2 class="text-2xl">Extracted Info</h2>
+            <pre>{{ extracted_info }}</pre>
+        </div>
 
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Process Image</button>
-  </form>
+        <div class="w-1/2 pl-4">
+    {% if form_type == "income" %}
+        <h2 class="text-2xl mb-4">Income Form</h2>
+        <form method="post" enctype="multipart/form-data" class="mb-4" action="{% url 'incomes:income-create' %}">
+            {% csrf_token %}
+            {{ operation_form.as_p }}
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Submit
+            </button>
+        </form>
+    {% elif form_type == "expense" %}
+        <h2 class="text-2xl mb-4">Expense Form</h2>
+        <form method="post" enctype="multipart/form-data" class="mb-4" action="{% url 'expenses:expense-create' %}">
+            {% csrf_token %}
+            {{ operation_form.as_p }}
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Submit
+            </button>
+        </form>
+    {% else %}
+        <p>No form available.</p>
+    {% endif %}
+</div>
+
+    </div>
+  {% else %}
+    <h2>Processed Text</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Process Image</button>
+    </form>
+  {% endif %}
 {% endblock %}

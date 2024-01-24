@@ -53,7 +53,6 @@ class ChartForm(forms.Form):
         widget=forms.Select(attrs={"class": CLASSES}),
     )
 
-
-
+    
 class ImageUploadForm(forms.Form):
     image = forms.ImageField()

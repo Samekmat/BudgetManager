@@ -73,57 +73,59 @@
     </div>
 
     <!-- Currency Selection Section -->
-    <div class="max-w-3xl mx-auto bg-white p-4 rounded-lg shadow-md mt-6">
-        <div class="max-h-64 overflow-y-auto">
-            <table class="w-full">
-                <caption class="bg-gray-200 text-lg font-bold py-2 text-center mb-4">Exchange rates from {{ base_currency }}</caption>
-                <thead>
-                    <tr>
-                        <th class="px-4 py-2">Currency</th>
-                        <th class="px-4 py-2">Rate</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for currency, rate in exchange_rates.data.items %}
-                        <tr>
-                            <td class="px-4 py-2">{{ currency }}</td>
-                            <td class="px-4 py-2">{{ rate }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <h1 class="mb-6 text-3xl text-gray-900 dark:text-white text-center">Select Base Currency</h1>
-        <form method="get" class="w-full max-w-sm mx-auto">
-            {% csrf_token %}
-            <div class="mb-4">
-                {{ currency_form.base_currency.label_tag }}
-                {{ currency_form.base_currency }}
-            </div>
-            <button type="submit" class="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold py-2 px-4 rounded-full">Submit</button>
-        </form>
+    <div class="flex flex-col items-center">
+    <!-- Header -->
+    <div class="text-xl font-bold text-gray-900 dark:text-white mt-4 mb-2">
+        Expense Comparison by Category
     </div>
 
-    <!-- Compare expenses Section -->
-   <h2 class="text-2xl font-bold mb-4">Expense Comparison Results of today compared to the previous month</h2>
-<ul class="list-disc ml-4">
-  {% for category, currency_results in expense_comparison_results.items %}
-    <li class="mb-2">
-      <span class="font-bold">{{ category }}:</span>
-      {% for currency, result_data in currency_results.items %}
-        <div class="ml-4">
-          <span class="{% if result_data.result == 'increased' %}text-red-500{% elif result_data.result == 'decreased' %}text-green-500{% else %}text-yellow-500{% endif %}">
-            {{ currency }}: {{ result_data.result }}
-          </span>
-          {% if result_data.result != 'unchanged' %}
-            <span class="{% if result_data.percentage_change > 0 %}text-red-500{% elif result_data.percentage_change < 0 %}text-green-500{% endif %}">
-              {% if result_data.percentage_change > 0 %}+{% endif %}{{ result_data.percentage_change|floatformat:2 }}%
-            </span>
-          {% endif %}
-        </div>
-      {% endfor %}
-    </li>
-  {% endfor %}
-</ul>
+    <!-- Category Selector (Dropdown for small screens) -->
+    <div class="sm:hidden">
+        <label for="tabs" class="sr-only">Select your category</label>
+        <select id="tabs" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            {% for category, _ in expense_comparison_results.items %}
+                <option>{{ category }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
+    <!-- Category Buttons and Dropdowns -->
+    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400">
+        {% for category, currency_results in expense_comparison_results.items %}
+            <li class="w-full">
+                <button
+                    id="{{ category|slugify }}-dropdownButton"
+                    data-dropdown-toggle="{{ category|slugify }}-dropdown"
+                    class="inline-block w-full p-4 bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                    aria-current="page"
+                >
+                    {{ category }}
+                </button>
+
+                <!-- Dropdown Content -->
+                <div
+                    id="{{ category|slugify }}-dropdown"
+                    class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+                >
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                        {% for currency, result_data in currency_results.items %}
+                            <li>
+                                <span class="{% if result_data.result == 'increased' %}text-red-500{% elif result_data.result == 'decreased' %}text-green-500{% else %}text-yellow-500{% endif %}">
+                                    {{ currency }} - {{ result_data.result }}
+                                </span>
+                                {% if result_data.result != 'unchanged' %}
+                                    <span class="{% if result_data.percentage_change > 0 %}text-red-500{% elif result_data.percentage_change < 0 %}text-green-500{% endif %}">
+                                        {% if result_data.percentage_change > 0 %}+{% endif %}{{ result_data.percentage_change|floatformat:2 }}%
+                                    </span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+    
 {% endblock %}

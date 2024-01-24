@@ -1,18 +1,17 @@
 import re
+from datetime import date, datetime
+
 import freecurrencyapi
 import pytesseract
-
-import freecurrencyapi
-
 from budget_manager_app.charts.generate_budget_charts import ChartsBudgetsGenerator
 from budget_manager_app.charts.generate_dashboard_charts import ChartsDashboardGenerator
+from budget_manager_app.choices import PAYMENT_METHOD_CHOICES
 from budget_manager_app.forms import (
     BudgetForm,
     ChartForm,
     CurrencyBaseForm,
     ImageUploadForm,
     IncomeExpenseSelectForm,
-
 )
 from budget_manager_app.models import Budget
 from django.conf import settings
@@ -24,9 +23,11 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-
 from django.views.generic import CreateView, DeleteView, FormView, ListView, UpdateView
+from expenses.forms import ExpenseForm
 from expenses.models import Expense
+from helper_models.models import Currency
+from incomes.forms import IncomeForm
 from incomes.models import Income
 from PIL import Image
 
@@ -139,7 +140,7 @@ class ChartView(LoginRequiredMixin, View):
         )
 
 
-class AddIncomeExpenseView(View):
+class AddIncomeExpenseView(LoginRequiredMixin, View):
     template_name = "budgets/add_income_expense.html"
 
     def get(self, request, budget_id):
@@ -177,7 +178,7 @@ class AddIncomeExpenseView(View):
         return render(request, self.template_name, {"form": form, "budget": budget})
 
 
-class DashboardView(View):
+class DashboardView(LoginRequiredMixin, View):
     template_name = "budgets/dashboard.html"
 
     def get(self, request):
@@ -195,7 +196,7 @@ class DashboardView(View):
         recent_transactions.sort(key=lambda x: x.date, reverse=True)
 
         expense_comparison = Expense.compare_expenses(request)
-        
+
         if currency_form.is_valid():
             return render(
                 request,
@@ -262,18 +263,23 @@ class DashboardView(View):
         client = freecurrencyapi.Client(api_key)
         return client.latest(base_currency=base_currency)
 
-class ProcessImageView(FormView):
+
+class ProcessImageView(LoginRequiredMixin, FormView):
     template_name = "process-image.html"
     form_class = ImageUploadForm
     success_url = reverse_lazy("process_image")
+
+    def get(self, request, *args, **kwargs):
+        request.session["referer"] = request.META.get("HTTP_REFERER", "")
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         image = form.cleaned_data["image"]
 
         text_result = self.process_image(image)
 
-        amount_pattern = re.compile(r"TOTAL\s+\$([\d.]+)", re.IGNORECASE)
-        date_pattern = re.compile(r"\b\d{1,2}/\d{1,2}/\d{4}\b")
+        amount_pattern = re.compile(r"(?:TOTAL|AMOUNT|SUMA\sPLN)\s*[^\d]*([\d,.]+)", re.IGNORECASE)
+        date_pattern = re.compile(r"\b\d{1,2}/\d{1,2}/\d{4}\b|\b\d{1,2}-\d{1,2}-\d{4}\b")
         currency_pattern = re.compile(r"(\$|USD|EUR|PLN|€|zł)")
         payment_method_pattern = re.compile(r"(Bank|Card|Cash)", re.IGNORECASE)
 
@@ -284,13 +290,39 @@ class ProcessImageView(FormView):
         payment_method_match = payment_method_pattern.search(text_result)
 
         extracted_info = {
-            "amount": amount_match.group(1) if amount_match else None,
-            "date": date_match.group() if date_match else None,
-            "currency": currency_match.group() if currency_match else None,
-            "payment_method": payment_method_match.group() if payment_method_match else None,
+            "amount": amount_match.group(1) if amount_match else "Unknown amount",
+            "date": date_match.group() if date_match else date.today(),
+            "currency": currency_match.group() if currency_match else "Unknown currency",
+            "payment_method": payment_method_match.group() if payment_method_match else "Unknown payment method",
         }
 
-        return self.render_to_response(self.get_context_data(extracted_info=extracted_info, text_result=text_result))
+        # map data
+        extracted_info["date"] = self.convert_date(extracted_info["date"])
+        extracted_info["currency"] = self.get_currency_pk_by_symbol(extracted_info["currency"])
+        extracted_info["payment_method"] = self.map_payment_method_to_name(extracted_info["payment_method"])
+        print(extracted_info)
+
+        if "http://127.0.0.1:8000/incomes/" == self.request.session["referer"]:
+            form_type = "income"
+            operation_form = IncomeForm(initial=extracted_info) if all(extracted_info.values()) else IncomeForm()
+
+        elif "http://127.0.0.1:8000/expenses/" == self.request.session["referer"]:
+            form_type = "expense"
+            operation_form = ExpenseForm(initial=extracted_info) if all(extracted_info.values()) else ExpenseForm()
+        else:
+            operation_form = None
+            form_type = None
+
+        return render(
+            self.request,
+            self.template_name,
+            {
+                "extracted_info": extracted_info,
+                "text_result": text_result,
+                "operation_form": operation_form,
+                "form_type": form_type,
+            },
+        )
 
     def process_image(self, image):
         # Convert image to grayscale
@@ -300,3 +332,30 @@ class ProcessImageView(FormView):
         text_result = pytesseract.image_to_string(image)
 
         return text_result
+
+    def convert_date(self, input_date):
+        formats = ["%Y-%m-%d", "%Y/%m/%d", "%Y%m%d", "%d-%m-%Y", "%d/%m/%Y", "%d%m%Y", "%m/%d/%Y"]
+        target_format = "%Y-%m-%d"
+
+        if input_date is not None:
+            for date_format in formats:
+                try:
+                    parsed_date = datetime.strptime(str(input_date), date_format).date()
+                    return parsed_date.strftime(target_format)
+                except ValueError:
+                    pass
+        return date.today().strftime(target_format)
+
+    def get_currency_pk_by_symbol(self, symbol):
+        try:
+            currency = Currency.objects.get(symbol=symbol)
+            return currency.pk
+        except Currency.DoesNotExist:
+            return "Unknown currency"
+
+    def map_payment_method_to_name(self, payment_method):
+        if payment_method is not None:
+            for method, name in PAYMENT_METHOD_CHOICES:
+                if payment_method.lower() in method:
+                    return method
+        return "Unknown payment method"

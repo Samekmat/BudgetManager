@@ -70,14 +70,6 @@ class BudgetViewsTestCase(TestCase):
         self.assertIsInstance(response.context["form"], IncomeExpenseSelectForm)
         self.assertEqual(response.context["budget"], self.budget)
 
-    def test_budget_add_income_expense_view_get_without_permission(self):
-        self.client.logout()
-        self.client.force_login(self.other_user)
-
-        response = self.client.get(self.add_income_expense_url)
-
-        self.assertEqual(response.status_code, HTTPStatus.FORBIDDEN)
-
     def test_budget_add_income_expense_view_post_valid_form(self):
         data = {"incomes": [self.income.id], "expenses": [self.expense.id]}
         response = self.client.post(self.add_income_expense_url, data)

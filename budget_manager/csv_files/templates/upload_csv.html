@@ -1,9 +1,27 @@
 {% extends '_base.html' %}
+{% load static %}
 
 {% block content %}
   <h2 class="text-2xl font-bold mb-4">CSV Upload</h2>
-  <form method="post" enctype="multipart/form-data">
+
+  <!-- Bank selection buttons/images -->
+  <div class="flex space-x-4 mb-4">
+  <button onclick="selectBank('santander')" class="w-10 h-10">
+    <img src="{% static 'images/santander_logo.png' %}" alt="Santander" class="w-full h-full object-contain">
+  </button>
+  <button onclick="selectBank('nest')" class="w-10 h-10">
+    <img src="{% static 'images/nest_logo.png' %}" alt="Nest" class="w-full h-full object-contain">
+  </button>
+  <button onclick="selectBank('revolut')" class="w-10 h-10">
+    <img src="{% static 'images/revolut_logo.png' %}" alt="Revolut" class="w-full h-full object-contain">
+  </button>
+</div>
+
+
+
+  <form method="post" enctype="multipart/form-data" id="uploadForm" style="display: none;">
     {% csrf_token %}
+    <input type="hidden" name="bank" id="bank" value="">
     {{ form }}
     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Upload</button>
   </form>
@@ -23,4 +41,11 @@
       {% endfor %}
     </ul>
   {% endif %}
+
+  <script>
+    function selectBank(bank) {
+      document.getElementById('bank').value = bank;
+      document.getElementById('uploadForm').style.display = 'block';
+    }
+  </script>
 {% endblock %}

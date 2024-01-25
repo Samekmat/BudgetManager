@@ -40,6 +40,17 @@
                 {{filter.form}}
                 <button type="submit" class="py-2.5 px-5 mr-2 mt-6 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Search</button>
             </form>
+
+            <!-- Export to CSV Button -->
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{% url 'expenses:export-expenses-csv' %}" class="text-white no-underline">Export to CSV</a>
+            </button>
+
+            <!-- Export to PDF Button -->
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{% url 'expenses:export-expenses-pdf' %}" class="text-white no-underline">Export to PDF</a>
+            </button>
+
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               <a href="{% url 'budgets:process_image' %}" class="text-white no-underline">Add new Expense by Image</a>
             </button>

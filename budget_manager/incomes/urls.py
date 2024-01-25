@@ -11,4 +11,6 @@ urlpatterns = [
         views.IncomeUpdateView.as_view(),
         name="income-update",
     ),
+    path("export-incomes-csv/", views.ExportIncomesCSVView.as_view(), name="export-incomes-csv"),
+    path("export-incomes-pdf/", views.ExportIncomesPDFView.as_view(), name="export-incomes-pdf"),
 ]

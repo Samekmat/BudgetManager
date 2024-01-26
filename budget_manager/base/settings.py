@@ -4,7 +4,7 @@ from pathlib import Path
 import environ
 import pytesseract
 
-env = environ.Env(DEBUG=(bool, True), TESSERACT=(str, ""))
+env = environ.Env(DEBUG=(bool, True), TESSERACT_CMD=(str, ""))
 environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

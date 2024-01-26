@@ -4,9 +4,7 @@ from pathlib import Path
 import environ
 import pytesseract
 
-env = environ.Env(
-    DEBUG=(bool, True),
-)
+env = environ.Env(DEBUG=(bool, True), TESSERACT=(str, ""))
 environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -92,35 +90,25 @@ WSGI_APPLICATION = "base.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": env("DB_NAME"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASSWORD"),
-        "HOST": env("DB_HOST"),
-        "PORT": env("DB_PORT"),
-    }
-}
 
-# if env('ENVIRONMENT') == 'ci':
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.sqlite3",
-#             "NAME": "ci_db",
-#         }
-#     }
-# else:
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.postgresql_psycopg2",
-#             "NAME": env("DB_NAME"),
-#             "USER": env("DB_USER"),
-#             "PASSWORD": env("DB_PASSWORD"),
-#             "HOST": env("DB_HOST"),
-#             "PORT": env("DB_PORT"),
-#         }
-#     }
+if env("ENVIRONMENT") == "ci":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "ci_db",
+        }
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": env("DB_NAME"),
+            "USER": env("DB_USER"),
+            "PASSWORD": env("DB_PASSWORD"),
+            "HOST": env("DB_HOST"),
+            "PORT": env("DB_PORT"),
+        }
+    }
 
 
 # Password validation

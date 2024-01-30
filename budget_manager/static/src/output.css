@@ -1396,6 +1396,10 @@ input:checked + .toggle-bg {
   max-width: 48rem;
 }
 
+.max-w-full {
+  max-width: 100%;
+}
+
 .max-w-md {
   max-width: 28rem;
 }
@@ -2077,6 +2081,10 @@ input:checked + .toggle-bg {
 
 .leading-9 {
   line-height: 2.25rem;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
 }
 
 .text-blue-500 {

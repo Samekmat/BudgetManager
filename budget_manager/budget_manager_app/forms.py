@@ -56,6 +56,6 @@ class ChartForm(forms.Form):
         queryset=Currency.objects.all(), required=True, widget=forms.Select(attrs={"class": CLASSES}), label="Currency"
     )
 
-
+    
 class ImageUploadForm(forms.Form):
     image = forms.ImageField(widget=forms.FileInput(attrs={"class": CLASSES, "accept": "image/*"}))

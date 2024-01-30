@@ -69,6 +69,7 @@ pytesseract = "^0.3.10"
 xhtml2pdf = "^0.2.14"
 
 
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

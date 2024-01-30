@@ -6,7 +6,10 @@ PAYMENT_METHOD_CHOICES = [
 ]
 
 
+CATEGORY__INCOME = "income"
+CATEGORY__EXPENSE = "expense"
+
 CATEGORY_TYPES = [
-    ("income", "Income"),
-    ("expense", "Expense"),
+    (CATEGORY__INCOME, "Income"),
+    (CATEGORY__EXPENSE, "Expense"),
 ]

@@ -1,4 +1,4 @@
-from budget_manager_app.choices import CATEGORY_TYPES
+from budget_manager_app.consts import CATEGORY_TYPES
 from budget_manager_app.styles import CLASSES
 from django import forms
 from helper_models.models import Category, Tag

@@ -58,9 +58,9 @@
     "model": "helper_models.category",
     "pk": 6,
     "fields": {
-      "name": "Housing",
-      "description": "Base category for expense",
-      "type": "expense",
+      "name": "CSV income import",
+      "description": "Base category for income import",
+      "type": "income",
       "builtin": true,
       "user": null
     }
@@ -69,7 +69,7 @@
     "model": "helper_models.category",
     "pk": 7,
     "fields": {
-      "name": "Transportation",
+      "name": "Housing",
       "description": "Base category for expense",
       "type": "expense",
       "builtin": true,
@@ -80,7 +80,7 @@
     "model": "helper_models.category",
     "pk": 8,
     "fields": {
-      "name": "Entertainment",
+      "name": "Transportation",
       "description": "Base category for expense",
       "type": "expense",
       "builtin": true,
@@ -91,7 +91,7 @@
     "model": "helper_models.category",
     "pk": 9,
     "fields": {
-      "name": "Food",
+      "name": "Entertainment",
       "description": "Base category for expense",
       "type": "expense",
       "builtin": true,
@@ -102,7 +102,7 @@
     "model": "helper_models.category",
     "pk": 10,
     "fields": {
-      "name": "Utilities",
+      "name": "Food",
       "description": "Base category for expense",
       "type": "expense",
       "builtin": true,
@@ -113,8 +113,30 @@
     "model": "helper_models.category",
     "pk": 11,
     "fields": {
+      "name": "Utilities",
+      "description": "Base category for expense",
+      "type": "expense",
+      "builtin": true,
+      "user": null
+    }
+  },
+  {
+    "model": "helper_models.category",
+    "pk": 12,
+    "fields": {
       "name": "Healthcare",
       "description": "Base category for expense",
+      "type": "expense",
+      "builtin": true,
+      "user": null
+    }
+  },
+  {
+    "model": "helper_models.category",
+    "pk": 13,
+    "fields": {
+      "name": "CSV expense import",
+      "description": "Base category for expense import",
       "type": "expense",
       "builtin": true,
       "user": null

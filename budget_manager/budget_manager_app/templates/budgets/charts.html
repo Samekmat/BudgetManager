@@ -1,40 +1,54 @@
 {% extends "_base.html" %}
+
 {% block content %}
+<style>
+    body, html {
+        height: 100%;
+        overflow: hidden;
+    }
 
-<div class="container mx-auto flex flex-wrap justify-between">
+    .unscrollable-container {
+        height: 100%;
+        overflow: auto;
+    }.
+</style>
 
-    <div class="max-w-md mx-4 mb-8">
-        <h1 class="text-2xl font-bold my-4">Budget Chart - Total Balance</h1>
-        {{ budget_chart | safe }}
+<div class="unscrollable-container">
+    <div class="container mx-auto flex flex-wrap justify-between">
+
+        <div class="max-w-md mx-4 mb-8">
+            <h1 class="text-2xl font-bold my-4 dark:text-white">Budget Chart - Total Balance</h1>
+            {{ budget_chart | safe }}
+        </div>
+
+        <div class="max-w-md mx-4 mb-8">
+            <h1 class="text-2xl font-bold my-4 dark:text-white">Line Chart - Expenses vs Incomes with total balance</h1>
+            {{ line_chart | safe }}
+        </div>
+
+        <div class="max-w-md mx-4 mb-8">
+            <h1 class="text-2xl font-bold my-4 dark:text-white">Bar Chart - Expenses vs Incomes with percentage</h1>
+            {{ bar_chart | safe }}
+        </div>
     </div>
 
-    <div class="max-w-md mx-4 mb-8">
-        <h1 class="text-2xl font-bold my-4">Line Chart - Expenses vs Incomes with total balance</h1>
-        {{ line_chart | safe }}
-    </div>
+    <div class="container mx-auto flex flex-wrap justify-between">
 
-    <div class="max-w-md mx-4 mb-8">
-        <h1 class="text-2xl font-bold my-4">Bar Chart - Expenses vs Incomes with percentage</h1>
-        {{ bar_chart | safe }}
-    </div>
-</div>
+        <div class="max-w-md mx-4 mb-8">
+            <h1 class="text-2xl font-bold my-4 dark:text-white">Pie Chart - Expenses by categories</h1>
+            {{ expense_category_chart | safe }}
+        </div>
 
-<div class="container mx-auto flex flex-wrap justify-between">
+        <div class="max-w-md mx-4 mb-8">
+            <h1 class="text-2xl font-bold my-4 dark:text-white">Pie Chart - Incomes by categories</h1>
+            {{ income_category_chart | safe }}
+        </div>
+        <div class="max-w-md mx-4 mb-8">
+            <h1 class="text-2xl font-bold my-4 dark:text-white">Pie Chart - Incomes vs Expenses</h1>
+            {{ income_chart | safe }}
+        </div>
 
-    <div class="max-w-md mx-4 mb-8">
-        <h1 class="text-2xl font-bold my-4">Pie Chart - Expenses by categories</h1>
-        {{ expense_category_chart | safe }}
     </div>
-
-    <div class="max-w-md mx-4 mb-8">
-        <h1 class="text-2xl font-bold my-4">Pie Chart - Incomes by categories</h1>
-        {{ income_category_chart | safe }}
-    </div>
-    <div class="max-w-md mx-4 mb-8">
-        <h1 class="text-2xl font-bold my-4">Pie Chart - Incomes vs Expenses</h1>
-        {{ income_chart | safe }}
-    </div>
-
 </div>
 
 {% endblock %}

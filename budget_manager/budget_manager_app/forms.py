@@ -41,18 +41,21 @@ class CurrencyBaseForm(forms.Form):
         queryset=Currency.objects.all(),
         empty_label=None,
         to_field_name="code",
+        widget=forms.Select(attrs={"class": CLASSES}),
     )
 
 
 class ChartForm(forms.Form):
-    date_from = forms.DateField(required=False, widget=forms.DateInput(attrs={"class": CLASSES, "type": "date"}))
-    date_to = forms.DateField(required=False, widget=forms.DateInput(attrs={"class": CLASSES, "type": "date"}))
+    date_from = forms.DateField(
+        required=False, widget=forms.DateInput(attrs={"class": CLASSES, "type": "date"}), label="From Date"
+    )
+    date_to = forms.DateField(
+        required=False, widget=forms.DateInput(attrs={"class": CLASSES, "type": "date"}), label="To Date"
+    )
     currency = forms.ModelChoiceField(
-        queryset=Currency.objects.all(),
-        required=True,
-        widget=forms.Select(attrs={"class": CLASSES}),
+        queryset=Currency.objects.all(), required=True, widget=forms.Select(attrs={"class": CLASSES}), label="Currency"
     )
 
     
 class ImageUploadForm(forms.Form):
-    image = forms.ImageField()
+    image = forms.ImageField(widget=forms.FileInput(attrs={"class": CLASSES, "accept": "image/*"}))

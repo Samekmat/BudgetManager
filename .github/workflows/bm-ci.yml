@@ -38,3 +38,5 @@ jobs:
         poetry run python manage.py test
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+        FREE_CURRENCY_API_KEY: ${{ secrets.FREE_CURRENCY_API_KEY }}

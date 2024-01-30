@@ -1,4 +1,4 @@
-from budget_manager_app.choices import PAYMENT_METHOD_CHOICES
+from budget_manager_app.consts import PAYMENT_METHOD_CHOICES
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models

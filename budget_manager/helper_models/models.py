@@ -1,4 +1,4 @@
-from budget_manager_app.choices import CATEGORY_TYPES
+from budget_manager_app.consts import CATEGORY_TYPES
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q

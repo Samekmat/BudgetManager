@@ -66,6 +66,8 @@ werkzeug = "3.0.1"
 zipp = "3.17.0"
 numpy = "^1.26.3"
 pytesseract = "^0.3.10"
+xhtml2pdf = "^0.2.14"
+
 
 
 [build-system]

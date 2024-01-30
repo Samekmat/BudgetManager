@@ -1,5 +1,5 @@
 import django_filters
-from budget_manager_app.choices import PAYMENT_METHOD_CHOICES
+from budget_manager_app.consts import PAYMENT_METHOD_CHOICES
 from budget_manager_app.styles import CLASSES
 from django import forms
 from helper_models.models import Currency, Tag

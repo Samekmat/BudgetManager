@@ -49,7 +49,7 @@ INSTALLED_EXTENSIONS = [
     "users",
     "helper_models",
     "saving_goals",
-    "csv_files",
+    "file_parsers",
 ]
 
 INSTALLED_APPS += INSTALLED_EXTENSIONS

@@ -8,4 +8,4 @@ class CSVFile(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.uploaded_at}"
+        return f"{self.user.username} - {self.uploaded_at.strftime('%Y-%m-%d')}"

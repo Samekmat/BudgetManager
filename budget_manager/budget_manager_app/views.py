@@ -5,7 +5,7 @@ import freecurrencyapi
 import pytesseract
 from budget_manager_app.charts.generate_budget_charts import ChartsBudgetsGenerator
 from budget_manager_app.charts.generate_dashboard_charts import ChartsDashboardGenerator
-from budget_manager_app.choices import PAYMENT_METHOD_CHOICES
+from budget_manager_app.consts import PAYMENT_METHOD_CHOICES
 from budget_manager_app.forms import (
     BudgetForm,
     ChartForm,
@@ -173,7 +173,7 @@ class AddIncomeExpenseView(LoginRequiredMixin, View):
             for expense in selected_expenses:
                 budget.expenses.add(expense)
 
-            return redirect("budgets:budgets")  # Redirect to the budget list view
+            return redirect("budgets:budgets")
 
         return render(request, self.template_name, {"form": form, "budget": budget})
 

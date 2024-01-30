@@ -21,60 +21,6 @@
     "model": "helper_models.currency",
     "pk": 3,
     "fields": {
-      "name": "Japanese yen",
-      "code": "JPY",
-      "symbol": "¥"
-    }
-  },
-  {
-    "model": "helper_models.currency",
-    "pk": 4,
-    "fields": {
-      "name": "Pound sterling",
-      "code": "GBP",
-      "symbol": "£"
-    }
-  },
-  {
-    "model": "helper_models.currency",
-    "pk": 5,
-    "fields": {
-      "name": "Australian dollar",
-      "code": "AUD",
-      "symbol": "$"
-    }
-  },
-  {
-    "model": "helper_models.currency",
-    "pk": 6,
-    "fields": {
-      "name": "Canadian dollar",
-      "code": "CAD",
-      "symbol": "$"
-    }
-  },
-  {
-    "model": "helper_models.currency",
-    "pk": 7,
-    "fields": {
-      "name": "Swiss franc",
-      "code": "CHF",
-      "symbol": "Fr"
-    }
-  },
-  {
-    "model": "helper_models.currency",
-    "pk": 8,
-    "fields": {
-      "name": "Chinese renminbi",
-      "code": "CNH",
-      "symbol": "¥"
-    }
-  },
-  {
-    "model": "helper_models.currency",
-    "pk": 9,
-    "fields": {
       "name": "Polish Zloty",
       "code": "PLN",
       "symbol": "zł"

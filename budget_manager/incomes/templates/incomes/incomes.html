@@ -38,24 +38,48 @@
         <div class="items-center block justify-between sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
 
             <form method="get" class="flex items-center space-x-2">
-                {{filter.form}}
-                <button type="submit" class="py-2.5 px-5 mr-2 mt-6 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Search</button>
-            </form>
+    <div class="mb-4">
+        <label for="{{ filter.form.date.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-white">Date</label>
+        {{ filter.form.date }}
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ filter.form.payment_method.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-white">Payment Method</label>
+        {{ filter.form.payment_method }}
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ filter.form.tags.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-white">Tags</label>
+        {{ filter.form.tags }}
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ filter.form.currency.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-white">Currency</label>
+        {{ filter.form.currency }}
+    </div>
+
+     <button type="submit" class="sm:mt-4 inline-flex items-center py-2.5 px-3 ms-2 mt-2 text-sm font-medium text-white bg-yellow-700 rounded-lg border border-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800 text-center me-2 mb-2">
+        <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+        </svg>Search
+    </button>
+</form>
 
             <!-- Export to CSV Button -->
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                <a href="{% url 'incomes:export-incomes-csv' %}" class="text-white no-underline">Export to CSV</a>
+            <button class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2">
+                <a href="{% url 'incomes:export-incomes-csv' %}" class="no-underline">Export to CSV</a>
             </button>
 
             <!-- Export to PDF Button -->
-            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <button class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
                 <a href="{% url 'incomes:export-incomes-pdf' %}" class="text-white no-underline">Export to PDF</a>
             </button>
-
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <!-- OCR add Button -->
+            <button class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
               <a href="{% url 'budgets:process_image' %}" class="text-white no-underline">Add new Income by Image</a>
             </button>
-            <button id="createIncomeButton" class="mt-6 justify-end text-white bg-lime-700 hover:bg-lime-800 focus:ring-4 focus:ring-lime-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-lime-600 dark:hover:bg-lime-700 focus:outline-none dark:focus:ring-lime-800" type="button" data-drawer-target="drawer-create-product-default" data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default" data-drawer-placement="right">
+            <!-- Add new expense Button -->
+            <button id="createIncomeButton" class="justify-end text-white bg-lime-700 hover:bg-lime-800 focus:ring-4 focus:ring-lime-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-lime-600 dark:hover:bg-lime-700 focus:outline-none dark:focus:ring-lime-800 text-center me-2 mb-2" type="button" data-drawer-target="drawer-create-product-default" data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default" data-drawer-placement="right">
                 Add new Income
             </button>
         </div>
@@ -69,12 +93,6 @@
                 <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
                     <thead class="bg-gray-100 dark:bg-gray-700">
                         <tr>
-                            <th scope="col" class="p-4">
-                                <div class="flex items-center">
-                                    <input id="checkbox-all" aria-describedby="checkbox-1" type="checkbox" class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="checkbox-all" class="sr-only">checkbox</label>
-                                </div>
-                            </th>
                             <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                                 Amount
                             </th>
@@ -104,13 +122,6 @@
                     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                     {% for income in incomes %}
                         <tr id="income-{{ income.id }}" class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <td class="w-4 p-4">
-                                <div class="flex items-center">
-                                    <input id="checkbox-{{ .id }}" aria-describedby="checkbox-1" type="checkbox"
-                                        class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="checkbox-{{ .id }}" class="sr-only">checkbox</label>
-                                </div>
-                            </td>
 
                             <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                                 <div class="text-base font-semibold text-gray-900 dark:text-white">{{income.amount}}</div>

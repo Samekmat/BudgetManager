@@ -2,6 +2,9 @@ import plotly.graph_objects as go
 from django.db.models import Sum
 from plotly.offline import plot
 
+BG_COLOR = "#d1d5db"
+PLOT_BGCOLOR = "#e5e7eb"
+
 
 class ChartsBudgetsGenerator:
     @staticmethod
@@ -37,6 +40,8 @@ class ChartsBudgetsGenerator:
             xaxis_title="",
             yaxis_title="Amount",
             barmode="group",
+            paper_bgcolor=BG_COLOR,
+            plot_bgcolor=PLOT_BGCOLOR,
         )
 
         return plot(fig, output_type="div")
@@ -50,6 +55,7 @@ class ChartsBudgetsGenerator:
         ]
 
         fig = go.Figure(data=[go.Pie(labels=labels, values=values, title="Incomes/Expenses")])
+        fig.update_layout(paper_bgcolor=BG_COLOR, plot_bgcolor=PLOT_BGCOLOR)
 
         return plot(fig, output_type="div")
 
@@ -62,10 +68,11 @@ class ChartsBudgetsGenerator:
                 mode="number+delta",
                 value=total_balance,
                 title="Total Balance",
-                number={"prefix": context["budget"].currency.symbol},
+                number={"suffix": f" {context['budget'].currency.symbol}"},
             )
         )
 
+        fig.update_layout(paper_bgcolor=BG_COLOR, plot_bgcolor=PLOT_BGCOLOR)
         return plot(fig, output_type="div")
 
     @staticmethod
@@ -75,7 +82,7 @@ class ChartsBudgetsGenerator:
 
         fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
 
-        fig.update_layout(title="Income Categories")
+        fig.update_layout(title="Income Categories", paper_bgcolor=BG_COLOR, plot_bgcolor=PLOT_BGCOLOR)
 
         return plot(fig, output_type="div")
 
@@ -86,7 +93,7 @@ class ChartsBudgetsGenerator:
 
         fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
 
-        fig.update_layout(title="Expense Categories")
+        fig.update_layout(title="Expense Categories", paper_bgcolor=BG_COLOR, plot_bgcolor=PLOT_BGCOLOR)
 
         return plot(fig, output_type="div")
 
@@ -125,6 +132,8 @@ class ChartsBudgetsGenerator:
             title="Budget Overview",
             xaxis_title="Date",
             yaxis_title="Amount",
+            paper_bgcolor=BG_COLOR,
+            plot_bgcolor=PLOT_BGCOLOR,
         )
 
         chart_div = plot(fig, output_type="div", include_plotlyjs=False)

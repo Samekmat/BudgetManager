@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-  <h2 class="text-2xl font-bold mb-4">CSV Upload</h2>
+  <h2 class="text-2xl font-bold mb-4 dark:text-white">CSV Upload</h2>
 
   <!-- Bank selection buttons/images -->
   <div class="flex space-x-4 mb-4">
@@ -23,21 +23,21 @@
     {% csrf_token %}
     <input type="hidden" name="bank" id="bank" value="">
     {{ form }}
-    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Upload</button>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Upload</button>
   </form>
 
   {% if incomes or expenses %}
-    <h3 class="text-xl font-bold mt-6">Incomes:</h3>
+    <h3 class="text-xl font-bold mt-6 dark:text-white">Incomes:</h3>
     <ul class="list-disc list-inside mt-4">
       {% for income in incomes %}
-        <li>Amount: {{ income.amount }}, Date: {{ income.date }}, Currency: {{ income.currency }}</li>
+        <li class="dark:text-white">Amount: {{ income.amount }}, Date: {{ income.date }}, Currency: {{ income.currency }}</li>
       {% endfor %}
     </ul>
 
-    <h3 class="text-xl font-bold mt-6">Expenses:</h3>
+    <h3 class="text-xl font-bold mt-6 dark:text-white">Expenses:</h3>
     <ul class="list-disc list-inside mt-4">
       {% for expense in expenses %}
-        <li>Amount: {{ expense.amount }}, Date: {{ expense.date }}, Currency: {{ expense.currency }}</li>
+        <li class="dark:text-white">Amount: {{ expense.amount }}, Date: {{ expense.date }}, Currency: {{ expense.currency }}</li>
       {% endfor %}
     </ul>
   {% endif %}

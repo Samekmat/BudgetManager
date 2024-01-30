@@ -6,7 +6,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("csv_files", "0001_initial"),
+        ("file_parsers", "0001_initial"),
     ]
 
     operations = [

@@ -1,9 +1,11 @@
-from csv_files.bank_csv_parsers import NestParser, RevolutParser, SantanderParser
-from csv_files.forms import CSVUploadForm
-from csv_files.models import CSVFile
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import FormView
+from file_parsers.forms import CSVUploadForm
+from file_parsers.models import CSVFile
+from file_parsers.parsers.csv.nest import NestCSVParser
+from file_parsers.parsers.csv.revolut import RevolutCSVParser
+from file_parsers.parsers.csv.santander import SantanderCSVParser
 
 
 class CSVUploadView(LoginRequiredMixin, FormView):
@@ -15,17 +17,18 @@ class CSVUploadView(LoginRequiredMixin, FormView):
         csv_file = form.cleaned_data["csv_file"]
         selected_bank = self.request.POST.get("bank", "")
 
-        if selected_bank == "santander":
-            parser = SantanderParser()
-        elif selected_bank == "nest":
-            parser = NestParser()
-        elif selected_bank == "revolut":
-            parser = RevolutParser()
-        # else:
-        #     parser = DefaultParser()
+        bank_parser_mapping = {
+            "santander": SantanderCSVParser,
+            "nest": NestCSVParser,
+            "revolut": RevolutCSVParser,
+        }
 
-        csv_file_instance = CSVFile(user=self.request.user, csv_file=csv_file)
-        csv_file_instance.save()
+        parser_class = bank_parser_mapping.get(selected_bank)
+
+        if parser_class:
+            parser = parser_class()
+
+        csv_file_instance = CSVFile.objects.create(user=self.request.user, csv_file=csv_file)
 
         csv_file_path = csv_file_instance.csv_file.path
 

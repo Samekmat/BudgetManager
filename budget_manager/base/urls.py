@@ -30,7 +30,7 @@ urlpatterns = [
     path("", include("helper_models.urls")),
     path("", include("budget_manager_app.urls")),
     path("", include("saving_goals.urls")),
-    path("", include("csv_files.urls")),
+    path("", include("file_parsers.urls")),
     path("dashboard/", views.DashboardView.as_view(), name="dashboard"),
 ]
 

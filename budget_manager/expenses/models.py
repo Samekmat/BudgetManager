@@ -1,11 +1,9 @@
-import calendar
-from datetime import timedelta
-
 from budget_manager_app.consts import PAYMENT_METHOD_CHOICES
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Sum
+from django.db.models.functions import TruncMonth
 from django.utils import timezone
 from helper_models.models import Category, Currency, Tag
 
@@ -90,13 +88,6 @@ class Expense(models.Model):
         user = request.user
 
         today = timezone.now()
-        last_day_previous_month = today.replace(day=1) - timedelta(days=1)
-
-        # Calculate the first day and last day of the next month
-        first_day_next_month = today.replace(day=1) + timedelta(days=32 - today.day)
-        last_day_next_month = first_day_next_month.replace(
-            day=calendar.monthrange(first_day_next_month.year, first_day_next_month.month)[1]
-        )
 
         results = {}
 
@@ -106,30 +97,20 @@ class Expense(models.Model):
             category_results = {}
 
             for currency in distinct_currencies:
-                existing_expenses = (
-                    Expense.objects.filter(
-                        user=user,
-                        category=category,
-                        currency=currency,
-                        date__range=(last_day_previous_month.replace(day=1), last_day_previous_month),
-                    ).aggregate(Sum("amount"))["amount__sum"]
-                    or 0
+                expenses = Expense.objects.filter(user=user, category=category, currency=currency, date__lte=today)
+
+                monthly_totals = (
+                    expenses.annotate(year_month=TruncMonth("date")).values("year_month").annotate(total=Sum("amount"))
                 )
 
-                forecasted_expenses = (
-                    Expense.objects.filter(
-                        user=user,
-                        category=category,
-                        currency=currency,
-                        date__range=(first_day_next_month, last_day_next_month),
-                    ).aggregate(Sum("amount"))["amount__sum"]
-                    or 0
-                )
+                total_months = len(monthly_totals)
+                total_amount = sum(item["total"] for item in monthly_totals)
 
-                category_results[currency.symbol] = {
-                    "existing_expenses": existing_expenses,
-                    "forecasted_expenses": forecasted_expenses,
-                }
+                average_amount_per_month = 0
+                if total_months != 0:
+                    average_amount_per_month = total_amount / total_months
+
+                category_results[currency.symbol] = {"average_amount_per_month": average_amount_per_month}
 
             results[category.name] = category_results
 

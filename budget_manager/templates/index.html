@@ -65,14 +65,14 @@
         <div class="flex flex-col sm:flex-row">
             <!-- Forecasted Expenses Section (Left Side) -->
             <div class="sm:w-1/2 pr-4">
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Forecasted Expenses</h1>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Expenses Forecast for the next month based on average(total/months)</h1>
                 {% for category, currency_results in expense_forecast.items %}
                     <div class="mb-4 p-4 bg-white dark:bg-gray-700 rounded-lg shadow-md">
                         <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ category }}</h2>
                         <ul class="list-disc pl-4">
                             {% for currency, result in currency_results.items %}
                                 <li class="text-gray-700 dark:text-gray-200">
-                                    <span class="font-bold">{{ currency }}:</span> Forecasted Expenses: {{ result.forecasted_expenses }}
+                                    <span class="font-bold">{{ currency }}:</span> Forecasted Expenses: {{ result.average_amount_per_month|floatformat:2 }} {{ currency }}
                                 </li>
                             {% endfor %}
                         </ul>

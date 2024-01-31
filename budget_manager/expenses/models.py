@@ -1,3 +1,6 @@
+import calendar
+from datetime import timedelta
+
 from budget_manager_app.consts import PAYMENT_METHOD_CHOICES
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
@@ -77,6 +80,56 @@ class Expense(models.Model):
                     percentage_change = ((total_expenses - total_entire_period) / total_entire_period) * 100
 
                 category_results[currency.symbol] = {"result": result, "percentage_change": percentage_change}
+
+            results[category.name] = category_results
+
+        return results
+
+    @staticmethod
+    def forecast_expenses(request):
+        user = request.user
+
+        today = timezone.now()
+        last_day_previous_month = today.replace(day=1) - timedelta(days=1)
+
+        # Calculate the first day and last day of the next month
+        first_day_next_month = today.replace(day=1) + timedelta(days=32 - today.day)
+        last_day_next_month = first_day_next_month.replace(
+            day=calendar.monthrange(first_day_next_month.year, first_day_next_month.month)[1]
+        )
+
+        results = {}
+
+        distinct_currencies = Currency.objects.filter(expense__user=user).distinct()
+
+        for category in Category.objects.filter(type="expense"):
+            category_results = {}
+
+            for currency in distinct_currencies:
+                existing_expenses = (
+                    Expense.objects.filter(
+                        user=user,
+                        category=category,
+                        currency=currency,
+                        date__range=(last_day_previous_month.replace(day=1), last_day_previous_month),
+                    ).aggregate(Sum("amount"))["amount__sum"]
+                    or 0
+                )
+
+                forecasted_expenses = (
+                    Expense.objects.filter(
+                        user=user,
+                        category=category,
+                        currency=currency,
+                        date__range=(first_day_next_month, last_day_next_month),
+                    ).aggregate(Sum("amount"))["amount__sum"]
+                    or 0
+                )
+
+                category_results[currency.symbol] = {
+                    "existing_expenses": existing_expenses,
+                    "forecasted_expenses": forecasted_expenses,
+                }
 
             results[category.name] = category_results
 

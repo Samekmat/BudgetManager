@@ -53,21 +53,37 @@
             </ul>
         </div>
 
-        <!-- Main Content Section -->
-        <div class="flex flex-col sm:flex-row">
+
             <!-- Add Transactions Section (Centered) -->
-            <div class="sm:w-1/2 mb-8 mx-auto bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Add Incomes/Expenses by CSV file</h2>
-                <a href="{% url 'file_parsers:upload-csv' %}" class="block bg-blue-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 transition-all duration-300 mx-auto">
-                    Add Transactions
-                </a>
+            <div class="mb-8 mx-auto bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md sm:w-1/2">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Add Incomes/Expenses by CSV file</h2>
+            <a href="{% url 'file_parsers:upload-csv' %}" class="block bg-blue-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 transition-all duration-300 mx-auto">
+                Add Transactions
+            </a>
+        </div>
+
+        <div class="flex flex-col sm:flex-row">
+            <!-- Forecasted Expenses Section (Left Side) -->
+            <div class="sm:w-1/2 pr-4">
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Forecasted Expenses</h1>
+                {% for category, currency_results in expense_forecast.items %}
+                    <div class="mb-4 p-4 bg-white dark:bg-gray-700 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ category }}</h2>
+                        <ul class="list-disc pl-4">
+                            {% for currency, result in currency_results.items %}
+                                <li class="text-gray-700 dark:text-gray-200">
+                                    <span class="font-bold">{{ currency }}:</span> Forecasted Expenses: {{ result.forecasted_expenses }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
             </div>
 
-            <!-- Currency Selection Section with Currency Rates -->
-            <div class="sm:w-1/2 mb-8 pl-4">
-                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
+            <!-- Currency Rates Section (Right Side) -->
+            <div class="sm:w-1/2 pl-4">
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md mb-4">
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Currency Selection</h2>
-
                     <form method="get" class="max-w-sm mx-auto">
                         {% csrf_token %}
                         <div class="mb-4">
@@ -76,8 +92,9 @@
                         </div>
                         <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold py-2 px-4 rounded-full hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring focus:border-blue-300 transition-all duration-300">Submit</button>
                     </form>
-
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-6 mb-4">Exchange Rates from {{ base_currency }}</h2>
+                </div>
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Exchange Rates from {{ base_currency }}</h2>
                     <div class="max-h-48 overflow-y-auto">
                         <table class="w-full">
                             <thead>

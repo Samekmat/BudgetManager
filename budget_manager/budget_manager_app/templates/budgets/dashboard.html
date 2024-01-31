@@ -2,6 +2,31 @@
 
 {% block content %}
 
+    <!-- Recent Transactions Section -->
+    <div class="my-8 mt-6">
+        <h1 class="text-3xl font-bold mb-4 text-center dark:text-white">Recent Transactions</h1>
+        <ul class="space-y-4">
+            {% for transaction in recent_transactions %}
+                <li class="border p-4 rounded-md shadow-md">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-lg font-semibold dark:text-white">{{ transaction.date }}</span>
+                        <span class="ml-4 dark:text-white">{{ transaction.amount }}{{ transaction.currency.symbol }}</span>
+                    </div>
+                    <div class="mb-2">{{ transaction.description }}</div>
+                    {% if transaction.category.type == "income" %}
+                        <span class="text-green-500 font-semibold">
+                            ({{ transaction.category.type }})
+                        </span>
+                    {% elif transaction.category.type == "expense" %}
+                        <span class="text-red-500 font-semibold">
+                            ({{ transaction.category.type }})
+                        </span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
     <h1 class="text-3xl font-bold mb-4 text-center dark:text-white">Expense and Income Chart</h1>
 <form method="GET" class="flex items-center mb-6 max-w-sm mx-auto">
     {% for field in form %}
@@ -51,31 +76,4 @@
         <h2 class="dark:text-white">No data available for the expense pie chart</h2>
     {% endif %}
 </div>
-
-
-    <!-- Recent Transactions Section -->
-    <div class="my-8 mt-6">
-        <h1 class="text-3xl font-bold mb-4 text-center dark:text-white">Recent Transactions</h1>
-        <ul class="space-y-4">
-            {% for transaction in recent_transactions %}
-                <li class="border p-4 rounded-md shadow-md">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-lg font-semibold dark:text-white">{{ transaction.date }}</span>
-                        <span class="ml-4 dark:text-white">{{ transaction.amount }}{{ transaction.currency.symbol }}</span>
-                    </div>
-                    <div class="mb-2">{{ transaction.description }}</div>
-                    {% if transaction.category.type == "income" %}
-                        <span class="text-green-500 font-semibold">
-                            ({{ transaction.category.type }})
-                        </span>
-                    {% elif transaction.category.type == "expense" %}
-                        <span class="text-red-500 font-semibold">
-                            ({{ transaction.category.type }})
-                        </span>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-
 {% endblock %}

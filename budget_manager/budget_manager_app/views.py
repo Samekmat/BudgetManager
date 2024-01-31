@@ -40,11 +40,13 @@ class IndexView(View):
         currency_form = CurrencyBaseForm()
         base_currency = request.GET.get("base_currency", "USD")
         exchange_rates = self.get_exchange_rates(base_currency)
+        expense_forecast = Expense.forecast_expenses(request)
 
         ctx = {
             "expense_comparison_results": expense_comparison,
             "currency_form": currency_form,
             "exchange_rates": exchange_rates,
+            "expense_forecast": expense_forecast,
         }
 
         return render(request, self.template_name, ctx)

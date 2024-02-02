@@ -1380,6 +1380,17 @@ input:checked + .toggle-bg {
   max-width: 42rem;
 }
 
+<<<<<<< HEAD
+=======
+.max-w-3xl {
+  max-width: 48rem;
+}
+
+.max-w-full {
+  max-width: 100%;
+}
+
+>>>>>>> 8b9d3b871840bf58fe92c8e7a98607c7a842dd96
 .max-w-md {
   max-width: 28rem;
 }
@@ -2063,6 +2074,10 @@ input:checked + .toggle-bg {
 
 .leading-9 {
   line-height: 2.25rem;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
 }
 
 .text-blue-500 {

@@ -30,9 +30,7 @@ class Expense(models.Model):
         return f"Expense-{self.pk}({self.user.username}) - {self.amount}{self.currency.symbol}"
 
     @staticmethod
-    def compare_expenses(request):
-        user = request.user
-
+    def compare_expenses(user: User) -> dict:
         today = timezone.now()
         first_day_previous_month = timezone.datetime(today.year, today.month, 1) - timezone.timedelta(days=1)
 
@@ -84,9 +82,7 @@ class Expense(models.Model):
         return results
 
     @staticmethod
-    def forecast_expenses(request):
-        user = request.user
-
+    def forecast_expenses(user: User) -> dict:
         today = timezone.now()
 
         results = {}

@@ -36,11 +36,11 @@ class IndexView(LoginRequiredMixin, View):
     template_name = "index.html"
 
     def get(self, request):
-        expense_comparison = Expense.compare_expenses(request)
+        expense_comparison = Expense.compare_expenses(request.user)
         currency_form = CurrencyBaseForm()
         base_currency = request.GET.get("base_currency", "USD")
         exchange_rates = self.get_exchange_rates(base_currency)
-        forecast_results = Expense.forecast_expenses(request)
+        forecast_results = Expense.forecast_expenses(request.user)
 
         ctx = {
             "expense_comparison_results": expense_comparison,

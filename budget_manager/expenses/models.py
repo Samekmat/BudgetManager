@@ -31,6 +31,21 @@ class Expense(models.Model):
 
     @staticmethod
     def compare_expenses(user: User) -> dict:
+        """Compares the total expenses for each expense category between the previous
+        month and the entire period, providing results and percentage changes.
+
+        Args:
+        - user (User): The user for whom expenses are compared.
+
+        Returns:
+        - dict: A dictionary containing comparison results for each category and currency.
+        Example:
+        {
+            'Groceries': {'USD': {'result': 'increased', 'percentage_change': 10.0}, ... },
+            ...
+        }
+        """
+
         today = timezone.now()
         first_day_previous_month = timezone.datetime(today.year, today.month, 1) - timezone.timedelta(days=1)
 
@@ -83,6 +98,21 @@ class Expense(models.Model):
 
     @staticmethod
     def forecast_expenses(user: User) -> dict:
+        """Forecasts the average monthly expenses for each expense category based on past
+        data.
+
+        Args:
+        - user (User): The user for whom expenses are forecasted.
+
+        Returns:
+        - dict: A dictionary containing forecasted results for each category and currency.
+        Example:
+        {
+            'Entertainment': {'USD': {'average_amount_per_month': 50.0}, ... },
+            ...
+        }
+        """
+
         today = timezone.now()
 
         results = {}

@@ -53,15 +53,6 @@
             </ul>
         </div>
 
-
-            <!-- Add Transactions Section (Centered) -->
-            <div class="mb-8 mx-auto bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md sm:w-1/2">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Add Incomes/Expenses by CSV file</h2>
-            <a href="{% url 'file_parsers:upload-csv' %}" class="block bg-blue-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 transition-all duration-300 mx-auto">
-                Add Transactions
-            </a>
-        </div>
-
         <div class="flex flex-col sm:flex-row">
             <!-- Forecasted Expenses Section (Left Side) -->
             <div class="sm:w-1/2 pr-4">
@@ -80,41 +71,41 @@
                 {% endfor %}
             </div>
 
-            <!-- Currency Rates Section (Right Side) -->
-            <div class="sm:w-1/2 pl-4">
-                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md mb-4">
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Currency Selection</h2>
-                    <form method="get" class="max-w-sm mx-auto">
-                        {% csrf_token %}
-                        <div class="mb-4">
-                            <label for="{{ currency_form.base_currency.id_for_label }}" class="block text-gray-700 dark:text-white">Select Currency:</label>
-                            {{ currency_form.base_currency }}
-                        </div>
-                        <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold py-2 px-4 rounded-full hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring focus:border-blue-300 transition-all duration-300">Submit</button>
-                    </form>
-                </div>
-                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Exchange Rates from {{ base_currency }}</h2>
-                    <div class="max-h-48 overflow-y-auto">
-                        <table class="w-full">
-                            <thead>
-                                <tr>
-                                    <th class="py-2 px-4 bg-gray-200 dark:bg-gray-800 dark:text-white">Currency</th>
-                                    <th class="py-2 px-4 bg-gray-200 dark:bg-gray-800 dark:text-white">Rate</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for currency, rate in exchange_rates.data.items %}
-                                    <tr>
-                                        <td class="py-2 px-4 dark:text-white">{{ currency }}</td>
-                                        <td class="py-2 px-4 dark:text-white">{{ rate|floatformat:4 }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+           <!-- Currency Rates Section (Right Side) -->
+<div class="sm:w-1/2 pl-4">
+    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md mb-4">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Currency Selection for Exchange Rates</h2>
+        <form method="get" class="max-w-sm mx-auto">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="{{ currency_form.base_currency.id_for_label }}" class="block text-gray-700 dark:text-white">Select Currency:</label>
+                {{ currency_form.base_currency }}
             </div>
+            <button type="submit" class="mb-5 w-full bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 text-white font-bold py-2 px-4 rounded-full transition-all duration-300">Submit</button>
+        </form>
+
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Exchange Rates from {{ base_currency }}</h2>
+        <div class="max-h-48 overflow-y-auto">
+            <table class="w-full">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 bg-gray-200 dark:bg-gray-800 dark:text-white">Currency</th>
+                        <th class="py-2 px-4 bg-gray-200 dark:bg-gray-800 dark:text-white">Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for currency, rate in exchange_rates.data.items %}
+                        <tr>
+                            <td class="py-2 px-4 dark:text-white">{{ currency }}</td>
+                            <td class="py-2 px-4 dark:text-white">{{ rate|floatformat:4 }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
         </div>
     </div>
 {% endblock content %}

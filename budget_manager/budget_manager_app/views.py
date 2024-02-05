@@ -117,7 +117,7 @@ class BudgetDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class ChartView(LoginRequiredMixin, View):
-    template_name = "budgets/charts.html"
+    template_name = "budgets/budget_charts.html"
 
     def get_context_data(self, budget):
         income_categories = budget.incomes.values("category__name").annotate(total=Sum("amount"))

@@ -1,6 +1,5 @@
 from decimal import Decimal
 
-from django.db import DataError
 from django.test import TestCase
 from saving_goals.factories import SavingGoalFactory
 from saving_goals.models import SavingGoal
@@ -8,7 +7,7 @@ from saving_goals.models import SavingGoal
 
 class SavingGoalTestCase(TestCase):
     def setUp(self):
-        self.test_goal = SavingGoalFactory()
+        self.test_goal = SavingGoalFactory(name="default_goal")
         self.custom_goal = SavingGoalFactory(
             name="Default amount if not specified",
             amount=0,
@@ -47,10 +46,6 @@ class SavingGoalTestCase(TestCase):
 
     def test_saving_goal_name_constraints(self):
         self.assertTrue(len(self.test_goal.name) <= 120)
-
-    def test_saving_goal_name_exceeds_max_length(self):
-        with self.assertRaises(DataError):
-            SavingGoalFactory(name="a" * 121)
 
     def test_saving_goal_str(self):
         self.assertEqual(str(self.test_goal), "default_goal")

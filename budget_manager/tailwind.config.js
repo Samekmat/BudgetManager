@@ -9,6 +9,7 @@ module.exports = {
       './saving_goals/templates/saving_goals/*html',
       './helper_models/templates/categories/*html',
       './helper_models/templates/tags/*html',
+      './file_parsers/templates/*html',
       './node_modules/flowbite/**/*.js'
   ],
   theme: {

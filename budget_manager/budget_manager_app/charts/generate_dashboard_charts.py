@@ -1,11 +1,29 @@
+from datetime import date
+from typing import Optional, Type, Union
+
 import plotly.graph_objects as go
-from django.db.models import Sum
+from django.db.models import QuerySet, Sum
+from django.forms import Form
+from expenses.models import Expense
+from incomes.models import Income
 from plotly.offline import plot
 
 
 class ChartsDashboardGenerator:
     @staticmethod
-    def generate_line_chart(form, expenses, incomes):
+    def generate_line_chart(form: Form, expenses: QuerySet, incomes: QuerySet) -> Optional[str]:
+        """Generate a line chart comparing expenses and incomes based on the provided
+        form and data.
+
+        Args:
+        - form (Form): The form containing user input.
+        - expenses (QuerySet): QuerySet of expense objects.
+        - incomes (QuerySet): QuerySet of income objects.
+
+        Returns:
+        - Optional[str]: The generated chart as an HTML div string, or None if no data is available.
+        """
+
         if form.is_valid():
             date_from = form.cleaned_data.get("date_from")
             date_to = form.cleaned_data.get("date_to")
@@ -52,7 +70,26 @@ class ChartsDashboardGenerator:
                 return line_chart
 
     @staticmethod
-    def generate_pie_chart(model, date_from, date_to, currency, title):
+    def generate_pie_chart(
+        model: Type[Union[Expense, Income]],
+        date_from: Optional[date],
+        date_to: Optional[date],
+        currency: str,
+        title: str,
+    ) -> Optional[str]:
+        """Generate a pie chart for a specific model based on date range and currency.
+
+        Args:
+        - model (Type[Union[ExpensesModel, IncomesModel]]): The model class for either expenses or incomes.
+        - date_from (Optional[date]): The start date for the filter.
+        - date_to (Optional[date]): The end date for the filter.
+        - currency (str): The currency code to filter by.
+        - title (str): The title for the chart.
+
+        Returns:
+        - Optional[str]: The generated chart as an HTML div string, or None if no data is available.
+        """
+
         filtered_data = model.objects.filter(currency=currency)
 
         if date_from and date_to:
@@ -71,7 +108,19 @@ class ChartsDashboardGenerator:
             return plot(fig, output_type="div")
 
     @staticmethod
-    def generate_percentage_bar_chart(form, expenses, incomes):
+    def generate_percentage_bar_chart(form: Form, expenses: QuerySet, incomes: QuerySet) -> Optional[str]:
+        """Generate a percentage bar chart comparing expenses and incomes based on the
+        provided form and data.
+
+        Args:
+        - form (Form): The form containing user input.
+        - expenses (QuerySet): QuerySet of expense objects.
+        - incomes (QuerySet): QuerySet of income objects.
+
+        Returns:
+        - Optional[str]: The generated chart as an HTML div string, or None if no data is available.
+        """
+
         if form.is_valid():
             date_from = form.cleaned_data.get("date_from")
             date_to = form.cleaned_data.get("date_to")
@@ -113,7 +162,19 @@ class ChartsDashboardGenerator:
                 return plot(fig, output_type="div")
 
     @staticmethod
-    def filter_data(data, date_from, date_to, currency):
+    def filter_data(data: QuerySet, date_from: Optional[date], date_to: Optional[date], currency: str) -> QuerySet:
+        """Filter the provided data based on date range and currency.
+
+        Args:
+        - data (QuerySet): The data to be filtered.
+        - date_from (Optional[date]): The start date for the filter.
+        - date_to (Optional[date]): The end date for the filter.
+        - currency (str): The currency code to filter by.
+
+        Returns:
+        - QuerySet: The filtered data.
+        """
+
         filters = {}
         if date_from:
             filters["date__gte"] = date_from

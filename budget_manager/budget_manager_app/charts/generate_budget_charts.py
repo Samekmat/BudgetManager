@@ -1,3 +1,5 @@
+from typing import Any, Dict, List, Union
+
 import plotly.graph_objects as go
 from django.db.models import Sum
 from plotly.offline import plot
@@ -8,7 +10,16 @@ PLOT_BGCOLOR = "#e5e7eb"
 
 class ChartsBudgetsGenerator:
     @staticmethod
-    def generate_bar_chart(context):
+    def generate_bar_chart(context: Dict[str, Union[List[Dict[str, Any]], float]]) -> str:
+        """Generate a bar chart comparing total incomes and total expenses.
+
+        Args:
+        - context (Dict): Dictionary containing incomes and expenses data.
+
+        Returns:
+        - str: The generated chart as an HTML div string.
+        """
+
         total_incomes = sum(item["total"] for item in context["incomes"])
         total_expenses = sum(item["total"] for item in context["expenses"])
 
@@ -47,7 +58,16 @@ class ChartsBudgetsGenerator:
         return plot(fig, output_type="div")
 
     @staticmethod
-    def generate_pie_chart(context):
+    def generate_pie_chart(context: Dict[str, Union[List[Dict[str, Any]], float]]) -> str:
+        """Generate a pie chart representing the distribution of incomes and expenses.
+
+        Args:
+        - context (Dict): Dictionary containing incomes and expenses data.
+
+        Returns:
+        - str: The generated chart as an HTML div string.
+        """
+
         labels = ["Incomes", "Expenses"]
         values = [
             sum(item["total"] for item in context["incomes"]),
@@ -60,7 +80,16 @@ class ChartsBudgetsGenerator:
         return plot(fig, output_type="div")
 
     @staticmethod
-    def generate_budget_chart(context):
+    def generate_budget_chart(context: Dict[str, Any]) -> str:
+        """Generate an indicator chart for the total budget balance.
+
+        Args:
+        - context (Dict): Dictionary containing total_balance and budget data.
+
+        Returns:
+        - str: The generated chart as an HTML div string.
+        """
+
         total_balance = context["total_balance"]
 
         fig = go.Figure(
@@ -76,7 +105,17 @@ class ChartsBudgetsGenerator:
         return plot(fig, output_type="div")
 
     @staticmethod
-    def generate_income_category_pie_chart(context):
+    def generate_income_category_pie_chart(context: Dict[str, List[Dict[str, Any]]]) -> str:
+        """Generate a pie chart representing the distribution of incomes across
+        categories.
+
+        Args:
+        - context (Dict): Dictionary containing income categories data.
+
+        Returns:
+        - str: The generated chart as an HTML div string.
+        """
+
         labels = [item["category__name"] for item in context["income_categories"]]
         values = [item["total"] for item in context["income_categories"]]
 
@@ -87,7 +126,17 @@ class ChartsBudgetsGenerator:
         return plot(fig, output_type="div")
 
     @staticmethod
-    def generate_expense_category_pie_chart(context):
+    def generate_expense_category_pie_chart(context: Dict[str, List[Dict[str, Any]]]) -> str:
+        """Generate a pie chart representing the distribution of expenses across
+        categories.
+
+        Args:
+        - context (Dict): Dictionary containing expense categories data.
+
+        Returns:
+        - str: The generated chart as an HTML div string.
+        """
+
         labels = [item["category__name"] for item in context["expense_categories"]]
         values = [item["total"] for item in context["expense_categories"]]
 
@@ -98,7 +147,16 @@ class ChartsBudgetsGenerator:
         return plot(fig, output_type="div")
 
     @staticmethod
-    def generate_line_chart(context):
+    def generate_line_chart(context: Dict[str, Any]) -> str:
+        """Generate a line chart representing the budget overview.
+
+        Args:
+        - context (Dict): Dictionary containing budget overview data.
+
+        Returns:
+        - str: The generated chart as an HTML div string.
+        """
+
         income_data = context["budget"].incomes.values("date").annotate(total=Sum("amount")).order_by("date")
         income_dates = [item["date"] for item in income_data]
         income_totals = [item["total"] for item in income_data]

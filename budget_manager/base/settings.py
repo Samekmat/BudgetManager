@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     "compressor",
     "rest_framework",
     "django_filters",
-    "debug_toolbar",
-    "silk",
+    # "axes",
+    # "silk",
+    # "debug_toolbar",
 ]
 
 INSTALLED_EXTENSIONS = [
@@ -57,8 +58,8 @@ INSTALLED_EXTENSIONS = [
 INSTALLED_APPS += INSTALLED_EXTENSIONS
 
 MIDDLEWARE = [
-    "silk.middleware.SilkyMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "silk.middleware.SilkyMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -66,6 +67,12 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # AxesMiddleware should be the last middleware in the MIDDLEWARE list.
+    # It only formats user lockout messages and renders Axes lockout responses
+    # on failed user authentication attempts from login views.
+    # If you do not want Axes to override the authentication response
+    # you can skip installing the middleware and use your own views.
+    # 'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = "base.urls"
@@ -186,3 +193,16 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ]
 }
+
+
+# AUTHENTICATION_BACKENDS = [
+#     # AxesStandaloneBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
+#     'axes.backends.AxesStandaloneBackend',
+#     # Django ModelBackend is the default authentication backend.
+#     'django.contrib.auth.backends.ModelBackend',
+#     ]
+#
+# # Django Axes settings
+# AXES_FAILURE_LIMIT = 5  # Number of login attempts allowed before lockout
+# AXES_LOCK_OUT_AT_FAILURE = True  # Whether to lock out based on number of login attempts
+# AXES_COOLOFF_TIME = timedelta(hours=1)

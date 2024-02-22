@@ -1,0 +1,18 @@
+Account number,,,,,,,,
+OWNER,,,,,,,,
+Date range of transactions,,,,,,,,
+Amount of transactions,,,,,,,,
+Sum +,,,,,,,,
+Sum -,,,,,,,,
+Indexing date,Operation date,Operation type,Amount,Currency,Data from who,Account number from,title,Amount after operation
+17-01-2024,13-01-2024,Płatności kartą,-81.85,PLN,,,test,0.19
+16-01-2024,13-01-2024,Płatności kartą,-39.2,PLN,,,test,82.04
+16-01-2024,12-01-2024,Płatności kartą,-50.61,PLN,,,test,121.24
+13-01-2024,13-01-2024,Przelewy przychodzące,1,PLN,Mr Test from green street 123,PL00000000000000000000000000,test,171.85
+09-01-2024,07-01-2024,Płatności kartą,-43.34,PLN,,,test,170.85
+03-01-2024,01-01-2024,Płatności kartą,-8,PLN,,,test,214.19
+02-01-2024,30-12-2023,Płatności kartą,-120,PLN,,,test,222.19
+02-01-2024,30-12-2023,Płatności kartą,-12,PLN,,,test,342.19
+02-01-2024,30-12-2023,Płatności kartą,-81.07,PLN,,,test,354.19
+27-12-2023,22-12-2023,Płatności kartą,-25.63,PLN,,,test,435.26
+27-12-2023,22-12-2023,Płatności kartą,-39.99,PLN,,,test,460.89

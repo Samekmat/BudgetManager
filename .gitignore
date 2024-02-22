@@ -155,3 +155,8 @@ lerna-debug.log*
 
 static/CACHE/*
 todo.md
+
+tessdata
+code
+app
+data

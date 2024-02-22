@@ -1,7 +1,7 @@
 from budget_manager_app.consts import CATEGORY_TYPES
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, QuerySet
 
 
 class Category(models.Model):
@@ -23,7 +23,7 @@ class Category(models.Model):
         return self.name
 
     @staticmethod
-    def get_categories_for_user(user):
+    def get_categories_for_user(user: User) -> QuerySet["Category"]:
         if user and hasattr(user, "is_authenticated") and user.is_authenticated:
             return Category.objects.filter(Q(user=user) | Q(builtin=True))
         else:

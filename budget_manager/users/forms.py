@@ -9,7 +9,6 @@ class RegisterForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # self.fields['username'].label_tag(attrs={'class': "text-gray-900 dark:text-white"}) TODO add class
         self.fields["username"].widget.attrs["class"] = CLASSES
         self.fields["email"].widget.attrs["class"] = CLASSES
         self.fields["password1"].widget.attrs["class"] = CLASSES

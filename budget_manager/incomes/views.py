@@ -25,7 +25,12 @@ class IncomeListView(LoginRequiredMixin, ListView):
     ordering = ["-date"]
 
     def get_queryset(self):
-        user_incomes = Income.objects.filter(user=self.request.user).order_by("-date")
+        user_incomes = (
+            Income.objects.filter(user=self.request.user)
+            .order_by("-date")
+            .select_related("currency", "category")
+            .prefetch_related("tags")
+        )
         return user_incomes
 
     def get_context_data(self, *, object_list=None, **kwargs):

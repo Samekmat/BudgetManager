@@ -51,8 +51,9 @@ class CategoryDeleteAPIView(generics.DestroyAPIView):
         idx = instance.id
 
         if instance.builtin:
-            messages.error(request, f"Cannot delete a non-editable category with ID {instance.id}.")
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            msg = f"Cannot delete a non-editable category with ID {idx}."
+            messages.error(request, msg)
+            return Response(data={"message": msg}, status=status.HTTP_400_BAD_REQUEST)
 
         self.perform_destroy(instance)
         messages.success(request, f"Category with ID {idx} has been deleted.")

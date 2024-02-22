@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import factory
 from file_parsers.models import CSVFile
 from users.factories import UserFactory
@@ -9,4 +11,4 @@ class CSVFileFactory(factory.django.DjangoModelFactory):
 
     user = factory.SubFactory(UserFactory)
     csv_file = factory.django.FileField(filename="example.csv")
-    uploaded_at = factory.Faker("date_time_this_decade")
+    uploaded_at = datetime(year=2024, month=1, day=30)

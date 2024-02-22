@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Sum
+from django.db.models.functions import TruncMonth
 from django.utils import timezone
 from helper_models.models import Category, Currency, Tag
 
@@ -29,8 +30,21 @@ class Expense(models.Model):
         return f"Expense-{self.pk}({self.user.username}) - {self.amount}{self.currency.symbol}"
 
     @staticmethod
-    def compare_expenses(request):
-        user = request.user
+    def compare_expenses(user: User) -> dict:
+        """Compares the total expenses for each expense category between the previous
+        month and the entire period, providing results and percentage changes.
+
+        Args:
+        - user (User): The user for whom expenses are compared.
+
+        Returns:
+        - dict: A dictionary containing comparison results for each category and currency.
+        Example:
+        {
+            'Groceries': {'USD': {'result': 'increased', 'percentage_change': 10.0}, ... },
+            ...
+        }
+        """
 
         today = timezone.now()
         first_day_previous_month = timezone.datetime(today.year, today.month, 1) - timezone.timedelta(days=1)
@@ -77,6 +91,52 @@ class Expense(models.Model):
                     percentage_change = ((total_expenses - total_entire_period) / total_entire_period) * 100
 
                 category_results[currency.symbol] = {"result": result, "percentage_change": percentage_change}
+
+            results[category.name] = category_results
+
+        return results
+
+    @staticmethod
+    def forecast_expenses(user: User) -> dict:
+        """Forecasts the average monthly expenses for each expense category based on past
+        data.
+
+        Args:
+        - user (User): The user for whom expenses are forecasted.
+
+        Returns:
+        - dict: A dictionary containing forecasted results for each category and currency.
+        Example:
+        {
+            'Entertainment': {'USD': {'average_amount_per_month': 50.0}, ... },
+            ...
+        }
+        """
+
+        today = timezone.now()
+
+        results = {}
+
+        distinct_currencies = Currency.objects.filter(expense__user=user).distinct()
+
+        for category in Category.objects.filter(type="expense"):
+            category_results = {}
+
+            for currency in distinct_currencies:
+                expenses = Expense.objects.filter(user=user, category=category, currency=currency, date__lte=today)
+
+                monthly_totals = (
+                    expenses.annotate(year_month=TruncMonth("date")).values("year_month").annotate(total=Sum("amount"))
+                )
+
+                total_months = len(monthly_totals)
+                total_amount = sum(item["total"] for item in monthly_totals)
+
+                average_amount_per_month = 0
+                if total_months != 0:
+                    average_amount_per_month = total_amount / total_months
+
+                category_results[currency.symbol] = {"average_amount_per_month": average_amount_per_month}
 
             results[category.name] = category_results
 

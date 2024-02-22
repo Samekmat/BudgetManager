@@ -32,8 +32,30 @@ from incomes.models import Income
 from PIL import Image
 
 
-def index(request):
-    return render(request, "index.html")
+class IndexView(LoginRequiredMixin, View):
+    template_name = "index.html"
+
+    def get(self, request):
+        expense_comparison = Expense.compare_expenses(request.user)
+        currency_form = CurrencyBaseForm()
+        base_currency = request.GET.get("base_currency", "USD")
+        exchange_rates = self.get_exchange_rates(base_currency)
+        forecast_results = Expense.forecast_expenses(request.user)
+
+        ctx = {
+            "expense_comparison_results": expense_comparison,
+            "currency_form": currency_form,
+            "exchange_rates": exchange_rates,
+            "expense_forecast": forecast_results,
+            "base_currency": base_currency,
+        }
+
+        return render(request, self.template_name, ctx)
+
+    def get_exchange_rates(self, base_currency):
+        api_key = settings.FREE_CURRENCY_API_KEY
+        client = freecurrencyapi.Client(api_key)
+        return client.latest(base_currency=base_currency)
 
 
 class BudgetListView(LoginRequiredMixin, ListView):
@@ -95,7 +117,7 @@ class BudgetDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class ChartView(LoginRequiredMixin, View):
-    template_name = "budgets/charts.html"
+    template_name = "budgets/budget_charts.html"
 
     def get_context_data(self, budget):
         income_categories = budget.incomes.values("category__name").annotate(total=Sum("amount"))
@@ -183,35 +205,15 @@ class DashboardView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = ChartForm(request.GET or None)
-        currency_form = CurrencyBaseForm()
         user = request.user
 
-        base_currency = self.request.GET.get("base_currency", "USD")
-        exchange_rates = self.get_exchange_rates(base_currency)
+        incomes = Income.objects.filter(user=user).select_related("category", "currency").prefetch_related("tags")
+        expenses = Expense.objects.filter(user=user).select_related("category", "currency").prefetch_related("tags")
 
-        income_query = Income.objects.filter(user=user).order_by("-date")[:2]
-        expense_query = Expense.objects.filter(user=user).order_by("-date")[:2]
-
-        recent_transactions = list(income_query) + list(expense_query)
+        recent_transactions = list(incomes.order_by("-date")[:2]) + list(expenses.order_by("-date")[:2])
         recent_transactions.sort(key=lambda x: x.date, reverse=True)
 
-        expense_comparison = Expense.compare_expenses(request)
-
-        if currency_form.is_valid():
-            return render(
-                request,
-                self.template_name,
-                {
-                    "form": form,
-                    "currency_form": currency_form,
-                    "exchange_rates": exchange_rates,
-                },
-            )
-
         if request.GET and form.is_valid():
-            expenses = Expense.objects.filter(user=user)
-            incomes = Income.objects.filter(user=user)
-
             line_chart = ChartsDashboardGenerator.generate_line_chart(form, expenses, incomes)
             income_pie_chart = ChartsDashboardGenerator.generate_pie_chart(
                 Income,
@@ -239,9 +241,6 @@ class DashboardView(LoginRequiredMixin, View):
                     "expense_pie_chart": expense_pie_chart,
                     "percentage_bar_chart": percentage_bar_chart,
                     "recent_transactions": recent_transactions,
-                    "base_currency": base_currency,
-                    "currency_form": currency_form,
-                    "exchange_rates": exchange_rates,
                 },
             )
 
@@ -250,18 +249,9 @@ class DashboardView(LoginRequiredMixin, View):
             self.template_name,
             {
                 "form": form,
-                "currency_form": currency_form,
-                "exchange_rates": exchange_rates,
-                "base_currency": base_currency,
                 "recent_transactions": recent_transactions,
-                "expense_comparison_results": expense_comparison,
             },
         )
-
-    def get_exchange_rates(self, base_currency):
-        api_key = settings.FREE_CURRENCY_API_KEY
-        client = freecurrencyapi.Client(api_key)
-        return client.latest(base_currency=base_currency)
 
 
 class ProcessImageView(LoginRequiredMixin, FormView):

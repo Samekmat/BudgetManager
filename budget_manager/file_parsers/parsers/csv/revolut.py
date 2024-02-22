@@ -1,7 +1,9 @@
 import csv
 from datetime import datetime
+from typing import List, Tuple
 
 from budget_manager_app.consts import CATEGORY__EXPENSE, CATEGORY__INCOME
+from django.contrib.auth.models import User
 from expenses.models import Expense
 from file_parsers.parsers.csv.parser import BankCSVParsers
 from helper_models.models import Category, Currency
@@ -9,7 +11,24 @@ from incomes.models import Income
 
 
 class RevolutCSVParser(BankCSVParsers):
-    def parse_csv(self, csv_path, user):
+    """CSV Parser for Revolut bank statements.
+
+    This class extends BankCSVParsers and provides a specific implementation for parsing
+    Revolut bank statements in CSV format.
+    """
+
+    def parse_csv(self, csv_path: str, user: User) -> Tuple[List[Income], List[Expense]]:
+        """Parse a Revolut bank statement in CSV format and import the transactions as
+        Income and Expense objects.
+
+        Args:
+        - csv_path (str): The path to the CSV file.
+        - user: The user for whom the transactions are imported.
+
+        Returns:
+        - Tuple[List[Income], List[Expense]]: A tuple containing lists of Income and Expense objects created during the import.
+        """
+
         income_category = Category.objects.get(type=CATEGORY__INCOME, name="CSV income import")
         expense_category = Category.objects.get(type=CATEGORY__EXPENSE, name="CSV expense import")
 

@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: .docker/Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ..:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DEBUG=0
+      - SECRET_KEY=django-insecure-wr^%@ic=(uw-!)&f)&9^6m5n(#=h^gwshk4_h_)%fi*@x_*qxv
+      - FREE_CURRENCY_API_KEY=fca_live_jtRAMKqZv5xfq5zhg0DsaWgmoxddOoERDfh3mJtm
+      - TESSERACT_CMD=/usr/bin/tesseract
+      - TESSDATA_PREFIX=/usr/share/tessdata
+      - DB_NAME=budget_manager
+      -  DB_USER=postgres
+      -  DB_PASSWORD=postgres
+      -  DB_HOST=db
+      -  DB_PORT=5432
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=budget_manager
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 30s
+      retries: 6
+
+
+  tesseract:
+    image: tesseractshadow/tesseract4re:latest
+    volumes:
+      - ./code:/usr/share/tessdata

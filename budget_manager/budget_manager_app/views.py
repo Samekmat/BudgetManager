@@ -207,16 +207,13 @@ class DashboardView(LoginRequiredMixin, View):
         form = ChartForm(request.GET or None)
         user = request.user
 
-        income_query = Income.objects.filter(user=user).order_by("-date")[:2]
-        expense_query = Expense.objects.filter(user=user).order_by("-date")[:2]
+        incomes = Income.objects.filter(user=user).select_related("category", "currency").prefetch_related("tags")
+        expenses = Expense.objects.filter(user=user).select_related("category", "currency").prefetch_related("tags")
 
-        recent_transactions = list(income_query) + list(expense_query)
+        recent_transactions = list(incomes.order_by("-date")[:2]) + list(expenses.order_by("-date")[:2])
         recent_transactions.sort(key=lambda x: x.date, reverse=True)
 
         if request.GET and form.is_valid():
-            expenses = Expense.objects.filter(user=user)
-            incomes = Income.objects.filter(user=user)
-
             line_chart = ChartsDashboardGenerator.generate_line_chart(form, expenses, incomes)
             income_pie_chart = ChartsDashboardGenerator.generate_pie_chart(
                 Income,

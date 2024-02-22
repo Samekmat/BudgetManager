@@ -102,7 +102,7 @@ class ExportExpensesCSVView(LoginRequiredMixin, View):
 class ExportExpensesPDFView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user = request.user
-        expenses = Expense.objects.filter(user=user)
+        expenses = Expense.objects.filter(user=user).select_related("category", "currency").prefetch_related("tags")
         data = {
             "Amount": [expense.amount for expense in expenses],
             "Date": [expense.date for expense in expenses],

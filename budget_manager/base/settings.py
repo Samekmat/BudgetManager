@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "compressor",
     "rest_framework",
     "django_filters",
+    "storages",
     # "axes",
     # "silk",
     # "debug_toolbar",
@@ -93,11 +94,16 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "base.wsgi.application"
+if env("ENVIRONMENT") == "aws":
+    AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
+    AWS_S3_CUSTOM_DOMAIN = env("AWS_S3_CUSTOM_DOMAIN")
+else:
+    WSGI_APPLICATION = "base.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 
 if env("ENVIRONMENT") == "ci":
@@ -108,6 +114,16 @@ if env("ENVIRONMENT") == "ci":
         }
     }
 else:
+    # DATABASES = {
+    #     "default": {
+    #         "ENGINE": "django.db.backends.postgresql_psycopg2",
+    #         "NAME": env("AWS_DB_NAME"),
+    #         "USER": env("AWS_DB_USER"),
+    #         "PASSWORD": env("AWS_DB_PASSWORD"),
+    #         "HOST": env("AWS_DB_HOST"),
+    #         "PORT": env("AWS_DB_PORT"),
+    #     }
+    # }
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -157,7 +173,10 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-MEDIA_URL = "/media/"
+if env("ENVIRONMENT") == "aws":
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+else:
+    MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type

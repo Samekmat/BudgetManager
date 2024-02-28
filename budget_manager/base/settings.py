@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 import environ
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     "storages",
-    # "axes",
+    "axes",
     # "silk",
     # "debug_toolbar",
 ]
@@ -73,7 +74,7 @@ MIDDLEWARE = [
     # on failed user authentication attempts from login views.
     # If you do not want Axes to override the authentication response
     # you can skip installing the middleware and use your own views.
-    # 'axes.middleware.AxesMiddleware',
+    "axes.middleware.AxesMiddleware",
 ]
 
 ROOT_URLCONF = "base.urls"
@@ -100,8 +101,8 @@ if env("ENVIRONMENT") == "aws":
     AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
     AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
     AWS_S3_CUSTOM_DOMAIN = env("AWS_S3_CUSTOM_DOMAIN")
-else:
-    WSGI_APPLICATION = "base.wsgi.application"
+
+WSGI_APPLICATION = "base.wsgi.application"
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
@@ -114,26 +115,26 @@ if env("ENVIRONMENT") == "ci":
         }
     }
 else:
-    # DATABASES = {
-    #     "default": {
-    #         "ENGINE": "django.db.backends.postgresql_psycopg2",
-    #         "NAME": env("AWS_DB_NAME"),
-    #         "USER": env("AWS_DB_USER"),
-    #         "PASSWORD": env("AWS_DB_PASSWORD"),
-    #         "HOST": env("AWS_DB_HOST"),
-    #         "PORT": env("AWS_DB_PORT"),
-    #     }
-    # }
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": env("DB_NAME"),
-            "USER": env("DB_USER"),
-            "PASSWORD": env("DB_PASSWORD"),
-            "HOST": env("DB_HOST"),
-            "PORT": env("DB_PORT"),
+            "NAME": env("AWS_DB_NAME"),
+            "USER": env("AWS_DB_USER"),
+            "PASSWORD": env("AWS_DB_PASSWORD"),
+            "HOST": env("AWS_DB_HOST"),
+            "PORT": env("AWS_DB_PORT"),
         }
     }
+    # DATABASES = {
+    #     "default": {
+    #         "ENGINE": "django.db.backends.postgresql_psycopg2",
+    #         "NAME": env("DB_NAME"),
+    #         "USER": env("DB_USER"),
+    #         "PASSWORD": env("DB_PASSWORD"),
+    #         "HOST": env("DB_HOST"),
+    #         "PORT": env("DB_PORT"),
+    #     }
+    # }
 
 
 # Password validation
@@ -214,14 +215,14 @@ REST_FRAMEWORK = {
 }
 
 
-# AUTHENTICATION_BACKENDS = [
-#     # AxesStandaloneBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
-#     'axes.backends.AxesStandaloneBackend',
-#     # Django ModelBackend is the default authentication backend.
-#     'django.contrib.auth.backends.ModelBackend',
-#     ]
-#
+AUTHENTICATION_BACKENDS = [
+    # AxesStandaloneBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
+    "axes.backends.AxesStandaloneBackend",
+    # Django ModelBackend is the default authentication backend.
+    "django.contrib.auth.backends.ModelBackend",
+]
+
 # # Django Axes settings
-# AXES_FAILURE_LIMIT = 5  # Number of login attempts allowed before lockout
-# AXES_LOCK_OUT_AT_FAILURE = True  # Whether to lock out based on number of login attempts
-# AXES_COOLOFF_TIME = timedelta(hours=1)
+AXES_FAILURE_LIMIT = 3  # Number of login attempts allowed before lockout
+AXES_LOCK_OUT_AT_FAILURE = True  # Whether to lock out based on number of login attempts
+AXES_COOLOFF_TIME = timedelta(hours=1)

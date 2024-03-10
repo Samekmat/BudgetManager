@@ -25,6 +25,10 @@ class CustomLoginView(LoginView):
     form_class = LoginForm
     success_url = reverse_lazy("index")
 
+    def form_valid(self, form):
+        messages.success(self.request, "Login successful. Welcome!")
+        return super().form_valid(form)
+
 
 class CustomLogoutView(LoginRequiredMixin, LogoutView):
     next_page = reverse_lazy("users:login")

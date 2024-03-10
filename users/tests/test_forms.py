@@ -1,7 +1,8 @@
-from django.test import TestCase
+from django.test import Client, TestCase
+from django.urls import reverse
 
 from users.factories import UserFactory
-from users.forms import LoginForm, RegisterForm
+from users.forms import RegisterForm
 
 
 class RegisterFormTestCase(TestCase):
@@ -44,14 +45,11 @@ class LoginFormTestCase(TestCase):
         self.user = UserFactory.create()
 
     def test_login_form_valid(self):
-        form_data = {
-            "username": self.user.username,
-            "password": "ZAQ!2wsx",
-        }
-        form = LoginForm(data=form_data)
-        self.assertTrue(form.is_valid())
+        client = Client()
+        response = client.post(reverse("users:login"), {"username": self.user.username, "password": "ZAQ!2wsx"})
+        self.assertEqual(response.status_code, 302)  # Assuming successful login redirects to another page
 
     def test_login_form_invalid(self):
-        form_data = {"username": self.user.username, "password": "wrong_pass123!"}
-        form = LoginForm(data=form_data)
-        self.assertFalse(form.is_valid())
+        client = Client()
+        response = client.post(reverse("users:login"), {"username": self.user.username, "password": "wrong_pass123!"})
+        self.assertEqual(response.status_code, 200)

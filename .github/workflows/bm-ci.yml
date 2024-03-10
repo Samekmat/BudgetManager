@@ -34,7 +34,6 @@ jobs:
         poetry install
     - name: Run Tests
       run: |
-        cd budget_manager
         poetry run python manage.py test
       env:
         ENVIRONMENT: ${{ secrets.ENVIRONMENT }}

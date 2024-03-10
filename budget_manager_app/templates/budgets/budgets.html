@@ -1,0 +1,67 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<div class="relative overflow-x-auto">
+  <h2 class="dark:text-white">Budget list</h2>
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th scope="col" class="px-6 py-3">Name</th>
+        <th scope="col" class="px-6 py-3">Created by</th>
+        <th scope="col" class="px-6 py-3">Shared with</th>
+        <th scope="col" class="px-6 py-3">Incomes</th>
+        <th scope="col" class="px-6 py-3">Expenses</th>
+          <th scope="col" class="px-6 py-3">Balance</th>
+        <th scope="col" class="px-6 py-3">Goals</th>
+        <th scope="col" class="px-6 py-3">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for budget in budgets %}
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td class="px-6 py-4">{{ budget.name }}</td>
+          <td class="px-6 py-4">{{ budget.user }}</td>
+            <td class="px-6 py-4">
+                <ul>
+              {% for user in budget.shared_with.all %}
+                    <li>{{ user }}</li>
+              {% endfor %}
+                </ul>
+            </td>
+            <td class="px-6 py-4">
+                <ul>
+              {% for income in budget.incomes.all %}
+                <li>{{ income.amount }}{{ income.currency.symbol }}</li>
+              {% endfor %}
+                </ul>
+            </td>
+            <td class="px-6 py-4">
+                <ul>
+              {% for expense in budget.expenses.all %}
+                <li>{{ expense.amount }}{{ expense.currency.symbol }}</li>
+              {% endfor %}
+                </ul>
+            </td>
+            <td class="px-6 py-4">
+              {{ budget.calculate_balance }}{{budget.currency.symbol}}
+            </td>
+            <td class="px-6 py-4">
+                <ul>
+              {% for goal in budget.goals.all %}
+                <li><a href="{% url 'saving_goals:goal-detail' goal.pk %}" class="text-blue-500 hover:underline">{{ goal.name }}</a></li>
+              {% endfor %}
+                </ul>
+            </td>
+          <td class="px-6 py-4">
+            <a href="{% url 'budgets:budget-update' budget.pk %}" class="text-blue-500 dark:text-blue-300 hover:underline">Edit</a> |
+            <a href="{% url 'budgets:budget-delete' budget.pk %}" class="text-red-500 dark:text-red-400 hover:underline">Delete</a> |
+            <a href="{% url 'budgets:budget-chart' budget.pk %}" class="text-yellow-500 hover:underline">View Charts</a> |
+            <a href="{% url 'budgets:add-income-expense' budget.id %}">Add Income/Expense</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+  <a href="{% url 'budgets:budget-create' %}" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Create New Budget</a>
+  {% endblock %}

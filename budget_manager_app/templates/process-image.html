@@ -1,0 +1,66 @@
+{% extends '_base.html' %}
+
+{% block content %}
+  {% if text_result %}
+    <div class="flex justify-between p-8">
+      <div class="w-3/5 pr-4">
+        <h2 class="text-2xl dark:text-white">Processed Text</h2>
+        <pre class="dark:text-white p-4">{{ text_result }}</pre>
+        <hr class="border-white my-4">
+        <h2 class="text-2xl dark:text-white">Extracted Info</h2>
+        <pre class="dark:text-white p-4">{{ extracted_info }}</pre>
+      </div>
+
+      <div class="w-2/5 pl-4">
+        {% if form_type == "income" %}
+          <h2 class="text-2xl mb-4 dark:text-white">Income Form</h2>
+          <form method="post" enctype="multipart/form-data" action="{% url 'incomes:income-create' %}">
+            {% csrf_token %}
+            {% for field in operation_form %}
+              <label for="{{ field.id_for_label }}" class="block text-sm font-bold text-gray-700 dark:text-white mb-1">
+                {{ field.label }}
+              </label>
+              {{ field }}
+            {% endfor %}
+
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">
+              Submit
+            </button>
+          </form>
+        {% elif form_type == "expense" %}
+          <h2 class="text-2xl mb-4 dark:text-white">Expense Form</h2>
+          <form method="post" enctype="multipart/form-data" action="{% url 'expenses:expense-create' %}">
+            {% csrf_token %}
+            {% for field in operation_form %}
+              <label for="{{ field.id_for_label }}" class="block text-sm font-bold text-gray-700 dark:text-white mb-1">
+                {{ field.label }}
+              </label>
+              {{ field }}
+            {% endfor %}
+
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">
+              Submit
+            </button>
+          </form>
+        {% else %}
+          <p>No form available.</p>
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+    <h2 class="text-2xl dark:text-white">Processed Text</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+        <label for="{{ field.id_for_label }}" class="block text-sm font-bold text-gray-700 dark:text-white mb-1">
+          {{ field.label }}
+        </label>
+        {{ field }}
+      {% endfor %}
+
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">
+        Process Image
+      </button>
+    </form>
+  {% endif %}
+{% endblock %}

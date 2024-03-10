@@ -2,7 +2,7 @@ name: Budget Manager CI
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "main", "develop"]
   pull_request:
     branches: [ "main", "develop"]
 
@@ -39,3 +39,12 @@ jobs:
       env:
         ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
         FREE_CURRENCY_API_KEY: ${{ secrets.FREE_CURRENCY_API_KEY }}
+    - name: Run Bandit
+      run: |
+        poetry run bandit -r .
+    - name: Run Safety
+      run: |
+        poetry run safety check
+    - name: Run Ruff
+      run: |
+        poetry run ruff check .

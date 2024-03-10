@@ -1,0 +1,29 @@
+[
+  {
+    "model": "helper_models.currency",
+    "pk": 1,
+    "fields": {
+      "name": "US dollar",
+      "code": "USD",
+      "symbol": "$"
+    }
+  },
+  {
+    "model": "helper_models.currency",
+    "pk": 2,
+    "fields": {
+      "name": "Euro",
+      "code": "EUR",
+      "symbol": "€"
+    }
+  },
+  {
+    "model": "helper_models.currency",
+    "pk": 3,
+    "fields": {
+      "name": "Polish Zloty",
+      "code": "PLN",
+      "symbol": "zł"
+    }
+  }
+]

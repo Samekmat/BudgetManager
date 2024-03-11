@@ -17,11 +17,11 @@ services:
       - DEBUG=0
       - SECRET_KEY=${SECRET_KEY}
       - FREE_CURRENCY_API_KEY=${FREE_CURRENCY_API_KEY}
-      - DB_NAME=budget_manager
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_HOST=db
-      - DB_PORT=5432
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
       - TESSERACT_CMD=/usr/bin/tesseract
       - TESSDATA_PREFIX=/usr/share/tessdata
     env_file:
@@ -30,9 +30,9 @@ services:
   db:
     image: postgres
     environment:
-      - POSTGRES_DB=budget_manager
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
       - ./data:/var/lib/postgresql/data
     healthcheck:

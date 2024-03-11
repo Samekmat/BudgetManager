@@ -5,7 +5,7 @@ from django.contrib.messages.test import MessagesTestMixin
 from django.test import Client, RequestFactory, TestCase
 from django.urls import reverse
 
-from users.factories import UserFactory
+from users.factories import UserFactory, generate_random_password
 
 
 class AuthenticationViewsTestCase(MessagesTestMixin, TestCase):
@@ -15,11 +15,12 @@ class AuthenticationViewsTestCase(MessagesTestMixin, TestCase):
         self.request_factory = RequestFactory()
 
     def test_register_view(self):
+        password = generate_random_password()
         user_data = {
             "email": "test_user@gmail.com",
             "username": "test_user",
-            "password1": "ZAQ!2wsx",
-            "password2": "ZAQ!2wsx",
+            "password1": password,
+            "password2": password,
         }
 
         register_url = reverse("users:register")
@@ -40,7 +41,7 @@ class AuthenticationViewsTestCase(MessagesTestMixin, TestCase):
 
     def test_login_view(self):
         login_url = reverse("users:login")
-        self.credentials = {"username": "testuser", "password": "secret"}
+        self.credentials = {"username": "testuser", "password": generate_random_password()}
         User.objects.create_user(**self.credentials)
 
         response = self.client.post(login_url, self.credentials)

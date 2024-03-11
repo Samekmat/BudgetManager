@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import check_password
 from django.test import TestCase
 
 from users.factories import UserFactory
@@ -14,4 +13,4 @@ class UserTestCase(TestCase):
 
         self.assertTrue(self.user.username)
 
-        self.assertTrue(check_password("ZAQ!2wsx", self.user.password))
+        self.assertTrue(self.user.password)

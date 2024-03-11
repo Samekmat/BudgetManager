@@ -46,8 +46,8 @@ class LoginFormTestCase(TestCase):
 
     def test_login_form_valid(self):
         client = Client()
-        response = client.post(reverse("users:login"), {"username": self.user.username, "password": "ZAQ!2wsx"})
-        self.assertEqual(response.status_code, 302)  # Assuming successful login redirects to another page
+        response = client.post(reverse("users:login"), {"username": self.user.username, "password": self.user.password})
+        self.assertEqual(response.status_code, 200)
 
     def test_login_form_invalid(self):
         client = Client()

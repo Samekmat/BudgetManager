@@ -1,2 +1,2 @@
 [bandit]
-exclude = tests, ./users/factories.py, ./saving_goals/factories.py, ./incomes/factories.py, ./expenses/factories.py, ./helper_models/factories.py, ./file_parsers/factories.py, ./budget_manager_app/factories.py
+exclude = tests, budget_manager/users/factories.py, budget_manager/saving_goals/factories.py, budget_manager/incomes/factories.py, budget_manager/expenses/factories.py, budget_manager/helper_models/factories.py, budget_manager/file_parsers/factories.py, budget_manager/budget_manager_app/factories.py

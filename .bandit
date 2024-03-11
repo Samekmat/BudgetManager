@@ -1,2 +1,3 @@
 [bandit]
-exclude = tests, budget_manager/users/factories.py, budget_manager/saving_goals/factories.py, budget_manager/incomes/factories.py, budget_manager/expenses/factories.py, budget_manager/helper_models/factories.py, budget_manager/file_parsers/factories.py, budget_manager/budget_manager_app/factories.py
+exclude = tests
+skips = B311, B108

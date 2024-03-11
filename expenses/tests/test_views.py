@@ -22,7 +22,7 @@ class ExpenseViewsTest(MessagesTestMixin, TestCase):
 
         self.client.force_login(self.user)
 
-        self.other_user = UserFactory(username="otheruser", email="otheruser@user.com", password="ZAQ!2wsx")
+        self.other_user = UserFactory(username="otheruser", email="otheruser@user.com")
 
     def test_expense_list_view(self):
         response = self.client.get(self.list_url)

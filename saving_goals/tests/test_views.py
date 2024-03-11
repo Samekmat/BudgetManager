@@ -26,7 +26,7 @@ class SavingGoalViewsTest(MessagesTestMixin, TestCase):
 
         self.client.force_login(self.user)
 
-        self.other_user = UserFactory(username="otheruser", email="otheruser@user.com", password="ZAQ!2wsx")
+        self.other_user = UserFactory(username="otheruser", email="otheruser@user.com")
 
     def test_saving_goal_list_view(self):
         response = self.client.post(self.list_url, {"amount_to_add": 200, "goal_id": self.goal.id})

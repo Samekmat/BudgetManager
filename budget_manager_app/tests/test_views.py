@@ -28,7 +28,7 @@ class BudgetViewsTestCase(TestCase):
         self.chart_url = reverse("budgets:budget-chart", kwargs={"budget_id": self.budget.id})
         self.dashboard_url = reverse("dashboard")
 
-        self.other_user = UserFactory(username="otheruser", email="otheruser@user.com", password="ZAQ!2wsx")
+        self.other_user = UserFactory(username="otheruser", email="otheruser@user.com")
         self.budget.shared_with.add(self.other_user)
         self.income = IncomeFactory(user=self.user)
         self.expense = ExpenseFactory(user=self.other_user)

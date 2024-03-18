@@ -8,7 +8,7 @@
 ## General info
 <details>
 <summary>Click here to see general information about <b>BudgetManager Project</b>!</summary>
-<b>BudgetManager</b> is a project dedicated to tracking and managing earnings and spending. With features like income and expense tracking, customizable budgets, goal settings, various options to upload your data, and generating charts to visualize your data.
+<b>BudgetManager</b> is a project dedicated to tracking and managing earnings and spending. With features like income and expense tracking, customizable budgets, goal settings, various options to upload your data, and generating charts to visualize that data.
 </details>
 
 ## Technologies & Tools

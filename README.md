@@ -2,7 +2,7 @@
 * [General info](#general-info)
 * [Technologies](#technologies--tools)
 * [Setup](#setup)
-* [More detailed information about modules](#more-detailed-information-about-modules)
+* [Functionalities](#functionalities)
 * [Application view](#application-view)
 
 ## General info
@@ -28,7 +28,10 @@
 </ul>
 
 ## Prerequisites
-1) Docker
+1) Python
+2) Docker
+3) Tesseract engine if running local
+
 
 ## Setup
  Get freecurrencyapi key from https://app.freecurrencyapi.com/login
@@ -65,3 +68,87 @@ git clone https://github.com/Samekmat/BudgetManager.git
 ```bash
 docker compose -f .\.docker\docker-compsoe.yml up -d --build
 ```
+
+## Functionalities
+<details>
+<summary>Click here to see all project functionalities</summary>
+
+1. Custom user authentication:
+<ul>
+<li>
+<h4>
+To use Budget Manager app, it is required to have an account. There is custom register, login, logout and profile creation
+using django signals.
+</h4>
+</li>
+</ul>
+
+2. Index view:
+<ul>
+<li>
+<h4>
+Index view is responsible for displaying currency exchange rates based on currencies existing in database.
+It also show expense comparison by category, which is a status of the current month expenses compared percentage
+to the previous expenses, it has 3 values(decreased, increased, unchanged).
+At the end we have expense forecast which calculates average spending's for the next month.
+</h4>
+</li>
+</ul>
+
+
+3. Dashboard:
+<ul>
+<h4>Dashboard is serving two functionalities:</h4>
+<li>Recent transactions:</li>
+As name calls, it displays two newest expenses with two newest incomes.
+<li>Expense and Income Charts:</li>
+Here we need to specify date range and currency to select data for graph generation
+(line chart, percentage charts and pie charts).
+</ul>
+
+4. Incomes and Expenses:
+<ul>
+<h4>Incomes and expenses have the same features which are:</h4>
+<li>List with filter and pagination</li>
+<li>Add new income/expense by form</li>
+<li>Add new income/expense by image of a bill or invoice</li>
+<li>Update</li>
+<li>Delete</li>
+<li>Export to csv</li>
+<li>Export to pdf</li>
+</ul>
+
+5. Categories and Tags section:
+<ul>
+<h4>
+<li>
+Categories and Tags contains base crud for easy management and filter with pagination to easily find specific ones:
+</li>
+</h4>
+</ul>
+
+6. Saving goals:
+<ul>
+<li>
+<h4>This section contains crud but also adding and subtracting amounts from the goals</h4>
+</li>
+</ul>
+
+7. Budgets:
+<ul>
+<h4>Crud and features connected with budgets</h4>
+<li>Crud</li>
+<li>Share budget with another user</li>
+<li>Specify budget currency</li>
+<li>Select goals that will be connected with budget</li>
+<li>Add incomes/expenses to a budget</li>
+<li>Generate budget charts</li>
+
+</ul>
+</details>
+
+## Application view
+
+### Screenshots
+
+### Video showcase

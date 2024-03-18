@@ -76,12 +76,10 @@ docker compose -f .\.docker\docker-compsoe.yml up -d --build
 
 1. Custom user authentication:
 <ul>
-<li>
 <h4>
 To use Budget Manager app, it is required to have an account. There is custom register, login, logout and profile creation
 using django signals.
 </h4>
-</li>
 </ul>
 
 2. Index view:

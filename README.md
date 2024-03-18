@@ -136,7 +136,11 @@ Categories and Tags contains base crud for easy management and filter with pagin
 <li>Select goals that will be connected with budget</li>
 <li>Add incomes/expenses to a budget</li>
 <li>Generate budget charts</li>
+</ul>
 
+8. Add transactions:
+<ul>
+    <h4>View to import CSV data from the bank, containes incomes, expenses or both </h4>
 </ul>
 </details>
 

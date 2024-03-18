@@ -150,5 +150,5 @@ Categories and Tags contains base crud for easy management and filter with pagin
 ## Application view
 
 ### Screenshots
-
+<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/2a3f8a5d-35fc-4e77-9d2e-90aa4e5a8c01" width="50%" height="50%" alt="Darkmode index"></img>
 ### Video showcase

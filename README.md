@@ -1,6 +1,6 @@
 # Content of Project
 * [General info](#general-info)
-* [Technologies](#technologies)
+* [Technologies](#technologies-&-tools)
 * [Setup](#setup)
 * [More detailed information about modules](#more-detailed-information-about-modules)
 * [Application view](#application-view)

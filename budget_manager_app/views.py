@@ -292,7 +292,6 @@ class ProcessImageView(LoginRequiredMixin, FormView):
         extracted_info["date"] = self.convert_date(extracted_info["date"])
         extracted_info["currency"] = self.get_currency_pk_by_symbol(extracted_info["currency"])
         extracted_info["payment_method"] = self.map_payment_method_to_name(extracted_info["payment_method"])
-        print(extracted_info)
 
         if f"{HOST_URL}incomes/" == self.request.session["referer"]:
             form_type = "income"

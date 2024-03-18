@@ -2,12 +2,8 @@
 
 {% block content %}
   <h2>Confirm Deletion</h2>
-  <p>Are you sure you want to delete the saving goal with the id {{goal.pk}}</p>
-  <ul>
-    <li><strong>Name:</strong> {{ goal.name }}</li>
-    <li><strong>Amount:</strong> {{ goal.amount }}</li>
-    <li><strong>Goal:</strong> {{ goal.goal }}</li>
-  </ul>
+  <p>Are you sure you want to delete the saving goal?</p>
+
   <form method="post">
     {% csrf_token %}
     <button type="submit" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Confirm Delete</button>

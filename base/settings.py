@@ -25,7 +25,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-HOST_URL = "http://budgetm-env.eba-m8je3cyb.eu-central-1.elasticbeanstalk.com/"
+HOST_URL = "http://127.0.0.1:8000/"
+# HOST_URL = "http://budgetm-env.eba-m8je3cyb.eu-central-1.elasticbeanstalk.com/"
 
 INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
 
@@ -113,26 +114,26 @@ if env("ENVIRONMENT") == "ci":
         }
     }
 else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": env("AWS_DB_NAME"),
-            "USER": env("AWS_DB_USER"),
-            "PASSWORD": env("AWS_DB_PASSWORD"),
-            "HOST": env("AWS_DB_HOST"),
-            "PORT": env("AWS_DB_PORT"),
-        }
-    }
     # DATABASES = {
     #     "default": {
     #         "ENGINE": "django.db.backends.postgresql_psycopg2",
-    #         "NAME": env("DB_NAME"),
-    #         "USER": env("DB_USER"),
-    #         "PASSWORD": env("DB_PASSWORD"),
-    #         "HOST": env("DB_HOST"),
-    #         "PORT": env("DB_PORT"),
+    #         "NAME": env("AWS_DB_NAME"),
+    #         "USER": env("AWS_DB_USER"),
+    #         "PASSWORD": env("AWS_DB_PASSWORD"),
+    #         "HOST": env("AWS_DB_HOST"),
+    #         "PORT": env("AWS_DB_PORT"),
     #     }
     # }
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": env("DB_NAME"),
+            "USER": env("DB_USER"),
+            "PASSWORD": env("DB_PASSWORD"),
+            "HOST": env("DB_HOST"),
+            "PORT": env("DB_PORT"),
+        }
+    }
 
 
 # Password validation

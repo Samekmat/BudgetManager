@@ -5,17 +5,19 @@
   <h2 class="text-2xl font-bold mb-4 dark:text-white">CSV Upload</h2>
 
   <!-- Bank selection buttons/images -->
-  <div class="flex space-x-4 mb-4">
-  <button onclick="selectBank('santander')" class="flex-1">
-    <img src="{% static 'images/santander_logo.png' %}" alt="Santander" class="w-full h-full object-contain">
+    <h3 class="dark:text-white">Click on the logo of the bank from which you downloaded the CSV and from which you want to add incomes and expenses</h3>
+ <div class="flex space-x-10 mb-4">
+  <button onclick="selectBank('santander')" class="flex-1 border-dotted">
+    <img src="{% static 'images/santander_logo.png' %}" alt="Santander" class="object-contain w-full h-full">
   </button>
   <button onclick="selectBank('nest')" class="flex-1">
-    <img src="{% static 'images/nest_logo.png' %}" alt="Nest" class="w-full h-full object-contain">
+    <img src="{% static 'images/nest_logo.png' %}" alt="Nest" class="object-contain w-full h-full">
   </button>
   <button onclick="selectBank('revolut')" class="flex-1">
-    <img src="{% static 'images/revolut_logo.png' %}" alt="Revolut" class="w-full h-full object-contain">
+    <img src="{% static 'images/revolut_logo.png' %}" alt="Revolut" class="object-contain w-full h-full">
   </button>
 </div>
+
 
 
 

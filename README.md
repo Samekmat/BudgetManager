@@ -143,6 +143,11 @@ Categories and Tags contains base crud for easy management and filter with pagin
 ## Additional resources
 <ul>
 <li>Fixtures to preload initial data -> categories, currencies and tags: helper_models/fixtures</li>
+Tags fixture need a user to be loaded so createsuperuser or standard user first
+
+```commandline
+python manage.py createsuperuser
+```
 
 ```commandline
 python manage.py loaddata 'fixture'

@@ -162,5 +162,5 @@ Categories and Tags contains base crud for easy management and filter with pagin
 <img src="https://github.com/Samekmat/BudgetManager/assets/32867793/83b57bc2-7dd6-45c8-bc73-566716c0df20" width="50%" height="50%" alt="Budget view charts img"></img>
 
 ### Video showcase
-<div style="position: relative; padding-bottom: 60.40268456375839%; height: 0;"><iframe src="https://www.loom.com/embed/0cb822939e2c432190c217c0ee6a301b?sid=fab91a0c-88b8-4502-af7c-d5d6d37136fe" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+<iframe src="https://www.loom.com/embed/0cb822939e2c432190c217c0ee6a301b?sid=fab91a0c-88b8-4502-af7c-d5d6d37136fe" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
 

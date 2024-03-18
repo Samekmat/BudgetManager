@@ -4,6 +4,7 @@
 * [Setup](#setup)
 * [Functionalities](#functionalities)
 * [Application view](#application-view)
+* [Video showcase](#video-showcase)
 
 ## General info
 <details>

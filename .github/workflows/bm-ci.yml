@@ -40,7 +40,7 @@ jobs:
         FREE_CURRENCY_API_KEY: ${{ secrets.FREE_CURRENCY_API_KEY }}
     - name: Run Bandit
       run: |
-        poetry run -c bandit -r .
+        poetry run bandit -r .
     - name: Run Safety
       run: |
         poetry run safety check

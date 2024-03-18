@@ -13,26 +13,11 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    environment:
-      - DEBUG=0
-      - SECRET_KEY=${SECRET_KEY}
-      - FREE_CURRENCY_API_KEY=${FREE_CURRENCY_API_KEY}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - TESSERACT_CMD=/usr/bin/tesseract
-      - TESSDATA_PREFIX=/usr/share/tessdata
     env_file:
-      - ../.env
+      - ../base/.env
 
   db:
     image: postgres
-    environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
       - ./data:/var/lib/postgresql/data
     healthcheck:
@@ -40,6 +25,8 @@ services:
       interval: 5s
       timeout: 30s
       retries: 6
+    env_file:
+      - ../base/.env
 
 
   tesseract:

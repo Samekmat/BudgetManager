@@ -15,7 +15,7 @@ COPY ../poetry.lock pyproject.toml /app/
 RUN pip install poetry && poetry config virtualenvs.create false && poetry install --no-dev
 
 # Copy the Django project code into the container
-COPY ../budget_manager /app/
+COPY ../../. /app/
 
 # Expose the port on which Django runs
 EXPOSE 8000

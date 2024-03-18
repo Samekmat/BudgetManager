@@ -147,19 +147,36 @@ Categories and Tags contains base crud for easy management and filter with pagin
 </ul>
 </details>
 
+## Additional resources
+<ul>
+<li>Fixtures to preload initial data -> categories, currencies and tags: helper_models/fixtures</li>
+
+```commandline
+python manage.py loaddata 'fixture'
+```
+
+<li>Sample bills and CSV's  - > resources</li>
+</ul>
+
+
 ## Application view
 
 ### Screenshots
-<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/2a3f8a5d-35fc-4e77-9d2e-90aa4e5a8c01" width="50%" height="50%" alt="Darkmode index img"></img>
-<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/e3b12fb9-6585-4f33-9f6c-09dd3e6fa44b" width="50%" height="50%" alt="Expenses img"></img>
-<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/e308944f-ec19-45a6-87fc-0511529e1888" width="50%" height="50%" alt="Income add img"></img>
-<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/260dcf54-ff57-4e8c-b4dd-ebfed43584b7" width="50%" height="50%" alt="OCR view img"></img>
-<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/da5a2638-88f1-4aa9-b59d-44c3d6d10d07" width="50%" height="50%" alt="Login img"></img>
-<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/7c363a69-9382-48b6-840b-e884e8435427" width="50%" height="50%" alt="Register img"></img>
-<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/10f35fcb-35d7-4314-870a-b46e2f761a49" width="50%" height="50%" alt="Categories img"></img>
-<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/9a2e257a-1b9a-4617-a408-bec56661b739" width="50%" height="50%" alt="Saving goal view img"></img>
-<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/7d110b6b-bacf-425b-9c65-b3b5e78e47df" width="50%" height="50%" alt="Dashboard img"></img>
-<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/83b57bc2-7dd6-45c8-bc73-566716c0df20" width="50%" height="50%" alt="Budget view charts img"></img>
+
+<details>
+<summary>Show Screens</summary>
+
+<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/2a3f8a5d-35fc-4e77-9d2e-90aa4e5a8c01" width="45%" alt="Darkmode index img"></img>
+<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/e3b12fb9-6585-4f33-9f6c-09dd3e6fa44b" width="45%" alt="Expenses img"></img>
+<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/e308944f-ec19-45a6-87fc-0511529e1888" width="45%" alt="Income add img"></img>
+<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/260dcf54-ff57-4e8c-b4dd-ebfed43584b7" width="45%" alt="OCR view img"></img>
+<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/da5a2638-88f1-4aa9-b59d-44c3d6d10d07" width="45%" alt="Login img"></img>
+<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/7c363a69-9382-48b6-840b-e884e8435427" width="45%" alt="Register img"></img>
+<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/10f35fcb-35d7-4314-870a-b46e2f761a49" width="45%" alt="Categories img"></img>
+<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/9a2e257a-1b9a-4617-a408-bec56661b739" width="45%" alt="Saving goal view img"></img>
+<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/7d110b6b-bacf-425b-9c65-b3b5e78e47df" width="45%" alt="Dashboard img"></img>
+<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/83b57bc2-7dd6-45c8-bc73-566716c0df20" width="45%" alt="Budget view charts img"></img>
+</details>
 
 ### Video showcase
 [<img src="https://cdn.loom.com/sessions/thumbnails/0cb822939e2c432190c217c0ee6a301b-with-play.gif" width="50%">](https://www.loom.com/embed/0cb822939e2c432190c217c0ee6a301b?sid=fab91a0c-88b8-4502-af7c-d5d6d37136fe)

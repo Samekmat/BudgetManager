@@ -150,8 +150,8 @@ Categories and Tags contains base crud for easy management and filter with pagin
 ## Application view
 
 ### Screenshots
-<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/2a3f8a5d-35fc-4e77-9d2e-90aa4e5a8c01" width="50%" height="50%" alt="Darkmode index img"></img>
-<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/e3b12fb9-6585-4f33-9f6c-09dd3e6fa44b" width="50%" height="50%" alt="Expenses img"></img>
+<img src="https://github.com/Samekmat/BudgetManager/assets/32867793/2a3f8a5d-35fc-4e77-9d2e-90aa4e5a8c01" width="50%" height="50%" alt="Darkmode index img"></img> <img src="https://github.com/Samekmat/BudgetManager/assets/32867793/e3b12fb9-6585-4f33-9f6c-09dd3e6fa44b" width="50%" height="50%" alt="Expenses img"></img>
+
 <img src="https://github.com/Samekmat/BudgetManager/assets/32867793/e308944f-ec19-45a6-87fc-0511529e1888" width="50%" height="50%" alt="Income add img"></img>
 <img src="https://github.com/Samekmat/BudgetManager/assets/32867793/260dcf54-ff57-4e8c-b4dd-ebfed43584b7" width="50%" height="50%" alt="OCR view img"></img>
 <img src="https://github.com/Samekmat/BudgetManager/assets/32867793/da5a2638-88f1-4aa9-b59d-44c3d6d10d07" width="50%" height="50%" alt="Login img"></img>

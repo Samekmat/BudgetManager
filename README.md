@@ -15,6 +15,7 @@
 <ul>
     <li>Python</li>
     <li>Django</li>
+    <li>Plotly for charts</li>
     <li>Poetry</li>
     <li>PostgreSQL</li>
     <li>Docker | Docker Compose</li>

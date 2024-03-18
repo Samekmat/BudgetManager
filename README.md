@@ -84,14 +84,12 @@ using django signals.
 
 2. Index view:
 <ul>
-<li>
 <h4>
 Index view is responsible for displaying currency exchange rates based on currencies existing in database.
 It also show expense comparison by category, which is a status of the current month expenses compared percentage
 to the previous expenses, it has 3 values(decreased, increased, unchanged).
 At the end we have expense forecast which calculates average spending's for the next month.
 </h4>
-</li>
 </ul>
 
 
@@ -120,17 +118,13 @@ Here we need to specify date range and currency to select data for graph generat
 5. Categories and Tags section:
 <ul>
 <h4>
-<li>
 Categories and Tags contains base crud for easy management and filter with pagination to easily find specific ones:
-</li>
 </h4>
 </ul>
 
 6. Saving goals:
 <ul>
-<li>
 <h4>This section contains crud but also adding and subtracting amounts from the goals</h4>
-</li>
 </ul>
 
 7. Budgets:

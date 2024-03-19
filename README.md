@@ -16,6 +16,8 @@
 <ul>
     <li>Python</li>
     <li>Django</li>
+    <li>Django Rest Framework</li>
+    <li>Django Filter</li>
     <li>Plotly for charts</li>
     <li>Poetry</li>
     <li>PostgreSQL</li>

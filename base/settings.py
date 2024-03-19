@@ -65,7 +65,6 @@ MIDDLEWARE = [
     # "silk.middleware.SilkyMiddleware",
     # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -126,22 +125,16 @@ else:
     #     }
     # }
 
-    # Local
-    # DATABASES = {
-    #     "default": {
-    #         "ENGINE": "django.db.backends.postgresql_psycopg2",
-    #         "NAME": env("DB_NAME"),
-    #         "USER": env("DB_USER"),
-    #         "PASSWORD": env("DB_PASSWORD"),
-    #         "HOST": env("DB_HOST"),
-    #         "PORT": env("DB_PORT"),
-    #     }
-    # }
-
-    # Fl0
-    import dj_database_url
-
-    DATABASES = {"default": dj_database_url.parse(env("FLO_DB_URL"))}
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": env("DB_NAME"),
+            "USER": env("DB_USER"),
+            "PASSWORD": env("DB_PASSWORD"),
+            "HOST": env("DB_HOST"),
+            "PORT": env("DB_PORT"),
+        }
+    }
 
 
 # Password validation
@@ -193,7 +186,7 @@ if env("ENVIRONMENT") == "aws":
 else:
     MEDIA_URL = "/media/"
     STATIC_URL = "/static/"
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

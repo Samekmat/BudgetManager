@@ -6,7 +6,7 @@ import environ
 import pytesseract
 from django.core.management.utils import get_random_secret_key
 
-env = environ.Env(DEBUG=(bool, True), TESSERACT_CMD=(str, ""), SECRET_KEY=(str, get_random_secret_key()))
+env = environ.Env(DEBUG=(bool, False), TESSERACT_CMD=(str, ""), SECRET_KEY=(str, get_random_secret_key()))
 environ.Env.read_env()
 
 
@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -65,6 +65,7 @@ MIDDLEWARE = [
     # "silk.middleware.SilkyMiddleware",
     # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -124,16 +125,23 @@ else:
     #         "PORT": env("AWS_DB_PORT"),
     #     }
     # }
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": env("DB_NAME"),
-            "USER": env("DB_USER"),
-            "PASSWORD": env("DB_PASSWORD"),
-            "HOST": env("DB_HOST"),
-            "PORT": env("DB_PORT"),
-        }
-    }
+
+    # Local
+    # DATABASES = {
+    #     "default": {
+    #         "ENGINE": "django.db.backends.postgresql_psycopg2",
+    #         "NAME": env("DB_NAME"),
+    #         "USER": env("DB_USER"),
+    #         "PASSWORD": env("DB_PASSWORD"),
+    #         "HOST": env("DB_HOST"),
+    #         "PORT": env("DB_PORT"),
+    #     }
+    # }
+
+    # Fl0
+    import dj_database_url
+
+    DATABASES = {"default": dj_database_url.parse(env("FLO_DB_URL"))}
 
 
 # Password validation
@@ -185,6 +193,7 @@ if env("ENVIRONMENT") == "aws":
 else:
     MEDIA_URL = "/media/"
     STATIC_URL = "/static/"
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

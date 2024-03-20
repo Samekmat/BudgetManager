@@ -38,6 +38,7 @@ jobs:
       env:
         ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
         FREE_CURRENCY_API_KEY: ${{ secrets.FREE_CURRENCY_API_KEY }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
     - name: Run Bandit
       run: |
         poetry run bandit -c pyproject.toml -r .

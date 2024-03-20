@@ -6,7 +6,7 @@ import environ
 import pytesseract
 from django.core.management.utils import get_random_secret_key
 
-env = environ.Env(DEBUG=(bool, True), TESSERACT_CMD=(str, ""), SECRET_KEY=(str, get_random_secret_key()))
+env = environ.Env(DEBUG=(bool, False), TESSERACT_CMD=(str, ""), SECRET_KEY=(str, get_random_secret_key()))
 environ.Env.read_env()
 
 
@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 

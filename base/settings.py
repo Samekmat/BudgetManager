@@ -6,7 +6,9 @@ import environ
 import pytesseract
 from django.core.management.utils import get_random_secret_key
 
-env = environ.Env(DEBUG=(bool, False), TESSERACT_CMD=(str, ""), SECRET_KEY=(str, get_random_secret_key()))
+env = environ.Env(
+    DEBUG=(bool, False), TESSERACT_CMD=(str, ""), SECRET_KEY=(str, get_random_secret_key()), ENVIRONMENT=(str, "local")
+)
 environ.Env.read_env()
 
 

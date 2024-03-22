@@ -13,7 +13,6 @@ environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -106,35 +105,17 @@ if env("ENVIRONMENT") == "aws":
 
 WSGI_APPLICATION = "base.wsgi.application"
 
-if env("ENVIRONMENT") == "ci":
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": "ci_db",
-        }
-    }
-else:
-    # DATABASES = {
-    #     "default": {
-    #         "ENGINE": "django.db.backends.postgresql_psycopg2",
-    #         "NAME": env("AWS_DB_NAME"),
-    #         "USER": env("AWS_DB_USER"),
-    #         "PASSWORD": env("AWS_DB_PASSWORD"),
-    #         "HOST": env("AWS_DB_HOST"),
-    #         "PORT": env("AWS_DB_PORT"),
-    #     }
-    # }
 
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": env("DB_NAME"),
-            "USER": env("DB_USER"),
-            "PASSWORD": env("DB_PASSWORD"),
-            "HOST": env("DB_HOST"),
-            "PORT": env("DB_PORT"),
-        }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
     }
+}
 
 
 # Password validation

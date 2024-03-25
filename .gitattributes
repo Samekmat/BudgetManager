@@ -31,8 +31,8 @@
 # (among others).
 
 * linguist-vendored
-*.js linguist-vendored=false
-*.html linguist-vendorede=false
+*.js linguist-vendored=true
+*.html linguist-vendorede=true
 
 *.py linguist-language=Python
 *.html linguist-language=HTML

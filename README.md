@@ -91,7 +91,7 @@ At the end we have expense forecast which calculates average spending's for the 
 
 3. <h4>Dashboard:</h4>
 <ul>
-Dashboard is serving two functionalities:
+<h5>Dashboard is serving two functionalities:</h5>
     
 <li>Recent transactions:</li>
 <p>As name calls, it displays two newest expenses with two newest incomes.</p>
@@ -102,7 +102,7 @@ Dashboard is serving two functionalities:
 
 4. <h4>Incomes and Expenses:</h4>
 <ul>
-Incomes and expenses have the same features which are:
+<h5>Incomes and expenses have the same features which are:</h5>
 <li>List with filter and pagination</li>
 <li>Add new income/expense by form</li>
 <li>Add new income/expense by image of a bill or invoice</li>
@@ -119,12 +119,12 @@ Categories and Tags contains base crud for easy management and filter with pagin
 
 6. <h4>Saving goals:</h4>
 <ul>
-This section contains crud but also adding and subtracting amounts from the goals
+This section contains CRUD but also adding and subtracting amounts from the goals.
 </ul>
 
 7. <h4>Budgets:</h4>
 <ul>
-Crud and features connected with budgets
+<h5>Crud and features connected with budgets</h5>
 <li>Crud</li>
 <li>Share budget with another user</li>
 <li>Specify budget currency</li>

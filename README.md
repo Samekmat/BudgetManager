@@ -133,7 +133,7 @@ This section contains CRUD but also adding and subtracting amounts from the goal
 
 <details>
     <summary>
-7. <h4>Budgets:</h4>
+7. Budgets:
     </summary>
 <ul>
 <h5>Crud and features connected with budgets</h5>

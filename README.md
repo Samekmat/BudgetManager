@@ -31,7 +31,7 @@
 ## Prerequisites
 1) Python
 2) Docker
-3) Tesseract engine if running local
+3) Tesseract engine if running on local machine / host
 
 
 ## Setup

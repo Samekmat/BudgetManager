@@ -30,13 +30,12 @@
 # ``shelve``, ``marshal``, ``anydbm``, & ``bsddb``
 # (among others).
 
-* linguist-vendored
-*.py linguist-vendored=false
-
-
 *.py linguist-language=Python
 *.html linguist-language=HTML
 *.css linguist-language=CSS
 *.js linguist-language=JavaScript
 *.json linguist-language=JSON
 *.txt linguist-language=Text
+
+* linguist-vendored
+*.py linguist-vendored=false

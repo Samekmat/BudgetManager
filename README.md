@@ -147,7 +147,8 @@ This section contains CRUD but also adding and subtracting amounts from the goal
 
 
 <details>
-8. <summary><h4>Add transactions:</h4></summary>
+    <summary>
+8. <h4>Add transactions:</h4></summary>
 <ul>
     View to import CSV data from the bank, containes incomes, expenses or both
 </ul>

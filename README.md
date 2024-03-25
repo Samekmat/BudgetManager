@@ -92,10 +92,11 @@ At the end we have expense forecast which calculates average spending's for the 
 3. <h4>Dashboard:</h4>
 <ul>
 Dashboard is serving two functionalities:
+    
 <li>Recent transactions:</li>
-As name calls, it displays two newest expenses with two newest incomes.
+<p>As name calls, it displays two newest expenses with two newest incomes.</p>
 <li>Expense and Income Charts:</li>
-Here we need to specify date range and currency to select data for graph generation
+<p>Here we need to specify date range and currency to select data for graph generation<p>
 (line chart, percentage charts and pie charts).
 </ul>
 

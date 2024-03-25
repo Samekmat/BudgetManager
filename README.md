@@ -76,8 +76,11 @@ docker compose -f .\.docker\docker-compsoe.yml up -d --build
     <summary>
 1. Custom user authentication:</summary>
 <ul>
-To use Budget Manager app, it is required to have an account. There is custom register, login, logout and profile creation
-using django signals.
+To use Budget Manager app, it is required to have an account. There is a custom:
+    <li>register</li>
+    <li>login</li>
+    <li>logout</li>
+    <li>profile creation using django signals</li>
 </ul>
 </details>
 
@@ -86,10 +89,16 @@ using django signals.
     <summary>
 2. Index view:</summary>
 <ul>
-Index view is responsible for displaying currency exchange rates based on currencies existing in database.
-It also show expense comparison by category, which is a status of the current month expenses compared percentage
-to the previous expenses, it has 3 values(decreased, increased, unchanged).
-At the end we have expense forecast which calculates average spending's for the next month.
+Index view is responsible for:
+    <li>displaying currency exchange rates based on currencies existing in database</li>
+    <li>showing expense comparison by category, which is status of the current month expenses, compared percentage to the previous expenses in 3 ways:
+        <ol>
+        <li>decreased</li>
+        <li>increased</li>
+        <li>unchanged</li>
+        </ol>
+    </li>
+    <li>expense forecast calculating average spending's for the upcoming month</li>
 </ul>
 </details>
 

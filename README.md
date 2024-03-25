@@ -134,7 +134,7 @@ This section contains CRUD but also adding and subtracting amounts from the goal
 <details>
     <summary>
 7. <h4>Budgets:</h4>
-<summary>
+    </summary>
 <ul>
 <h5>Crud and features connected with budgets</h5>
 <li>Crud</li>
@@ -144,7 +144,7 @@ This section contains CRUD but also adding and subtracting amounts from the goal
 <li>Add incomes/expenses to a budget</li>
 <li>Generate budget charts</li>
 </ul>
-
+</details>
 
 <details>
     <summary>

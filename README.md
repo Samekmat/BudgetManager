@@ -71,25 +71,27 @@ docker compose -f .\.docker\docker-compsoe.yml up -d --build
 ```
 
 ## Functionalities
-<details>
-<summary>Click here to see all project functionalities</summary>
 
-1. <h4>Custom user authentication:</h4>
+1. <details><h4>Custom user authentication:</h4></details>
+<summary>
 <ul>
 To use Budget Manager app, it is required to have an account. There is custom register, login, logout and profile creation
 using django signals.
 </ul>
+</summary>
 
-2. <h4>Index view:</h4>
+2. <details><h4>Index view:</h4></details>
+<summary>
 <ul>
 Index view is responsible for displaying currency exchange rates based on currencies existing in database.
 It also show expense comparison by category, which is a status of the current month expenses compared percentage
 to the previous expenses, it has 3 values(decreased, increased, unchanged).
 At the end we have expense forecast which calculates average spending's for the next month.
 </ul>
+</summary>
 
-
-3. <h4>Dashboard:</h4>
+3. <details><h4>Dashboard:</h4></details>
+<summary>
 <ul>
 <h5>Dashboard is serving two functionalities:</h5>
     
@@ -99,8 +101,10 @@ At the end we have expense forecast which calculates average spending's for the 
 <p>Here we need to specify date range and currency to select data for graph generation<p>
 (line chart, percentage charts and pie charts).
 </ul>
+</summary>
 
-4. <h4>Incomes and Expenses:</h4>
+4. <details><h4>Incomes and Expenses:</h4></details>
+<summary>
 <ul>
 <h5>Incomes and expenses have the same features which are:</h5>
 <li>List with filter and pagination</li>
@@ -111,18 +115,24 @@ At the end we have expense forecast which calculates average spending's for the 
 <li>Export to csv</li>
 <li>Export to pdf</li>
 </ul>
+</summary>
 
-5. <h4>Categories and Tags section:<h4></h4>
+5. <details><h4>Categories and Tags section:</h4></details>details>
+<summary>
 <ul>
 Categories and Tags contains base crud for easy management and filter with pagination to easily find specific ones:
 </ul>
+</summary>
 
-6. <h4>Saving goals:</h4>
+6. <details><h4>Saving goals:</h4></details>details>
+<summary>
 <ul>
 This section contains CRUD but also adding and subtracting amounts from the goals.
 </ul>
+</summary>
 
-7. <h4>Budgets:</h4>
+7. <details><h4>Budgets:</h4></details>details>
+<summary>
 <ul>
 <h5>Crud and features connected with budgets</h5>
 <li>Crud</li>
@@ -132,12 +142,14 @@ This section contains CRUD but also adding and subtracting amounts from the goal
 <li>Add incomes/expenses to a budget</li>
 <li>Generate budget charts</li>
 </ul>
+</summary>
 
-8. <h4>Add transactions:</h4>
+8. <details><h4>Add transactions:</h4></details>
+<summary>
 <ul>
     View to import CSV data from the bank, containes incomes, expenses or both
 </ul>
-</details>
+</summary>
 
 ## Additional resources
 <ul>

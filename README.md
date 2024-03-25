@@ -131,7 +131,9 @@ This section contains CRUD but also adding and subtracting amounts from the goal
 </ul>
 </summary>
 
-7. <details><h4>Budgets:</h4></details>details>
+<details>
+    <summary>
+7. <h4>Budgets:</h4>
 <summary>
 <ul>
 <h5>Crud and features connected with budgets</h5>
@@ -142,14 +144,14 @@ This section contains CRUD but also adding and subtracting amounts from the goal
 <li>Add incomes/expenses to a budget</li>
 <li>Generate budget charts</li>
 </ul>
-</summary>
 
-8. <details><h4>Add transactions:</h4></details>
-<summary>
+
+<details>
+8. <summary><h4>Add transactions:</h4></summary>
 <ul>
     View to import CSV data from the bank, containes incomes, expenses or both
 </ul>
-</summary>
+</details>
 
 ## Additional resources
 <ul>

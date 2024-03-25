@@ -1,9 +1,2 @@
-
-*.py linguist-detectable=true
-*.js linguist-detectable=true
-*.html linguist-detectable=false
-*.css linguist-detectable=false
-
-# python 100%
-# * linguist-vendored
-# *.py linguist-vendored=false
+* linguist-vendored
+*.py linguist-vendored=false

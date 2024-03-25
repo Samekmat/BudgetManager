@@ -7,10 +7,9 @@
 * [Video showcase](#video-showcase)
 
 ## General info
-<details>
-<summary>Click here to see general information about <b>BudgetManager Project</b>!</summary>
-<b>BudgetManager</b> is a project dedicated to tracking and managing earnings and spending. With features like income and expense tracking, customizable budgets, goal settings, various options to upload your data, and generating charts to visualize that data.
-</details>
+<h2>Click here to see general information about <b>BudgetManager Project</b>!</summary>
+<b>BudgetManager</b> is a project dedicated to tracking and managing earnings and spending. With features like income and expense tracking, customizable budgets, goal settings, various options to upload your data, and generating charts to visualize that data.</h2>
+
 
 ## Technologies & Tools
 <ul>
@@ -76,28 +75,24 @@ docker compose -f .\.docker\docker-compsoe.yml up -d --build
 <details>
 <summary>Click here to see all project functionalities</summary>
 
-1. Custom user authentication:
+1. <h4>Custom user authentication:</h4>
 <ul>
-<h4>
 To use Budget Manager app, it is required to have an account. There is custom register, login, logout and profile creation
 using django signals.
-</h4>
 </ul>
 
-2. Index view:
+2. <h4>Index view:</h4>
 <ul>
-<h4>
 Index view is responsible for displaying currency exchange rates based on currencies existing in database.
 It also show expense comparison by category, which is a status of the current month expenses compared percentage
 to the previous expenses, it has 3 values(decreased, increased, unchanged).
 At the end we have expense forecast which calculates average spending's for the next month.
-</h4>
 </ul>
 
 
-3. Dashboard:
+3. <h4>Dashboard:</h4>
 <ul>
-<h4>Dashboard is serving two functionalities:</h4>
+Dashboard is serving two functionalities:
 <li>Recent transactions:</li>
 As name calls, it displays two newest expenses with two newest incomes.
 <li>Expense and Income Charts:</li>
@@ -105,9 +100,9 @@ Here we need to specify date range and currency to select data for graph generat
 (line chart, percentage charts and pie charts).
 </ul>
 
-4. Incomes and Expenses:
+4. <h4>Incomes and Expenses:</h4>
 <ul>
-<h4>Incomes and expenses have the same features which are:</h4>
+Incomes and expenses have the same features which are:
 <li>List with filter and pagination</li>
 <li>Add new income/expense by form</li>
 <li>Add new income/expense by image of a bill or invoice</li>
@@ -117,21 +112,19 @@ Here we need to specify date range and currency to select data for graph generat
 <li>Export to pdf</li>
 </ul>
 
-5. Categories and Tags section:
+5. <h4>Categories and Tags section:<h4></h4>
 <ul>
-<h4>
 Categories and Tags contains base crud for easy management and filter with pagination to easily find specific ones:
-</h4>
 </ul>
 
-6. Saving goals:
+6. <h4>Saving goals:</h4>
 <ul>
-<h4>This section contains crud but also adding and subtracting amounts from the goals</h4>
+This section contains crud but also adding and subtracting amounts from the goals
 </ul>
 
-7. Budgets:
+7. <h4>Budgets:</h4>
 <ul>
-<h4>Crud and features connected with budgets</h4>
+Crud and features connected with budgets
 <li>Crud</li>
 <li>Share budget with another user</li>
 <li>Specify budget currency</li>
@@ -140,9 +133,9 @@ Categories and Tags contains base crud for easy management and filter with pagin
 <li>Generate budget charts</li>
 </ul>
 
-8. Add transactions:
+8. <h4>Add transactions:</h4>
 <ul>
-    <h4>View to import CSV data from the bank, containes incomes, expenses or both </h4>
+    View to import CSV data from the bank, containes incomes, expenses or both
 </ul>
 </details>
 

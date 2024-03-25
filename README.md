@@ -76,7 +76,7 @@ docker compose -f .\.docker\docker-compsoe.yml up -d --build
     <summary>
 1. Custom user authentication:</summary>
 <ul>
-To use Budget Manager app, it is required to have an account. There is a custom:
+To use Budget Manager app, it is required to have an account. There is also a custom:
     <li>register</li>
     <li>login</li>
     <li>logout</li>
@@ -107,8 +107,6 @@ Index view is responsible for:
     <summary>
 3. Dashboard:</summary>
 <ul>
-<h5>Dashboard is serving two functionalities:</h5>
-    
 <li>Recent transactions:</li>
 <p>As name calls, it displays two newest expenses with two newest incomes.</p>
 <li>Expense and Income Charts:</li>
@@ -122,23 +120,24 @@ Index view is responsible for:
     <summary>
 4. Incomes and Expenses:</summary>
 <ul>
-<h5>Incomes and expenses have the same features which are:</h5>
-<li>List with filter and pagination</li>
-<li>Add new income/expense by form</li>
-<li>Add new income/expense by image of a bill or invoice</li>
-<li>Update</li>
-<li>Delete</li>
-<li>Export to csv</li>
-<li>Export to pdf</li>
+<li>CRUD</li>
+<li>add new income/expense by form</li>
+<li>add new income/expense by image of a bill or invoice</li>
+<li>filter</li>
+<li>paginationelete</li>
+<li>export to csv</li>
+<li>export to pdf</li>
 </ul>
 </details>
 
 
 <details>
     <summary>
-5. Categories and Tags section:</summary>
+5. Categories and Tags:</summary>
 <ul>
-Categories and Tags contains base crud for easy management and filter with pagination to easily find specific ones:
+    <li>CRUD</li>
+    <li>filter</li>
+    <li>pagination</li>
 </ul>
 </details>
 
@@ -146,7 +145,9 @@ Categories and Tags contains base crud for easy management and filter with pagin
     <summary>
 6. Saving goals:</summary>
 <ul>
-This section contains CRUD but also adding and subtracting amounts from the goals.
+    <li>CRUD</li>
+    <li>adding money amount to the goals</li>
+    <li>subtracting money amount from the goals</li>
 </ul>
 </details>
     
@@ -154,8 +155,7 @@ This section contains CRUD but also adding and subtracting amounts from the goal
     <summary>
 7. Budgets:</summary>
 <ul>
-<h5>Crud and features connected with budgets</h5>
-<li>Crud</li>
+<li>CRUD</li>
 <li>Share budget with another user</li>
 <li>Specify budget currency</li>
 <li>Select goals that will be connected with budget</li>
@@ -168,14 +168,17 @@ This section contains CRUD but also adding and subtracting amounts from the goal
     <summary>
 8. Add transactions:</summary>
 <ul>
-    View to import CSV data from the bank, containes incomes, expenses or both
+    Import csv data containing:
+    <li>incomes</li>
+    <li>expenses</li>
+    <li>both</li>
 </ul>
 </details>
 
 ## Additional resources
 <ul>
 <li>Fixtures to preload initial data -> categories, currencies and tags: helper_models/fixtures</li>
-Tags fixture need a user to be loaded so createsuperuser or standard user first
+Tags fixture needs user to be loaded, so createsuperuser or standard user first
 
 ```commandline
 python manage.py createsuperuser

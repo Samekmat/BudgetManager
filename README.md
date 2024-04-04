@@ -72,8 +72,6 @@ git clone https://github.com/Samekmat/BudgetManager.git
 docker compose -f .\.docker\docker-compsoe.yml up -d --build
 ```
 
-4) Apply migrations
-
 ## Functionalities
 
 <details>
@@ -154,7 +152,7 @@ Index view is responsible for:
     <li>subtracting money amount from the goals</li>
 </ul>
 </details>
-    
+
 <details>
     <summary>
 7. Budgets:</summary>

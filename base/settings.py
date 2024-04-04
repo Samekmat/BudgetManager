@@ -7,7 +7,7 @@ import pytesseract
 from django.core.management.utils import get_random_secret_key
 
 env = environ.Env(
-    DEBUG=(bool, False), TESSERACT_CMD=(str, ""), SECRET_KEY=(str, get_random_secret_key()), ENVIRONMENT=(str, "local")
+    DEBUG=(bool, True), TESSERACT_CMD=(str, ""), SECRET_KEY=(str, get_random_secret_key()), ENVIRONMENT=(str, "local")
 )
 environ.Env.read_env()
 
@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = ["*"]
 
@@ -181,7 +181,7 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/users/login/"
 
 
-COMPRESS_ROOT = STATIC_ROOT
+COMPRESS_ROOT = BASE_DIR / "static"
 
 COMPRESS_ENABLED = True
 

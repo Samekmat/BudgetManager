@@ -50,7 +50,9 @@ poetry install
 ```
 4) Configure .env variables using base/.env.dist examples
 
-5) Run server on localhost
+5) Apply migrations
+
+6) Run server on localhost
 ```bash
 python manage.py runserver
 ```
@@ -69,6 +71,8 @@ git clone https://github.com/Samekmat/BudgetManager.git
 ```bash
 docker compose -f .\.docker\docker-compsoe.yml up -d --build
 ```
+
+4) Apply migrations
 
 ## Functionalities
 

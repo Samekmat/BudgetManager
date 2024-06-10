@@ -215,3 +215,9 @@ python manage.py loaddata 'fixture'
 
 ### Video showcase
 [<img src="https://cdn.loom.com/sessions/thumbnails/0cb822939e2c432190c217c0ee6a301b-with-play.gif" width="50%">](https://www.loom.com/embed/0cb822939e2c432190c217c0ee6a301b?sid=fab91a0c-88b8-4502-af7c-d5d6d37136fe)
+
+### Infrastructure model
+![Infrastructure main model](.infragenie/infrastructure_main_model.svg)
+- [web component model](.infragenie/web_component_model.svg)
+
+---
